@@ -160,6 +160,11 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
         self.__original_val__mm = self.__current_val_mm
         self._update_display()
 
+    def set_value_and_reset_state(self, value_in_mm):
+        self.set_value(value_in_mm)
+        self.__original_val__mm = self.__current_val_mm
+        self._update_display()
+
     def text(self):
         return str(self.__current_val_mm)
 

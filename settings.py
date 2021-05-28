@@ -13,7 +13,8 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'apps.maintenance_productivity',
-    'apps.joint_profiles'
+    'apps.joint_profiles',
+     'apps.dowel_profiles',
 ]
 
 DATABASES = {

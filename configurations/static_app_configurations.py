@@ -2,7 +2,8 @@ import logging
 import os
 
 from . import machine_ranges
-from .constants_types import AppSupportedOperations, AppSupportedSettingValues, SupportedMachines
+from apps.commons import SupportedMachines
+from .constants_types import AppSupportedOperations, AppSupportedSettingValues, WidgetsType
 
 CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
@@ -25,9 +26,43 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Depth", "target_key": "joint_profile_depth", "range": machine_ranges.joint_profile_depth},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
     {"lbl": "Pin width", "target_key": "joint_profile_bit_width", "range": machine_ranges.joint_profile_bit_width},
-    {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom", "range": machine_ranges.joint_profile_distance_from_bottom},
+    {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
+     "range": machine_ranges.joint_profile_distance_from_bottom},
 ]
 
+
+DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
+    {
+        "lbl": "Spacing",
+        "target_key": "dowel_profile_spacing",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_spacing
+    },
+    {
+        "lbl": "Distance from edge",
+        "target_key": "dowel_profile_dis_from_edge",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_dis_from_edge
+    },
+    {
+        "lbl": "Distance from face",
+        "target_key": "dowel_profile_dis_from_face",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_dis_from_face
+    },
+    {
+        "lbl": "Face depth",
+        "target_key": "dowel_profile_face_depth",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_face_depth
+    },
+    {
+        "lbl": "Edge depth",
+        "target_key": "dowel_profile_edge_depth",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_edge_depth
+    }
+]
 
 # main logging info
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
