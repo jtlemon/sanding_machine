@@ -7,9 +7,8 @@ from .constants_types import AppSupportedOperations, AppSupportedSettingValues, 
 CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
 SUPPORTED_OPERATIONS = [
-    AppSupportedOperations.jointSettingOperation,
-    AppSupportedOperations.feedAndSpeedOperation,
-    AppSupportedOperations.settingParametersOperation
+    AppSupportedOperations.dovetailCameraOperation,
+    AppSupportedOperations.jointProfilesOperation
 ]
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
@@ -27,8 +26,6 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
     {"lbl": "Pin width", "target_key": "joint_profile_bit_width", "range": machine_ranges.joint_profile_bit_width},
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom", "range": machine_ranges.joint_profile_distance_from_bottom},
-{"lbl": "New Pram", "target_key": "var_name", "range": (7,30,0.1)},
-{"lbl": "new. ", "target_key": "vekjogjeoh", "range": (3,70,0.1)},
 ]
 
 

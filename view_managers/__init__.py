@@ -1,2 +1,2 @@
-from .joint_setting_manager import JointSettingPageManger
+from .joint_profiles.joint_profile_manager import JointProfilesPageManager
 from .camera_page_manager import DovetailCameraPageManager

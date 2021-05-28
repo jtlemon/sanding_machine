@@ -30,3 +30,7 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
     def new_image_received(self, camera_index, pix_map):
         if camera_index == 0:
             self.camera_display.setPixmap(pix_map)
+
+    def handle_joint_profile_updated(self, new_profile):
+        self.available_profiles_combo.load_new_options(new_profile)
+

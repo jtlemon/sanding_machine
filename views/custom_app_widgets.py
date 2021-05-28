@@ -40,9 +40,9 @@ class ProfileComboBox(QtWidgets.QWidget):
         self.action_combo_btn.setIconSize(QtCore.QSize(35, 35))
         self.widget_layout.addWidget(self.action_combo_btn, stretch=0)
         self.setMinimumHeight(50)
-        self.combo_box.addItems(["hello", "world", "hey", "there"])
         self.action_combo_btn.clicked.connect(lambda: self.combo_box.showPopup())
         self.combo_box.currentTextChanged.connect(lambda txt: self.currentTextChanged.emit(txt))
+
 
     def addItems(self, items):
         self.combo_box.addItems(items)
@@ -55,6 +55,28 @@ class ProfileComboBox(QtWidgets.QWidget):
 
     def currentText(self):
         return  self.combo_box.currentText()
+
+    def setCurrentIndex(self, index):
+        self.combo_box.setCurrentIndex(index)
+
+    def setCurrentText(self, text):
+        self.combo_box.setCurrentText(text)
+
+    def set_default_option(self, default):
+        index = self.combo_box.findText(default)
+        self.combo_box.setCurrentIndex(index)
+
+    def load_new_options(self, options):
+        current_option = self.combo_box.currentText()
+        self.combo_box.clear()
+        self.combo_box.addItems(options)
+        target_index = self.combo_box.findText(current_option)
+        self.combo_box.setCurrentIndex(target_index)
+
+
+
+
+
 
 
 

@@ -2,10 +2,11 @@ from enum import Enum
 
 
 class AppSupportedOperations(Enum):
-    jointSettingOperation = 0
-    feedAndSpeedOperation = 1
-    restMachineOperation = 2
-    settingParametersOperation = 3
+    dovetailCameraOperation = 0
+    jointProfilesOperation = 1
+    feedAndSpeedOperation = 2
+    restMachineOperation = 3
+    settingParametersOperation = 4
 
 
 class AppSupportedSettingValues(Enum):

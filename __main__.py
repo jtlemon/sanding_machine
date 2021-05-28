@@ -6,10 +6,10 @@ try:
 except Exception as e:
     print(e)
 from PySide2 import QtWidgets, QtGui, QtCore
-from models import AppSupportedOperations, CameraMangerProcess
-from view_managers import JointSettingPageManger, DovetailCameraPageManager
+from models import  CameraMangerProcess
+from view_managers import JointProfilesPageManager, DovetailCameraPageManager
 from views import MachineInterfaceUi
-from configurations import static_app_configurations
+from configurations import static_app_configurations,AppSupportedOperations
 import time
 from models.temperature_service import TemperatureService
 from models.sensors_connector_hal import SensorConnector
@@ -20,18 +20,17 @@ class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
         super(MachineGuiInterface, self).__init__()
         self.__camera_image_subscribers = {index:list() for index in range(static_app_configurations.AVAILABLE_CAMERAS)}
+        self.__joint_profile_update_subscribers = list()
         self.__installed_operations = {}
         for app_operation in static_app_configurations.SUPPORTED_OPERATIONS:
             operation_page_widget = None
-            if app_operation == AppSupportedOperations.jointSettingOperation:
-                operation_page_widget = JointSettingPageManger("Joint Setting")
-            elif app_operation == AppSupportedOperations.feedAndSpeedOperation:
-                operation_page_widget = DovetailCameraPageManager("Feed/Speed")
+            if app_operation == static_app_configurations.AppSupportedOperations.dovetailCameraOperation:
+                operation_page_widget = DovetailCameraPageManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
-            elif app_operation == AppSupportedOperations.restMachineOperation:
-                operation_page_widget = JointSettingPageManger("Reset")
-            elif app_operation == AppSupportedOperations.settingParametersOperation:
-                operation_page_widget = JointSettingPageManger("Setting")
+                self.__joint_profile_update_subscribers.append(operation_page_widget)
+            elif app_operation == static_app_configurations.AppSupportedOperations.jointProfilesOperation:
+                operation_page_widget = JointProfilesPageManager()
+                operation_page_widget.jointProfilesUpdatedSignal.connect(self.handle_joint_profile_updates)
             self.add_app_window_widget(operation_page_widget)
             self.__installed_operations[app_operation] = operation_page_widget
 
@@ -55,10 +54,15 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__camera_check_timer.timeout.connect(self.check_available_images)
         self.__camera_check_timer.start(int(1000/static_app_configurations.FRAME_RATE))
 
+        # initiate all signals
+        if AppSupportedOperations.jointProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
+            available_profile_names = self.__installed_operations[AppSupportedOperations.jointProfilesOperation].get_profile_names()
+            self.handle_joint_profile_updates(available_profile_names)
         # start all threads
         self.__temperature_thread.start()
         self.__sensors_board_thread.start()
         self.__grbl_interface.start_process()
+
 
 
     def subscribe_to_image(self, index, widget):
@@ -85,6 +89,10 @@ class MachineGuiInterface(MachineInterfaceUi):
                 q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
                 pix_map = QtGui.QPixmap.fromImage(q_image)
                 active_widget.new_image_received(cam_index, pix_map)
+
+    def handle_joint_profile_updates(self, new_profiles):
+        for subscriber_widget in self.__joint_profile_update_subscribers:
+            subscriber_widget.handle_joint_profile_updated(new_profiles)
 
     def closeEvent(self, event) -> None:
         self.__temperature_thread.close_service()
