@@ -1,0 +1,58 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/icons8-chevron-up-50.png</file>
+    <file>icons/icons8-chevron-right-50.png</file>
+    <file>icons/icons8-chevron-down-50.png</file>
+    <file>icons/icons8-chevron-left-50.png</file>
+    <file>icons/icons8-up-50.png</file>
+    <file>icons/icons8-usb-disconnected-96.png</file>
+    <file>icons/icons8-usb-connected-96.png</file>
+    <file>icons/icons8-delete-bin-96.png</file>
+    <file>icons/icons8-chevron-down-90.png</file>
+    <file>icons/10d@2x.png</file>
+    <file>icons/icons8-camera-96.png</file>
+    <file>icons/icons8-refresh-90.png</file>
+    <file>icons/icons8-double-right-100.png</file>
+    <file>icons/icons8-double-left-96.png</file>
+    <file>icons/icons8-double-left-100.png</file>
+    <file>icons/icons8-edit-96.png</file>
+    <file>icons/icons8-right-90.png</file>
+    <file>icons/icons8-left-90.png</file>
+    <file>icons/icons8-down-arrow-90.png</file>
+    <file>icons/icons8-up-90.png</file>
+    <file>icons/icons8-minus-96.png</file>
+    <file>icons/icons8-plus-144.png</file>
+    <file>icons/icons8-calculator-64.png</file>
+    <file>icons/50n@2x.png</file>
+    <file>icons/50d@2x.png</file>
+    <file>icons/13n@2x.png</file>
+    <file>icons/13d@2x.png</file>
+    <file>icons/11n@2x.png</file>
+    <file>icons/11d@2x.png</file>
+    <file>icons/10n@2x.png</file>
+    <file>icons/09n@2x.png</file>
+    <file>icons/09d@2x.png</file>
+    <file>icons/09d@2x (1).png</file>
+    <file>icons/04n@2x.png</file>
+    <file>icons/04d@2x.png</file>
+    <file>icons/03n@2x.png</file>
+    <file>icons/03d@2x.png</file>
+    <file>icons/02n@2x.png</file>
+    <file>icons/02d@2x.png</file>
+    <file>icons/01n@2x.png</file>
+    <file>icons/01d@2x.png</file>
+  </qresource>
+  <qresource prefix="fonts">
+    <file>fonts/montserrat/MontserratAlternates-SemiBold.otf</file>
+    <file>fonts/montserrat/MontserratAlternates-Medium.otf</file>
+    <file>fonts/montserrat/MontserratAlternates-Regular.otf</file>
+    <file>fonts/montserrat/MontserratAlternates-Light.otf</file>
+    <file>fonts/montserrat/Montserrat-Bold.otf</file>
+    <file>fonts/montserrat/Montserrat-Medium.otf</file>
+    <file>fonts/montserrat/Montserrat-Regular.otf</file>
+    <file>fonts/montserrat/Montserrat-Light.otf</file>
+    <file>fonts/montserrat/Montserrat-Thin.otf</file>
+    <file>fonts/Helvetica-400.ttf</file>
+  </qresource>
+  <qresource prefix="files"/>
+</RCC>

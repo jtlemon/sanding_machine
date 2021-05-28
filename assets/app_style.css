@@ -1,0 +1,134 @@
+QWidget
+{
+    text-transform: uppercase;
+     font-family:"Helvetica";
+     font-size:18pt;
+     font-weight:bold;
+     color:black;
+}
+QPushButton
+{
+   border:1px solid #9f9f9f;
+   background-color:  rgb(211, 215, 207);
+   border-radius:30%;
+}
+QPushButton:hover
+{
+   background-color:  rgb(255, 255, 255);
+}
+QPushButton:checked
+{
+   background-color:  rgb(255, 255, 255);
+   color:green;
+}
+#app_header_frame
+{
+    background: gray;
+    border:2px solid gray;
+}
+#app_footer_frame
+{
+    border:none;
+    background-color: black;
+}
+
+AppFooterButton{
+     background-color: transparent;
+     color: rgba(255, 255, 255, 255);
+     border: 1px solid white;
+     padding:10px;
+}
+AppFooterButton:hover{
+    background-color: transparent;
+    color: rgba(255, 255, 255, 128);
+}
+
+AppFooterButton:checked{
+    background-color: transparent;
+    color: green;
+    border: 1px solid green;
+}
+
+
+.LeftRightCenterButtonWidget
+{
+     border-color: rgb(238, 238, 236);
+     background-color: rgb(211, 215, 207);
+     border-radius:40%;
+     color:black;
+}
+.LeftRightCenterButtonWidget QPushButton
+{
+     border:none;
+     background-color: transparent;
+     padding:10px;
+     color:black;
+
+}
+.LeftRightCenterButtonWidget QPushButton:checked
+{
+     background-color: green;
+}
+.LeftRightCenterButtonWidget QPushButton[offLvl="1"]:checked
+{
+    background-color: red;
+}
+#left_btn_widget
+{
+    border-top-left-radius:30%;
+    border-bottom-left-radius:30%;
+}
+#right_btn_widget
+{
+    border-top-right-radius:30%;
+    border-bottom-right-radius:30%;
+}
+#sidebar_frame
+{
+    border:1px solid gray;
+    background: #9f9f9f;
+}
+
+ProfileComboBox
+{
+  background-color: rgb(211, 215, 207);
+  border: none;
+  color: rgb(40,40,40);
+  border-radius:30%;
+  padding: 2px 0px 1px 15px; /*This makes text colour work*/
+}
+ProfileComboBox QComboBox{
+    border:none;
+    background-color:transparent;
+}
+ProfileComboBox QComboBox::drop-down
+{
+    background-color: rgb(211, 215, 207);
+}
+ProfileComboBox QComboBox QAbstractItemView {
+    selection-background-color: rgb(255, 0, 0);
+    selection-color: rgb(200, 200, 200);
+    border:1px solid #9f9f9f;
+    border-bottom-right-radius:20;
+
+}
+
+
+ProfileComboBox QComboBox::on
+{
+   background-color: rgb(211, 215, 207);
+   border: none;
+   color: rgb(40,40,40);
+   border-top-left-radius:30%;
+   border-bottom-left-radius:0px;
+   padding: 2px 0px 1px 15px; /*This makes text colour work*/
+}
+
+ProfileComboBox #action_combo_btn
+{
+    border:none;
+    background-color:transparent;
+    qproperty-icon: url(:/icons/icons/icons8-chevron-down-50.png);
+}
+
+

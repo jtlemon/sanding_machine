@@ -1,0 +1,1 @@
+from .dovetail_widget_manager import DovetailSideButtons

@@ -1,0 +1,1 @@
+from .dovetail_camera_page import Ui_DovetailCameraPageUI
