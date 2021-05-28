@@ -9,7 +9,8 @@ CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
-    AppSupportedOperations.jointProfilesOperation
+    AppSupportedOperations.jointProfilesOperation,
+    AppSupportedOperations.dowelsProfileOperation
 ]
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,

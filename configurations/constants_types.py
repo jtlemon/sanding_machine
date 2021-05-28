@@ -4,9 +4,10 @@ from enum import Enum
 class AppSupportedOperations(Enum):
     dovetailCameraOperation = 0
     jointProfilesOperation = 1
-    feedAndSpeedOperation = 2
-    restMachineOperation = 3
-    settingParametersOperation = 4
+    dowelsProfileOperation = 2
+    feedAndSpeedOperation = 3
+    restMachineOperation = 4
+    settingParametersOperation = 5
 
 
 class AppSupportedSettingValues(Enum):
