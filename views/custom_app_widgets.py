@@ -148,3 +148,35 @@ class TrackableCheckBox(QtWidgets.QCheckBox):
 
     def value(self):
         return self.isChecked()
+
+
+class TrackableLineEdit(QtWidgets.QLineEdit):
+    def __init__(self, *args, key_name, **kwargs):
+        super(TrackableCheckBox, self).__init__(*args, **kwargs)
+        self.__key_name = key_name
+
+    def get_key(self):
+        return self.__key_name
+
+    def set_value(self, new_value):
+        self.setText(new_value)
+
+    def value(self):
+        return self.text()
+
+
+class TrackableQComboBox(QtWidgets.QComboBox):
+    def __init__(self, *args, key_name, options = [], **kwargs):
+        super(TrackableQComboBox, self).__init__(*args, **kwargs)
+        self.__key_name = key_name
+        self.addItems(options)
+
+    def get_key(self):
+        return self.__key_name
+
+    def set_value(self, new_value):
+        self.setCurrentText(new_value)
+
+    def value(self):
+        return self.currentText()
+

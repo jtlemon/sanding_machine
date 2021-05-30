@@ -19,3 +19,7 @@ class AppSupportedSettingValues(Enum):
 class WidgetsType(Enum):
     rangeWidget = 0
     boolWidget = 1
+    textWidget = 2
+    speedWidget = 3
+    optionWidget = 4
+    spinBoxWidget = 5

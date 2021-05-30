@@ -67,6 +67,7 @@ class AddEditJoinProfile(QtWidgets.QDialog):
         # signals
         self.cancel_btn.clicked.connect(self.reject)
         self.save_btn.clicked.connect(self.handle_save_profile)
+        self.setMinimumWidth(600)
 
     def handle_save_profile(self):
         profile_name = self.profile_name_edit.text()

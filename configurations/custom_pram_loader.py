@@ -1,6 +1,7 @@
 import os, json, inspect
-from configurations.static_app_configurations import CURRENT_MACHINE
 from apps.commons import SupportedMachines
+from configurations.static_app_configurations import CURRENT_MACHINE
+
 if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
     file_name = "dovetail_configurations.json"
 else:

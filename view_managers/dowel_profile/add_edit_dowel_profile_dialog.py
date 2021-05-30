@@ -10,7 +10,7 @@ except Exception as e:
 from apps.dowel_profiles import models
 from PySide2 import QtWidgets
 from view_managers.dowel_profile.utils import get_supported_profiles
-from view_managers.dowel_profile.configured_prams_widget import RenderInternalPramsWidget
+from view_managers.dialog_configured_prams import RenderInternalPramsWidget
 import configurations.static_app_configurations as static_configurations
 from views.custom_app_widgets import SaveCancelButtons, QLineEditWithSideLabel
 
@@ -32,6 +32,7 @@ class AddEditDowelProfileDialog(QtWidgets.QDialog):
         self.widget_layout.addWidget(self.save_cancel_widget)
         self.save_cancel_widget.cancel_btn.clicked.connect(self.reject)
         self.save_cancel_widget.save_btn.clicked.connect(self.handle_save_payload)
+        self.setMinimumWidth(600)
 
     def handle_save_payload(self):
         profile_name = self.profile_name_line_edit.text()

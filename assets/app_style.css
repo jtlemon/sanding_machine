@@ -113,7 +113,6 @@ ProfileComboBox QComboBox QAbstractItemView {
 
 }
 
-
 ProfileComboBox QComboBox::on
 {
    background-color: rgb(211, 215, 207);
@@ -129,6 +128,16 @@ ProfileComboBox #action_combo_btn
     border:none;
     background-color:transparent;
     qproperty-icon: url(:/icons/icons/icons8-chevron-down-50.png);
+}
+
+
+QCheckBox::indicator {
+     width: 40px;
+     height: 40px;
+}
+TrackableCheckBox
+{
+    height:40px;
 }
 
 

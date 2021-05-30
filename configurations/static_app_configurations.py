@@ -1,12 +1,11 @@
 import logging
 import os
-
-from . import machine_ranges
 from apps.commons import SupportedMachines
+from . import machine_ranges
 from .constants_types import AppSupportedOperations, AppSupportedSettingValues, WidgetsType
-
 CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
+from custom_widgets import SpinUnitMode
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
     AppSupportedOperations.jointProfilesOperation,
@@ -30,7 +29,6 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
      "range": machine_ranges.joint_profile_distance_from_bottom},
 ]
-
 
 DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
     {
@@ -63,6 +61,64 @@ DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dowel_profile_edge_depth
     }
+]
+
+DOVETAIL_BIT_PROFILES_CONFIGURATION = [
+    {
+        "lbl": "Bit #",
+        "target_key": "bit_profile_number",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_number
+    },
+    {
+        "lbl": "Bit length",
+        "target_key": "bit_profile_length",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_length
+    },
+    {
+        "lbl": "Bit diameter",
+        "target_key": "bit_profile_diameter",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_diameter
+    },
+    {
+        "lbl": "Cutting edge length",
+        "target_key": "bit_profile_cutting_edge_length",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_cutting_edge_length
+    },
+    {
+        "lbl": "Number of flutes",
+        "target_key": "bit_profile_number_of_flutes",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_number_of_flutes
+    },
+    {
+        "lbl": "Feed speed",
+        "target_key": "bit_profile_feed_speed",
+        "field_type": WidgetsType.speedWidget,
+        "range": machine_ranges.bit_profile_feed_speed,
+        "unit": "RPM"
+
+    },
+    {
+        "lbl": "Spindle speed",
+        "target_key": "bit_profile_spindle_speed",
+        "field_type": WidgetsType.speedWidget,
+        "range": machine_ranges.bit_profile_spindle_speed,
+        "unit": "/sec",
+        "custom_lbl": {SpinUnitMode.MM_MODE: "mm/m", SpinUnitMode.IN_MODE: "IPM"}
+
+    },
+    {
+        "lbl": "Bit type",
+        "target_key": "bit_profile_bit_type",
+        "field_type": WidgetsType.optionWidget,
+        "options": ["dovetail", "drill bit", "box joint bit"],
+
+    },
+
 ]
 
 # main logging info
