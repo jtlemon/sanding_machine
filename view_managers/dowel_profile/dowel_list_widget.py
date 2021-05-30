@@ -9,9 +9,10 @@ except Exception as e:
     print(e)
 from apps.dowel_profiles import models
 from PySide2 import QtWidgets, QtCore
-from view_managers.dowel_profile.utils import get_supported_profiles_meta
+from view_managers.profiles_helper_functions import get_supported_profiles_meta
 from view_managers.dowel_profile.add_edit_dowel_dialog import AddEditDowelDialog
 from view_managers.utils import add_item_to_table
+from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import RecordTrackBtn, CenterPagePushButton
 
 
@@ -29,7 +30,7 @@ class DowelListWidget(QtWidgets.QWidget):
         self.add_dowel_btn.widget_btn.setMinimumSize(300, 60)
         self.widget_layout.addWidget(self.add_dowel_btn)
         # table widget
-        col_names, self.target_db_keys, self.default_values = get_supported_profiles_meta()
+        col_names, self.target_db_keys, self.default_values = get_supported_profiles_meta(AppSupportedOperations.dowelsProfileOperation)
         col_names.extend(["#", "#"])
         self.widget_table = QtWidgets.QTableWidget()
         self.widget_table.setColumnCount(len(col_names))

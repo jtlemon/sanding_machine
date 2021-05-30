@@ -9,7 +9,8 @@ from custom_widgets import SpinUnitMode
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
     AppSupportedOperations.jointProfilesOperation,
-    AppSupportedOperations.dowelsProfileOperation
+    AppSupportedOperations.dowelsProfileOperation,
+    AppSupportedOperations.bitProfilesOperation
 ]
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
@@ -100,14 +101,12 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.bit_profile_feed_speed,
         "unit": "RPM"
-
     },
     {
         "lbl": "Spindle speed",
         "target_key": "bit_profile_spindle_speed",
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.bit_profile_spindle_speed,
-        "unit": "/sec",
         "custom_lbl": {SpinUnitMode.MM_MODE: "mm/m", SpinUnitMode.IN_MODE: "IPM"}
 
     },

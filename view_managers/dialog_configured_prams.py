@@ -30,6 +30,7 @@ def widget_create_from_dict(config_dict):
         widget_range = config_dict.get("range")
         initial_value = widget_range[0]
         unit = config_dict.get("unit", "")
+        allow_mode_change = True if len(unit) == 0 else False
         custom_lbl = config_dict.get("custom_lbl", {})
         if initial_value is None:
             initial_value = widget_range[0]
@@ -40,7 +41,8 @@ def widget_create_from_dict(config_dict):
             extra=unit,
             target_config_key=key,
             numpad_title=name,
-            special_lbl=custom_lbl
+            special_lbl=custom_lbl,
+            allow_mode_change=allow_mode_change
         )
     elif field_type == WidgetsType.optionWidget:
         options = config_dict.get("options")

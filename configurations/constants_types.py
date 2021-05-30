@@ -5,7 +5,7 @@ class AppSupportedOperations(Enum):
     dovetailCameraOperation = 0
     jointProfilesOperation = 1
     dowelsProfileOperation = 2
-    feedAndSpeedOperation = 3
+    bitProfilesOperation = 3
     restMachineOperation = 4
     settingParametersOperation = 5
 
@@ -22,4 +22,3 @@ class WidgetsType(Enum):
     textWidget = 2
     speedWidget = 3
     optionWidget = 4
-    spinBoxWidget = 5

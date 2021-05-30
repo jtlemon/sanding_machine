@@ -10,7 +10,8 @@ except Exception as e:
 from apps.dowel_profiles import models
 from PySide2 import QtWidgets
 from view_managers.dialog_configured_prams import RenderInternalPramsWidget
-import configurations.static_app_configurations as static_configurations
+from view_managers.profiles_helper_functions import get_supported_profiles
+from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import SaveCancelButtons
 
 
@@ -20,10 +21,7 @@ class AddEditDowelDialog(QtWidgets.QDialog):
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         self.__current_dowel = dowel
         self.__dowel_profile = dowel_profile
-        if static_configurations.CURRENT_MACHINE == static_configurations.SupportedMachines.dovetailMachine:
-            supported_dowels_profiles = static_configurations.DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION
-        else:
-            raise ValueError("not supported machine.......")
+        supported_dowels_profiles = get_supported_profiles(AppSupportedOperations.dowelsProfileOperation)
         self.internal_prams_widget = RenderInternalPramsWidget(supported_dowels_profiles)
         self.widget_layout.addWidget(self.internal_prams_widget)
         if self.__current_dowel:
