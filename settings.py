@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'apps.maintenance_productivity',
     'apps.joint_profiles',
      'apps.dowel_profiles',
+    "apps.bit_profiles"
 ]
 
 DATABASES = {

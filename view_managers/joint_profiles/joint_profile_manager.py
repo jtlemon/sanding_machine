@@ -65,7 +65,7 @@ class JointProfilesPageManager(QtWidgets.QWidget):
         # clear table
         self.widget_table.setRowCount(0)
         self.__joint_profiles_names.clear()
-        for joint_profile in models.JoinProfile.objects.all():
+        for joint_profile in models.JoinProfile.objects.filter(machine=static_configurations.CURRENT_MACHINE):
             self.append_joint_to_table(joint_profile)
         self.jointProfilesUpdatedSignal.emit(self.__joint_profiles_names)
 

@@ -82,7 +82,9 @@ class AddEditJoinProfile(QtWidgets.QDialog):
             self.__current_profile.json_payload = current_payload
             self.__current_profile.save()
         else:
-            self.__current_profile = models.JoinProfile(profile_name=profile_name, json_payload=json_data)
+            self.__current_profile = models.JoinProfile(profile_name=profile_name, json_payload=json_data,
+                                                        machine=static_configurations.CURRENT_MACHINE
+                                                        )
             self.__current_profile.save()
         self.accept()
 
