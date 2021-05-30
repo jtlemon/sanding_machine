@@ -35,7 +35,7 @@ class BitProfileManager(QtWidgets.QWidget):
         self.widget_table.setColumnCount(len(col_names))
         self.widget_table.setHorizontalHeaderLabels(col_names)
         for i in range(self.widget_table.columnCount() - 2):
-            self.widget_table.horizontalHeader().setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+            self.widget_table.horizontalHeader().setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
         self.widget_layout.addWidget(self.widget_table, stretch=1)
         self.add_dowel_profile_btn.clicked.connect(self.handle_add_new_dowel)
         self.reload_profiles_table()

@@ -1,16 +1,20 @@
 import logging
 import os
+
 from apps.commons import SupportedMachines
 from . import machine_ranges
 from .constants_types import AppSupportedOperations, AppSupportedSettingValues, WidgetsType
+
 CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
 from custom_widgets import SpinUnitMode
+
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
     AppSupportedOperations.jointProfilesOperation,
     AppSupportedOperations.dowelsProfileOperation,
-    AppSupportedOperations.bitProfilesOperation
+    AppSupportedOperations.bitProfilesOperation,
+    AppSupportedOperations.settingParametersOperation
 ]
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
@@ -120,6 +124,62 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
 
 ]
 
+DOVETAIL_SETTING_CONFIGURATION = [
+    {
+        "lbl": "Standard width 1",
+        "target_key": "dovetail_setting_standard_width_1",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_1
+    },
+    {
+        "lbl": "Standard width 2",
+        "target_key": "dovetail_setting_standard_width_2",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_2
+    },
+    {
+        "lbl": "Standard width 3",
+        "target_key": "dovetail_setting_standard_width_3",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_3
+    },
+    {
+        "lbl": "Standard width 4",
+        "target_key": "dovetail_setting_standard_width_4",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_4
+    },
+    {
+        "lbl": "X zero",
+        "target_key": "dovetail_setting_x_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+    {
+        "lbl": "Y zero",
+        "target_key": "dovetail_setting_y_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_y_zero
+    },
+    {
+        "lbl": "Z zero",
+        "target_key": "dovetail_setting_z_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_z_zero
+    },
+    {
+        "lbl": "A zero",
+        "target_key": "dovetail_setting_a_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_a_zero
+    },
+    {
+        "lbl": "B zero",
+        "target_key": "dovetail_setting_b_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_b_zero
+    },
+]
 # main logging info
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
 LOGGER_NAME = "Dovetail"

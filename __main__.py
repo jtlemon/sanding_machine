@@ -7,7 +7,7 @@ except Exception as e:
     print(e)
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import  CameraMangerProcess
-from view_managers import JointProfilesPageManager, DovetailCameraPageManager, DowelProfileManager, BitProfileManager
+from view_managers import JointProfilesPageManager, DovetailCameraPageManager, DowelProfileManager, BitProfileManager, MachineSettingsManager
 from views import MachineInterfaceUi
 from configurations import static_app_configurations,AppSupportedOperations
 import time
@@ -35,6 +35,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = DowelProfileManager()
             elif app_operation == static_app_configurations.AppSupportedOperations.bitProfilesOperation:
                 operation_page_widget = BitProfileManager()
+            elif app_operation == static_app_configurations.AppSupportedOperations.settingParametersOperation:
+                operation_page_widget = MachineSettingsManager()
             self.add_app_window_widget(operation_page_widget)
             self.__installed_operations[app_operation] = operation_page_widget
 

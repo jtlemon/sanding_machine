@@ -11,6 +11,8 @@ def get_supported_profiles(profile_type):
               supported_dowels_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
         elif profile_type == static_configurations.AppSupportedOperations.bitProfilesOperation:
             supported_dowels_profiles = static_configurations.DOVETAIL_BIT_PROFILES_CONFIGURATION
+        elif profile_type == static_configurations.AppSupportedOperations.settingParametersOperation:
+            supported_dowels_profiles = static_configurations.DOVETAIL_SETTING_CONFIGURATION
         else:
             raise ValueError(f"not implemented operation {profile_type}")
 

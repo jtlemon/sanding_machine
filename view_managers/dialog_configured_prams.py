@@ -72,6 +72,9 @@ class RenderInternalPramsWidget(QtWidgets.QWidget):
             self.grid_layout.addWidget(control_widget, index, 1, 1, 1)
             self.internal_widgets.append(control_widget)
 
+    def get_internal_widgets_ref(self):
+        return  self.internal_widgets
+
     def load_initial_values(self, payload: dict):
         for control_widget in self.internal_widgets:
             key = control_widget.get_key()

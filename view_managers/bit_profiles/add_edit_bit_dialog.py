@@ -49,6 +49,7 @@ class AddEditBitProfileDialog(QtWidgets.QDialog):
         else:
             current_payload = self.__bit_profile.get_decoded_json()
             current_payload.update(new_configured_json)
+            self.__bit_profile.profile_name = profile_name
             self.__bit_profile.default_prams_json = current_payload
             self.__bit_profile.save()
         self.accept()

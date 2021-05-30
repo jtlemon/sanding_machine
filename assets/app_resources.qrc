@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/tenor.gif</file>
     <file>icons/icons8-chevron-up-50.png</file>
     <file>icons/icons8-chevron-right-50.png</file>
     <file>icons/icons8-chevron-down-50.png</file>

@@ -13,6 +13,7 @@ if not os.path.isfile(CONFIGURATION_FILE_PATH):
 
 
 class CustomMachineParamManager:
+    __is_loaded = False
     @staticmethod
     def store():
         configuration_dict = dict()
@@ -30,12 +31,18 @@ class CustomMachineParamManager:
 
     @staticmethod
     def set_value(key, value, auto_store=True):
+        if CustomMachineParamManager.__is_loaded is False:
+            CustomMachineParamManager.load_configuration()
+            CustomMachineParamManager.__is_loaded = True
         setattr(CustomMachineParamManager, key, value)
         if auto_store:
             CustomMachineParamManager.store()
 
     @staticmethod
     def get_value(key, default=None):
+        if CustomMachineParamManager.__is_loaded is False:
+            CustomMachineParamManager.load_configuration()
+            CustomMachineParamManager.__is_loaded = True
         return getattr(CustomMachineParamManager, key, default)
 
 
