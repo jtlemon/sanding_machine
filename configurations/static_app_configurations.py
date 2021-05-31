@@ -180,6 +180,11 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "range": machine_ranges.dovetail_setting_b_zero
     },
 ]
+# ******************************************** Errors ****************************
+INSTALLED_ERRORS = {
+    "type1": {"txt": "Door opened", "flashing": True, "color": "blue"},
+    "type2": {"txt": "error message", "flashing": False, "color": "blue"},
+}
 # main logging info
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
 LOGGER_NAME = "Dovetail"
