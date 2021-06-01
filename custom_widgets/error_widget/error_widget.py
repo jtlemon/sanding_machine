@@ -11,7 +11,6 @@ class ErrorWidgetLabel(QtWidgets.QLabel):
 
     def _manage_color_change(self):
         self.current_color_index = (self.current_color_index + 1) % 2
-        print(f"color:{self.__colors[self.current_color_index]}")
         self.setStyleSheet(f"color:{self.__colors[self.current_color_index]}")
 
     def set_error(self, error_dict:dict):

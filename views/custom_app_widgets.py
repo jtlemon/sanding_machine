@@ -28,8 +28,6 @@ class AppFooterButton(QtWidgets.QPushButton):
 
 
 class ProfileComboBox(QtWidgets.QWidget):
-    currentTextChanged = QtCore.Signal(str)
-
     def __init__(self, parent):
         super(ProfileComboBox, self).__init__(parent=parent)
         self.setAttribute(QtCore.Qt.WA_StyledBackground, True)
@@ -44,7 +42,7 @@ class ProfileComboBox(QtWidgets.QWidget):
         self.widget_layout.addWidget(self.action_combo_btn, stretch=0)
         self.setMinimumHeight(50)
         self.action_combo_btn.clicked.connect(lambda: self.combo_box.showPopup())
-        self.combo_box.currentTextChanged.connect(lambda txt: self.currentTextChanged.emit(txt))
+        self.currentTextChanged = self.combo_box.currentTextChanged
 
     def addItems(self, items):
         self.combo_box.addItems(items)

@@ -180,6 +180,11 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "range": machine_ranges.dovetail_setting_b_zero
     },
 ]
+
+# ************************* dovetail left/right active mapper *************
+DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]
+DOVETAIL_SUPPORTED_LEVELS = 4
+BASE_LEVEL_CONFIGURATION_KEY = "dovetail_setting_standard_width_" # "dovetail_setting_standard_width_4" for lvl 4
 # ******************************************** Errors ****************************
 INSTALLED_ERRORS = {
     "type1": {"txt": "Door opened", "flashing": True, "color": "blue"},
@@ -189,11 +194,11 @@ INSTALLED_ERRORS = {
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
 LOGGER_NAME = "Dovetail"
 
-DOVETAIL_SUPPORTED_LEVELS = 4
+
 AVAILABLE_CAMERAS = 1
 FRAME_RATE = 5  # we will take image every 0.1 sec
-IMAGE_WIDTH = 720
-IMAGE_HEIGHT = 420
+IMAGE_WIDTH = 640
+IMAGE_HEIGHT = 480
 
 # TEMPERATURE
 TEMPERATURE_API_KEY = "bdde746d10436194809f0f822c5c1a2b"

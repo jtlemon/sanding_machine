@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1014</width>
-    <height>668</height>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,1">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,1">
      <property name="spacing">
       <number>12</number>
      </property>
@@ -72,8 +72,8 @@
         <widget class="QPushButton" name="start_button">
          <property name="minimumSize">
           <size>
-           <width>200</width>
-           <height>75</height>
+           <width>300</width>
+           <height>60</height>
           </size>
          </property>
          <property name="font">
@@ -96,8 +96,8 @@
         <widget class="QPushButton" name="cancel_Button">
          <property name="minimumSize">
           <size>
-           <width>200</width>
-           <height>75</height>
+           <width>300</width>
+           <height>60</height>
           </size>
          </property>
          <property name="font">
@@ -129,9 +129,9 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,0,1,0">
        <item>
-        <spacer name="horizontalSpacer_6">
+        <spacer name="horizontalSpacer_5">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -151,11 +151,78 @@
         </widget>
        </item>
        <item>
-        <widget class="ProfileComboBox" name="available_profiles_combo" native="true">
+        <widget class="ProfileComboBox" name="joint_profile_combo" native="true">
          <property name="minimumSize">
           <size>
            <width>150</width>
-           <height>60</height>
+           <height>50</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Dowel Profile</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ProfileComboBox" name="dowel_profile_combo" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>50</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Bit Profile</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ProfileComboBox" name="bit_profile_combo" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>50</height>
           </size>
          </property>
         </widget>
@@ -207,14 +274,14 @@
         <widget class="QLabel" name="camera_display">
          <property name="minimumSize">
           <size>
-           <width>720</width>
-           <height>420</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>720</width>
-           <height>400</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="text">

@@ -1,6 +1,7 @@
 from PySide2 import QtWidgets, QtCore, QtGui
 import math, re
 import configurations.static_app_configurations
+from models import MeasureUnitType
 from configurations.system_configuration_loader import MainConfigurationLoader
 from configurations.custom_pram_loader import CustomMachineParamManager
 from views.custom_app_widgets import CenterPagePushButton
@@ -179,7 +180,8 @@ class MachineSettingsManager(QtWidgets.QWidget):
             allow_leave = True
         return allow_leave
 
-
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
 
 
 

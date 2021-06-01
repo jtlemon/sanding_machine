@@ -2,7 +2,7 @@ from models import MeasureUnitType
 
 
 class AbstractOperationWidgetManger:
-    def change_mode(self, unit: MeasureUnitType):
+    def change_measure_mode(self, unit: MeasureUnitType):
         raise NotImplementedError('subclasses must override change_mode()!')
 
     def get_footer_btn_name(self) -> str:

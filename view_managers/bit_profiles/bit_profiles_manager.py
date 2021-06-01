@@ -15,13 +15,16 @@ from view_managers.utils import add_item_to_table
 from view_managers.bit_profiles.add_edit_bit_dialog import AddEditBitProfileDialog
 from views.custom_app_widgets import RecordTrackBtn, CenterPagePushButton
 from configurations.constants_types import AppSupportedOperations
+from models import MeasureUnitType
 
 
 class BitProfileManager(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
+    profilesChanged = QtCore.Signal(set)
     def __init__(self, footer_btn=""):
         super(BitProfileManager, self).__init__()
         self.__footer_btn_text = "Bit Profiles" if len(footer_btn) == 0 else footer_btn
+        self.__all_loaded_profiles = set()
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         self.add_dowel_profile_btn = CenterPagePushButton("Add New Profile")
         self.add_dowel_profile_btn.widget_btn.setMinimumSize(300, 60)
@@ -44,9 +47,12 @@ class BitProfileManager(QtWidgets.QWidget):
         return self.__footer_btn_text
 
     def reload_profiles_table(self):
+        self.__all_loaded_profiles = set()
         self.widget_table.setRowCount(0)
         for bit_profile in models.BitProfile.objects.filter(machine=static_configurations.CURRENT_MACHINE):
             self.append_profile_to_table(bit_profile)
+            self.__all_loaded_profiles.add(bit_profile.profile_name)
+        self.profilesChanged.emit(self.__all_loaded_profiles)
 
     def append_profile_to_table(self, bit_profile, row_index=-1):
         has_to_update_model = False
@@ -76,22 +82,37 @@ class BitProfileManager(QtWidgets.QWidget):
                 bit_profile.save()
 
     def handle_delete_profile(self, dowel_profile_id):
-        dowel_profile = models.BitProfile.objects.get(pk=dowel_profile_id)
-        dowel_profile.delete()
+        bit_profile = models.BitProfile.objects.get(pk=dowel_profile_id)
+        self.__all_loaded_profiles.remove(bit_profile.profile_name)
+        bit_profile.delete()
         row_index = self.get_row_id(dowel_profile_id)
         self.widget_table.removeRow(row_index)
+        self.profilesChanged.emit(self.__all_loaded_profiles)
 
     def handle_edit_profile(self, dowel_profile_id):
-        dowel_profile = models.BitProfile.objects.get(pk=dowel_profile_id)
+        bit_profile = models.BitProfile.objects.get(pk=dowel_profile_id)
         row_index = self.get_row_id(dowel_profile_id)
-        dia = AddEditBitProfileDialog(dowel_profile, parent=self)
+        old_profile_name = bit_profile.profile_name
+        dia = AddEditBitProfileDialog(bit_profile, parent=self)
         if dia.exec_():
-            self.append_profile_to_table(dia.get_profile(), row_index=row_index)
+            bit_profile = dia.get_profile()
+            new_profile_name = bit_profile.profile_name
+            self.append_profile_to_table(bit_profile, row_index=row_index)
+            if new_profile_name != old_profile_name:
+                self.__all_loaded_profiles.remove(old_profile_name)
+                self.__all_loaded_profiles.add(new_profile_name)
+                self.profilesChanged.emit(self.__all_loaded_profiles)
+
+    def get_loaded_profiles(self):
+        return self.__all_loaded_profiles
 
     def handle_add_new_dowel(self):
         dia = AddEditBitProfileDialog(parent=self)
         if dia.exec_():
-            self.append_profile_to_table(dia.get_profile())
+            bit_profile = dia.get_profile()
+            self.append_profile_to_table(bit_profile)
+            self.__all_loaded_profiles.add(bit_profile.profile_name)
+            self.profilesChanged.emit(self.__all_loaded_profiles)
 
     def get_row_id(self, item_pk):
         row_id = -1
@@ -102,6 +123,9 @@ class BitProfileManager(QtWidgets.QWidget):
         if row_id < 0:
             raise ValueError(f"the id field should be > 0 order pk {item_pk}")
         return row_id
+
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
 
 
 if __name__ == "__main__":

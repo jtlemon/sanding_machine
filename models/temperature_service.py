@@ -22,7 +22,8 @@ class TemperatureService(QtCore.QThread):
             if (time.time() - self.__last_time_measured) > static_app_configurations.MEASURE_TEMPERATURE_EVERY or self.__measure_now:
                 try:
                     api_address = f'http://api.openweathermap.org/data/2.5/weather?zip={zip_code},us&appid={static_app_configurations.TEMPERATURE_API_KEY}&units=imperial'
-                    json_data = requests.get(api_address).json()
+                    response = requests.get(api_address)
+                    json_data = response.json()
                     if "main" in json_data:
                         display_weather = str(round(json_data['main']['temp'])) + '\xb0 F' + ' ' +\
                                           json_data['weather'][0]['main'] \
@@ -36,9 +37,9 @@ class TemperatureService(QtCore.QThread):
                         logger.error(f"error in getting info zip code {zip_code}")
 
                 except Exception as e:
-                    pass
+                    print(e)
                 self.__last_time_measured = time.time()
-            time.sleep(1)
+            time.sleep(3)
 
     def update_now(self):
         self.__measure_now = True

@@ -14,3 +14,5 @@ class DovetailCameraPageView(QtWidgets.QWidget, Ui_DovetailCameraPageUI):
         v_spacer_item_1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Preferred,
                                                 QtWidgets.QSizePolicy.Expanding)
         self.sidebar_frame_layout.addItem(v_spacer_item_1)
+        self.start_button.setCheckable(True)
+        self.cancel_Button.setCheckable(True)

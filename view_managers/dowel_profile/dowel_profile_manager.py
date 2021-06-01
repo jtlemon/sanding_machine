@@ -9,6 +9,7 @@ from apps.dowel_profiles import models
 from PySide2 import QtWidgets, QtCore, QtGui
 from view_managers.dowel_profile.dowel_profile_widget import ProfileListWidget
 from view_managers.dowel_profile.dowel_list_widget import DowelListWidget
+from models import MeasureUnitType
 
 class DowelProfileManager(QtWidgets.QStackedWidget):
     def __init__(self, footer_btn=""):
@@ -20,6 +21,7 @@ class DowelProfileManager(QtWidgets.QStackedWidget):
         self.addWidget(self.dowel_joint_widget)
         self.dowel_profile_widget.profileClicked.connect(self.load_dowel_joints)
         self.dowel_joint_widget.backSignal.connect(lambda :self.setCurrentIndex(0))
+        self.profilesChanged = self.dowel_profile_widget.profilesChanged
 
     def load_dowel_joints(self, profile_id):
         dowel_profile = models.DowelProfile.objects.get(pk= profile_id)
@@ -28,6 +30,12 @@ class DowelProfileManager(QtWidgets.QStackedWidget):
 
     def get_footer_btn_name(self) -> str:
         return self.__footer_btn_text
+
+    def get_loaded_profiles(self):
+        return self.dowel_profile_widget.get_loaded_profiles()
+
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
 
 
 if __name__ == "__main__":

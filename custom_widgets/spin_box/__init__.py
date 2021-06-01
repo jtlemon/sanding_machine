@@ -1,1 +1,1 @@
-from .custom_spinbox import CustomSpinBox
+from .custom_spinbox import CustomSpinBox, SpinUnitMode

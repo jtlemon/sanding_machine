@@ -22,11 +22,19 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.header_frame_layout = QtWidgets.QHBoxLayout(self.header_frame)
         self.header_frame_layout.setContentsMargins(0, 0, 10, 0)
         # header widgets
+        self.machine_status_lbl = QtWidgets.QLabel()
+        self.machine_status_lbl.setText("Ready.....")
+        self.machine_status_lbl.setMinimumWidth(200)
+        self.header_frame_layout.addWidget(self.machine_status_lbl)
+
+        self.__count_down_timer_widget = CountDownTimerManager.get_widget()
+        self.header_frame_layout.addWidget(self.__count_down_timer_widget)
+        h_spacer_item_0 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
+                                                QtWidgets.QSizePolicy.Preferred)
+        self.header_frame_layout.addItem(h_spacer_item_0)
         self.__error_lbl = ErrorWidgetLabel()
         self.__error_lbl.set_error(static_configurations.INSTALLED_ERRORS["type1"])
         self.header_frame_layout.addWidget(self.__error_lbl)
-        self.__count_down_timer_widget = CountDownTimerManager.get_widget()
-        self.header_frame_layout.addWidget(self.__count_down_timer_widget)
         h_spacer_item_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
                                                 QtWidgets.QSizePolicy.Preferred)
         self.header_frame_layout.addItem(h_spacer_item_1)
@@ -59,11 +67,11 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.__inches_btn = custom_widgets.AppFooterButton("inches")
         self.__inches_btn.setCheckable(True)
         self.__inches_btn.setObjectName("main_inches_btn")
-        self.__inches_btn.clicked.connect(lambda: self._handle_change_measure_unit(MeasureUnitType.IN_UNIT))
+        self.__inches_btn.clicked.connect(lambda: self.handle_change_measure_unit(MeasureUnitType.IN_UNIT))
         self.__mm_btn = custom_widgets.AppFooterButton("mm")
         self.__mm_btn.setCheckable(True)
         self.__mm_btn.setObjectName("main_mm_btn")
-        self.__mm_btn.clicked.connect(lambda: self._handle_change_measure_unit(MeasureUnitType.MM_UNIT))
+        self.__mm_btn.clicked.connect(lambda: self.handle_change_measure_unit(MeasureUnitType.MM_UNIT))
         self.footer_frame_layout.addWidget(self.__inches_btn)
         self.footer_frame_layout.addWidget(self.__mm_btn)
         self.main_window_layout.addWidget(self.footer_frame, stretch=0)
@@ -73,9 +81,8 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.__clock_timer = QtCore.QTimer()
         self.__clock_timer.timeout.connect(self._update_app_clock)
         self.__clock_timer.start(1000)  # update clock every 1sec
-        self._handle_change_measure_unit(MeasureUnitType.MM_UNIT)
-
         self.calculator_btn.clicked.connect(self._handle_display_calculator)
+
 
     def _handle_display_calculator(self):
         self.__calculator = Calculator()
@@ -93,7 +100,7 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.__current_temperature_lbl.setText(f"{new_temp}")
         self.__weather_icon.setPixmap(QtGui.QPixmap(":/icons/icons/{}@2x.png".format(weather_icon)))
 
-    def _handle_change_measure_unit(self, new_unit: MeasureUnitType):
+    def handle_change_measure_unit(self, new_unit: MeasureUnitType):
         if new_unit == MeasureUnitType.IN_UNIT:
             self.__inches_btn.setChecked(True)
             self.__mm_btn.setChecked(False)

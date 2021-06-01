@@ -18,7 +18,7 @@ QPushButton:hover
 }
 QPushButton:checked
 {
-   background-color:  rgb(255, 255, 255);
+   background-color: rgb(255, 255, 255);
    color:green;
 }
 #app_header_frame
@@ -99,19 +99,15 @@ ProfileComboBox
 }
 ProfileComboBox QComboBox{
     border:none;
-    background-color:transparent;
+    background-color: rgb(211, 215, 207);
 }
 ProfileComboBox QComboBox::drop-down
 {
+     border: 0px;
+     width: 2px;
     background-color: rgb(211, 215, 207);
 }
-ProfileComboBox QComboBox QAbstractItemView {
-    selection-background-color: rgb(255, 0, 0);
-    selection-color: rgb(200, 200, 200);
-    border:1px solid #9f9f9f;
-    border-bottom-right-radius:20;
 
-}
 
 ProfileComboBox QComboBox::on
 {

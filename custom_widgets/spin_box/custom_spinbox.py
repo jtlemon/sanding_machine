@@ -222,6 +222,7 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
 
 
 
+
 def __TEST__():
     app = QtWidgets.QApplication([])
     dia = CustomSpinBox(0, 10, 1, 3, display_type=SpinType.leftRightType)

@@ -20,7 +20,7 @@ class Ui_DovetailCameraPageUI(object):
     def setupUi(self, DovetailCameraPageUI):
         if not DovetailCameraPageUI.objectName():
             DovetailCameraPageUI.setObjectName(u"DovetailCameraPageUI")
-        DovetailCameraPageUI.resize(1014, 668)
+        DovetailCameraPageUI.resize(1014, 645)
         DovetailCameraPageUI.setStyleSheet(u"")
         self.horizontalLayout_4 = QHBoxLayout(DovetailCameraPageUI)
         self.horizontalLayout_4.setSpacing(0)
@@ -46,7 +46,7 @@ class Ui_DovetailCameraPageUI(object):
 
         self.start_button = QPushButton(DovetailCameraPageUI)
         self.start_button.setObjectName(u"start_button")
-        self.start_button.setMinimumSize(QSize(200, 75))
+        self.start_button.setMinimumSize(QSize(300, 60))
         font = QFont()
         font.setFamily(u"Helvetica")
         font.setPointSize(18)
@@ -59,7 +59,7 @@ class Ui_DovetailCameraPageUI(object):
 
         self.cancel_Button = QPushButton(DovetailCameraPageUI)
         self.cancel_Button.setObjectName(u"cancel_Button")
-        self.cancel_Button.setMinimumSize(QSize(200, 75))
+        self.cancel_Button.setMinimumSize(QSize(300, 60))
         self.cancel_Button.setFont(font)
 
         self.horizontalLayout_12.addWidget(self.cancel_Button)
@@ -73,27 +73,65 @@ class Ui_DovetailCameraPageUI(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_6)
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_5)
 
         self.label_12 = QLabel(DovetailCameraPageUI)
         self.label_12.setObjectName(u"label_12")
 
         self.horizontalLayout_3.addWidget(self.label_12)
 
-        self.available_profiles_combo = ProfileComboBox(DovetailCameraPageUI)
-        self.available_profiles_combo.setObjectName(u"available_profiles_combo")
-        self.available_profiles_combo.setMinimumSize(QSize(150, 60))
+        self.joint_profile_combo = ProfileComboBox(DovetailCameraPageUI)
+        self.joint_profile_combo.setObjectName(u"joint_profile_combo")
+        self.joint_profile_combo.setMinimumSize(QSize(150, 50))
 
-        self.horizontalLayout_3.addWidget(self.available_profiles_combo)
+        self.horizontalLayout_3.addWidget(self.joint_profile_combo)
+
+        self.label = QLabel(DovetailCameraPageUI)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout_3.addWidget(self.label)
+
+        self.dowel_profile_combo = ProfileComboBox(DovetailCameraPageUI)
+        self.dowel_profile_combo.setObjectName(u"dowel_profile_combo")
+        self.dowel_profile_combo.setMinimumSize(QSize(150, 50))
+
+        self.horizontalLayout_3.addWidget(self.dowel_profile_combo)
+
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_6)
+
+        self.horizontalLayout_3.setStretch(2, 1)
+        self.horizontalLayout_3.setStretch(4, 1)
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(-1, 0, -1, -1)
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_4)
+
+        self.label_2 = QLabel(DovetailCameraPageUI)
+        self.label_2.setObjectName(u"label_2")
+
+        self.horizontalLayout_2.addWidget(self.label_2)
+
+        self.bit_profile_combo = ProfileComboBox(DovetailCameraPageUI)
+        self.bit_profile_combo.setObjectName(u"bit_profile_combo")
+        self.bit_profile_combo.setMinimumSize(QSize(150, 50))
+
+        self.horizontalLayout_2.addWidget(self.bit_profile_combo)
 
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_3)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -107,8 +145,8 @@ class Ui_DovetailCameraPageUI(object):
 
         self.camera_display = QLabel(DovetailCameraPageUI)
         self.camera_display.setObjectName(u"camera_display")
-        self.camera_display.setMinimumSize(QSize(720, 420))
-        self.camera_display.setMaximumSize(QSize(720, 400))
+        self.camera_display.setMinimumSize(QSize(0, 0))
+        self.camera_display.setMaximumSize(QSize(16777215, 16777215))
         self.camera_display.setPixmap(QPixmap(u":/icons/icons/icons8-camera-96.png"))
         self.camera_display.setScaledContents(True)
         self.camera_display.setAlignment(Qt.AlignCenter)
@@ -126,7 +164,7 @@ class Ui_DovetailCameraPageUI(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
-        self.verticalLayout.setStretch(4, 1)
+        self.verticalLayout.setStretch(5, 1)
 
         self.horizontalLayout_4.addLayout(self.verticalLayout)
 
@@ -143,6 +181,8 @@ class Ui_DovetailCameraPageUI(object):
         self.start_button.setText(QCoreApplication.translate("DovetailCameraPageUI", u"Start", None))
         self.cancel_Button.setText(QCoreApplication.translate("DovetailCameraPageUI", u"Cancel", None))
         self.label_12.setText(QCoreApplication.translate("DovetailCameraPageUI", u"Joint type ", None))
+        self.label.setText(QCoreApplication.translate("DovetailCameraPageUI", u"Dowel Profile", None))
+        self.label_2.setText(QCoreApplication.translate("DovetailCameraPageUI", u"Bit Profile", None))
         self.camera_display.setText("")
     # retranslateUi
 

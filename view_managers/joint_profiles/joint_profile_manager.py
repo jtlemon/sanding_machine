@@ -138,11 +138,11 @@ class JointProfilesPageManager(QtWidgets.QWidget):
             raise ValueError(f"the id field should be > 0 order pk {item_pk}")
         return row_id
 
-    def get_profile_names(self):
+    def get_loaded_profiles(self):
         return self.__joint_profiles_names
 
-    def change_mode(self, unit: MeasureUnitType):
-        raise NotImplementedError('subclasses must override change_mode()!')
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
 
     def get_footer_btn_name(self) -> str:
         return self.__footer_btn_text

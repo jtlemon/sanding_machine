@@ -17,9 +17,11 @@ from views.custom_app_widgets import RecordTrackBtn, CenterPagePushButton
 
 class ProfileListWidget(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
+    profilesChanged = QtCore.Signal(set)
     def __init__(self):
         super(ProfileListWidget, self).__init__()
         self.__current_dowel_profile = None
+        self.__all_loaded_profiles = set()
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         self.add_dowel_profile_btn = CenterPagePushButton("Add New Profile")
         self.add_dowel_profile_btn.widget_btn.setMinimumSize(300, 60)
@@ -44,8 +46,11 @@ class ProfileListWidget(QtWidgets.QWidget):
 
     def reload_profiles_table(self):
         self.widget_table.setRowCount(0)
+        self.__all_loaded_profiles = set()
         for dowel_profile in models.DowelProfile.objects.filter(machine= static_configurations.CURRENT_MACHINE):
             self.append_profile_to_table(dowel_profile)
+            self.__all_loaded_profiles.add(dowel_profile.profile_name)
+        self.profilesChanged.emit(self.__all_loaded_profiles)
 
 
     def append_profile_to_table(self, dowel_profile, row_index=-1):
@@ -77,22 +82,36 @@ class ProfileListWidget(QtWidgets.QWidget):
 
     def handle_delete_profile(self, dowel_profile_id):
         dowel_profile = models.DowelProfile.objects.get(pk=dowel_profile_id)
+        self.__all_loaded_profiles.add(dowel_profile.profile_name)
         dowel_profile.delete()
+        self.profilesChanged.emit(self.__all_loaded_profiles)
         row_index = self.get_row_id(dowel_profile_id)
         self.widget_table.removeRow(row_index)
 
     def handle_edit_profile(self, dowel_profile_id):
         dowel_profile = models.DowelProfile.objects.get(pk=dowel_profile_id)
         row_index = self.get_row_id(dowel_profile_id)
+        old_profile_name = dowel_profile.profile_name
         dia = AddEditDowelProfileDialog(dowel_profile=dowel_profile, parent=self)
         if dia.exec_():
-            self.append_profile_to_table(dia.get_profile(), row_index=row_index)
+            dowel_profile = dia.get_profile()
+            new_profile_name = dowel_profile.profile_name
+            self.append_profile_to_table(dowel_profile , row_index=row_index)
+            if new_profile_name != old_profile_name:
+                self.__all_loaded_profiles.add(dowel_profile.new_profile_name)
+                self.__all_loaded_profiles.remove(old_profile_name)
+                self.profilesChanged.emit(self.__all_loaded_profiles)
 
+    def get_loaded_profiles(self):
+        return self.__all_loaded_profiles
 
     def handle_add_new_dowel(self):
         dia = AddEditDowelProfileDialog(parent=self)
         if dia.exec_():
-            self.append_profile_to_table(dia.get_profile())
+            dowel_profile = dia.get_profile()
+            self.append_profile_to_table(dowel_profile)
+            self.__all_loaded_profiles.add(dowel_profile.profile_name)
+            self.profilesChanged.emit(self.__all_loaded_profiles)
 
     def get_row_id(self, item_pk):
         row_id = -1

@@ -1,7 +1,5 @@
 from enum import Enum
-
 from PySide2 import QtWidgets, QtCore
-
 
 class ClickedButtonDir(Enum):
     none = 0
@@ -92,6 +90,9 @@ class LeftRightCenterButtonWidget(QtWidgets.QWidget):
         self.left_btn.setChecked(True)
         self.__current_btn_active = ClickedButtonDir.both
 
+    def set_mid_btn_text(self, text):
+        self.center_btn.setText(text)
+
 
 class DovetailSideButtons(QtWidgets.QWidget):
     sideBtnClicked = QtCore.Signal(int, int)  # current active levels
@@ -109,6 +110,8 @@ class DovetailSideButtons(QtWidgets.QWidget):
             self.button_widgets_list.append(btn_widget)
 
         self.button_widgets_list[0].center_btn.click()
+
+
 
     def _handle_btn_widget_pressed(self, lvl, btn_dir: ClickedButtonDir):
         for i in range(len(self.button_widgets_list)):
