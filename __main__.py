@@ -26,6 +26,7 @@ from models import MeasureUnitType
 from apps.joint_profiles.models import JoinProfile
 from apps.dowel_profiles.models import DowelProfile
 from apps.bit_profiles.models import BitProfile
+from models.esteper_serial_parser import EStepperSerialInterface
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -230,11 +231,12 @@ class MachineGuiInterface(MachineInterfaceUi):
 
 if __name__ == "__main__":
     from views import utils
-
     camera_process = CameraMangerProcess()
     camera_process.daemon = True
     camera_process.start()
     app = QtWidgets.QApplication(sys.argv)
+    e = EStepperSerialInterface()
+    e.start()
     utils.load_app_fonts()
     machine_gui_interface = MachineGuiInterface()
     machine_gui_interface.showMaximized()
