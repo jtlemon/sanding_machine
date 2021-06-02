@@ -185,3 +185,118 @@
 2021-06-02 00:06:27,945 - Dovetail - INFO - the sensors are disabled by the configurations
 2021-06-02 00:07:21,794 - Dovetail - INFO - the sensors are disabled by the configurations
 2021-06-02 00:08:11,270 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:52:28,572 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:53:04,940 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:54:21,782 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:54:49,135 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:55:44,156 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:56:35,221 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 18:59:13,374 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:00:30,462 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:02:29,958 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:03:47,476 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:04:21,384 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:05:30,604 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:06:07,366 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:06:19,190 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:06:46,567 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:07:47,090 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:08:20,965 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:09:15,005 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:10:57,531 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:11:36,133 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:12:17,600 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:13:09,876 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:14:04,805 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:14:33,627 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:14:46,582 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:32:24,593 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:32:59,732 - Dovetail - ERROR - [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 265, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+OSError: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mohamed/workspace/home_wood_creations/dovetail_drill_dowel/models/esteper_serial_parser.py", line 137, in reconnect
+    timeout=0.5)
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialutil.py", line 240, in __init__
+    self.open()
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 268, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+2021-06-02 19:32:59,810 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:33:03,742 - Dovetail - ERROR - [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 265, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+OSError: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mohamed/workspace/home_wood_creations/dovetail_drill_dowel/models/esteper_serial_parser.py", line 137, in reconnect
+    timeout=0.5)
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialutil.py", line 240, in __init__
+    self.open()
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 268, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+2021-06-02 19:33:07,743 - Dovetail - ERROR - [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 265, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+OSError: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mohamed/workspace/home_wood_creations/dovetail_drill_dowel/models/esteper_serial_parser.py", line 137, in reconnect
+    timeout=0.5)
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialutil.py", line 240, in __init__
+    self.open()
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 268, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+2021-06-02 19:33:11,744 - Dovetail - ERROR - [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 265, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+OSError: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mohamed/workspace/home_wood_creations/dovetail_drill_dowel/models/esteper_serial_parser.py", line 137, in reconnect
+    timeout=0.5)
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialutil.py", line 240, in __init__
+    self.open()
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 268, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+2021-06-02 19:33:15,745 - Dovetail - ERROR - [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 265, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+OSError: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mohamed/workspace/home_wood_creations/dovetail_drill_dowel/models/esteper_serial_parser.py", line 137, in reconnect
+    timeout=0.5)
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialutil.py", line 240, in __init__
+    self.open()
+  File "/usr/local/lib/python3.6/dist-packages/serial/serialposix.py", line 268, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 16] could not open port /dev/ttyACM0: [Errno 16] Device or resource busy: '/dev/ttyACM0'
+2021-06-02 19:33:53,095 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:34:22,598 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:35:22,584 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:35:47,509 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:36:22,207 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:36:40,643 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:40:21,383 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 19:41:20,683 - Dovetail - INFO - service close after the thread finished
