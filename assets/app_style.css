@@ -54,7 +54,7 @@ AppFooterButton:checked{
 {
      border-color: rgb(238, 238, 236);
      background-color: rgb(211, 215, 207);
-     border-radius:40%;
+     border-radius:35px;
      color:black;
 }
 .LeftRightCenterButtonWidget QPushButton
@@ -75,13 +75,13 @@ AppFooterButton:checked{
 }
 #left_btn_widget
 {
-    border-top-left-radius:30%;
-    border-bottom-left-radius:30%;
+    border-top-left-radius:25px;;
+    border-bottom-left-radius:25px;
 }
 #right_btn_widget
 {
-    border-top-right-radius:30%;
-    border-bottom-right-radius:30%;
+    border-top-right-radius:25px;
+    border-bottom-right-radius:25px;
 }
 #sidebar_frame
 {

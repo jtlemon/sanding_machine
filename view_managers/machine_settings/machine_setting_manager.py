@@ -13,12 +13,12 @@ from view_managers.dialog_configured_prams import RenderInternalPramsWidget, set
 
 def is_valid_zipcode(zip_code):
     zip_code= zip_code.replace(" ", "")
-
     regx = re.compile(r"^[0-9]{5}(?:-[0-9]{4})?$")
     return False if regx.match(zip_code) is None else True
 
 
 class MachineSettingsManager(QtWidgets.QWidget):
+    settingChangedSignal = QtCore.Signal()
     def __init__(self, footer_btn=""):
         super(MachineSettingsManager, self).__init__()
         self.__footer_btn_text = "Settings" if len(footer_btn) == 0 else footer_btn
@@ -29,7 +29,7 @@ class MachineSettingsManager(QtWidgets.QWidget):
         self.top_layout.addItem(h_spacer_1)
         zip_code_fixed_lbl = QtWidgets.QLabel("zip code")
         self.top_layout.addWidget(zip_code_fixed_lbl , stretch=0)
-        self.__current_zip_code_value = MainConfigurationLoader.get_zip_code_value()
+        self.__current_zip_code_value = MainConfigurationLoader.get_value("zip_code", "84116")
         self.zip_code_line_edit = QtWidgets.QLineEdit(self.__current_zip_code_value)
         self.zip_code_line_edit.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.zip_code_line_edit.setMaxLength(7)
@@ -43,7 +43,7 @@ class MachineSettingsManager(QtWidgets.QWidget):
         self.top_layout_1.addItem(h_spacer_3)
         time_format_fixed_lbl = QtWidgets.QLabel("time format")
         self.top_layout_1.addWidget(time_format_fixed_lbl, stretch=0)
-        self.__current_time_format = MainConfigurationLoader.get_time_format_value()
+        self.__current_time_format = MainConfigurationLoader.get_value("time_format", 12)
         self.time24_option = QtWidgets.QRadioButton("24 hr")
         self.time12_option = QtWidgets.QRadioButton("12 hr")
         if self.__current_time_format == 24:
@@ -138,8 +138,8 @@ class MachineSettingsManager(QtWidgets.QWidget):
         time_format = 24 if self.time24_option.isChecked() else 12
         self.__current_time_format = time_format
         self.__current_zip_code_value = zip_code
-        MainConfigurationLoader.set_zip_code_value(zip_code, False)
-        MainConfigurationLoader.set_time_format_value(time_format, True) # to save the configuration in the file
+        MainConfigurationLoader.set_value("zip_code", zip_code, False)
+        MainConfigurationLoader.set_value("time_format",time_format, True) # to save the configuration in the file
         for control_widget in self.all_widgets_ref:
             key = control_widget.get_key()
             value = control_widget.value()
@@ -150,6 +150,7 @@ class MachineSettingsManager(QtWidgets.QWidget):
         if show_animation:
             animation_dialog = ImagePlayerDialog(":/icons/icons/tenor.gif", parent=self)
             animation_dialog.exec_()
+        self.settingChangedSignal.emit()
         return saved_flag
 
     def discard_changes(self):

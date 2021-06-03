@@ -4,6 +4,7 @@ from .abs_operation_widget_manager import AbstractOperationWidgetManger
 from views import DovetailCameraPageView
 import configurations.static_app_configurations as static_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
+from configurations.system_configuration_loader import MainConfigurationLoader
 
 
 class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetManger):
@@ -72,8 +73,9 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
                     value = round(value/25.4, 3)
                     disp_text = f"{value}\""
                 else:
-                    value = f"{value}mm"
-                widget.set_mid_btn_text(str(value))
+                    value = round(value, 2)
+                    disp_text = f"{value}mm"
+                widget.set_mid_btn_text(str(disp_text))
 
 
     def get_footer_btn_name(self) -> str:
@@ -96,5 +98,10 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
 
     def handle_bit_profile_updated(self, new_profiles):
         self.bit_profile_combo.load_new_options(new_profiles)
+
+    def handle_setting_changed(self):
+        target_unit = MeasureUnitType(MainConfigurationLoader.get_value("measure_unit", 1))
+        self.load_mid_btn_text(target_unit)
+
 
 

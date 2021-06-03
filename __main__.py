@@ -27,6 +27,8 @@ from apps.joint_profiles.models import JoinProfile
 from apps.dowel_profiles.models import DowelProfile
 from apps.bit_profiles.models import BitProfile
 from models.estop_serial_parser import EStopSerialInterface, SignalToModule
+from configurations.system_configuration_loader import MainConfigurationLoader
+
 
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
@@ -37,6 +39,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__joint_profile_update_subscribers = set()
         self.__bit_profile_update_subscribers = set()
         self.__dowel_profile_update_subscribers = set()
+        self.__machine_setting_changed_subscribers = set()
         self.__installed_operations = {}
         self.__current_dowel_profile = None
         self.__current_bit_profile = None
@@ -49,6 +52,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__joint_profile_update_subscribers.add(operation_page_widget)
                 self.__bit_profile_update_subscribers.add(operation_page_widget)
                 self.__dowel_profile_update_subscribers.add(operation_page_widget)
+                self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == static_app_configurations.AppSupportedOperations.jointProfilesOperation:
                 operation_page_widget = JointProfilesPageManager()
                 operation_page_widget.jointProfilesUpdatedSignal.connect(self.handle_joint_profile_updates)
@@ -60,6 +64,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget.profilesChanged.connect(self.handle_bit_profile_updates)
             elif app_operation == static_app_configurations.AppSupportedOperations.settingParametersOperation:
                 operation_page_widget = MachineSettingsManager()
+                operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
+
             self.add_app_window_widget(operation_page_widget)
             self.__installed_operations[app_operation] = operation_page_widget
 
@@ -119,7 +125,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.load_defaults()
 
     def load_defaults(self):
-        self.handle_change_measure_unit(MeasureUnitType.MM_UNIT)
+        target_unit = MeasureUnitType(MainConfigurationLoader.get_value("measure_unit", 1))
+        self.handle_change_measure_unit(target_unit)
         self.switch_to_another_page(0)
 
     def handle_side_buttons_changed(self, left_lvl, right_lvl):
@@ -224,6 +231,10 @@ class MachineGuiInterface(MachineInterfaceUi):
         for opt in self.__installed_operations:
             widget = self.__installed_operations[opt]
             widget.change_measure_mode(new_unit)
+
+    def handle_machine_setting_changed_slot(self):
+        for widget in self.__machine_setting_changed_subscribers:
+            widget.handle_setting_changed()
 
     def closeEvent(self, event) -> None:
         self.__temperature_thread.close_service()

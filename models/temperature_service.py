@@ -18,7 +18,7 @@ class TemperatureService(QtCore.QThread):
 
     def run(self):
         while not self.isInterruptionRequested():
-            zip_code = MainConfigurationLoader.get_zip_code_value()
+            zip_code = MainConfigurationLoader.get_value("zip_code", "84116")
             if (time.time() - self.__last_time_measured) > static_app_configurations.MEASURE_TEMPERATURE_EVERY or self.__measure_now:
                 try:
                     api_address = f'http://api.openweathermap.org/data/2.5/weather?zip={zip_code},us&appid={static_app_configurations.TEMPERATURE_API_KEY}&units=imperial'
