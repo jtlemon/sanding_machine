@@ -30,6 +30,7 @@ from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 from configurations.system_configuration_loader import MainConfigurationLoader
 
 
+
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
         super(MachineGuiInterface, self).__init__()
@@ -75,7 +76,6 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__sensors_board_thread = SensorConnector()
         self.__grbl_interface = GrblControllerHal()
         self.__estop_interface = EStopSerialInterface()
-
 
         # connect signals
         self.measureUnitChangedSignal.connect(self.handle_measure_unit_changed)

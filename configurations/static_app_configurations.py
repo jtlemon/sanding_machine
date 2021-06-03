@@ -28,9 +28,7 @@ SUPPORTED_SETTING_VALUES = {
 DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Pin spacing", "target_key": "joint_profile_pin_spacing",
      "range": machine_ranges.joint_profile_pin_spacing},
-    {"lbl": "Depth", "target_key": "joint_profile_depth", "range": machine_ranges.joint_profile_depth},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
-    {"lbl": "Pin width", "target_key": "joint_profile_bit_width", "range": machine_ranges.joint_profile_bit_width},
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
      "range": machine_ranges.joint_profile_distance_from_bottom},
 ]
@@ -77,10 +75,10 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "unit": "#"
     },
     {
-        "lbl": "Bit length",
-        "target_key": "bit_profile_length",
+        "lbl": "Bit Angle",
+        "target_key": "bit_profile_angle",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_profile_length
+        "range": machine_ranges.bit_profile_angle
     },
     {
         "lbl": "Bit diameter",
@@ -117,14 +115,6 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "unit": "RPM"
 
     },
-    {
-        "lbl": "Bit type",
-        "target_key": "bit_profile_bit_type",
-        "field_type": WidgetsType.optionWidget,
-        "options": ["dovetail", "drill bit", "box joint bit"],
-
-    },
-
 ]
 
 DOVETAIL_SETTING_CONFIGURATION = [

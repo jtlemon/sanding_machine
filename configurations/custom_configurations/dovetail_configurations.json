@@ -1,13 +1,16 @@
 {
     "dovetail_setting_a_zero": 1,
     "dovetail_setting_b_zero": 1,
-    "dovetail_setting_standard_width_1": 121.6,
+    "dovetail_setting_standard_width_1": 101.6,
     "dovetail_setting_standard_width_2": 152.39999999999998,
     "dovetail_setting_standard_width_3": 203.2,
-    "dovetail_setting_standard_width_4": 257.0,
+    "dovetail_setting_standard_width_4": 254.0,
     "dovetail_setting_x_zero": 5.0,
     "dovetail_setting_y_zero": 5,
     "dovetail_setting_z_zero": 2,
-    "left_active": 4,
-    "right_active": 0
+    "left_active": 6,
+    "right_active": 6,
+    "bit_measure_location": [15, 10],
+    "bit_change_location": [150, 0, 0],
+    "current_bit": 0
 }
