@@ -219,8 +219,8 @@ SENSOR_LOGGING_LVL = logging.INFO
 SENSOR_LOGGING_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 SENSOR_MAP = [101.6, 228.6, 304.8, 381, 457.2, 533.4, 609.6, 685.8, 762, 914.4]
 
-# ***************************** estepper module ************************
-IS_ESTEPPER_MODULE_ENABLED = True
-ESTEPPER_MODULE_COM_PORT = "/dev/ttyACM0"
-ESTEPPER_MODULE_BAUD_RATE = 4800
-ESTEPPER_CHECK_STATUS_EVERY = 0.5  # check status every 0.5 sec
+# ***************************** E-Stop module ************************
+IS_ESTOP_MODULE_ENABLED = True
+ESTOP_MODULE_COM_PORT = "/dev/ttyACM0"
+ESTOP_MODULE_BAUD_RATE = 4800
+ESTOP_CHECK_STATUS_EVERY = 0.5  # check status every 0.5 sec

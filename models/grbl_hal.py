@@ -64,7 +64,7 @@ class GrblControllerHal(QtCore.QObject):
         self.auto_left_width = left_width
         self.auto_right_width = right_width
 
-    def get_latest_responces(self):
+    def get_latest_responses(self):
         all_responses = []
         while not self.__last_responses_queue.empty():
             response = self.__last_responses_queue.get()
@@ -338,7 +338,6 @@ class GrblControllerHal(QtCore.QObject):
         self.machineStateChangedSignal.emit('ready')
         time_to_run = self.calculate_run_time()
         self.machineStartedSignal.emit(time_to_run)
-
 
     def release_clamp_left_vertical(self):
         module_logger.debug('releasing left vertical clamp')

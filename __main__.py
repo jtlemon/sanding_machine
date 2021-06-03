@@ -26,7 +26,7 @@ from models import MeasureUnitType
 from apps.joint_profiles.models import JoinProfile
 from apps.dowel_profiles.models import DowelProfile
 from apps.bit_profiles.models import BitProfile
-from models.esteper_serial_parser import EStepperSerialInterface, SignalToModule
+from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
@@ -68,7 +68,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         # display sensor values also and weight auto width, height in certain dovetail widget if it's existed
         self.__sensors_board_thread = SensorConnector()
         self.__grbl_interface = GrblControllerHal()
-        self.__estepper_interface = EStepperSerialInterface()
+        self.__estop_interface = EStopSerialInterface()
 
 
         # connect signals
@@ -113,7 +113,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__temperature_thread.start()
         self.__sensors_board_thread.start()
         self.__grbl_interface.start_process()
-        self.__estepper_interface.start()
+        self.__estop_interface.start()
 
         # load defaults
         self.load_defaults()
@@ -229,7 +229,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__temperature_thread.close_service()
         self.__sensors_board_thread.close_service()
         self.__grbl_interface.release_resources()
-        self.__estepper_interface.requestInterruption()
+        self.__estop_interface.requestInterruption()
 
 
 if __name__ == "__main__":

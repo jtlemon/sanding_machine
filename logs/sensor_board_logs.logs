@@ -9094,3 +9094,1661 @@ Traceback (most recent call last):
   File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
     raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
 serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:43:46,079 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:43:50,088 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:43:54,100 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:43:58,115 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:02,127 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:06,136 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:10,144 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:14,156 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:18,159 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:22,165 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:26,175 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:30,187 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:34,203 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:38,208 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:42,209 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:46,221 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:50,231 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:54,242 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:44:58,253 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:02,263 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:06,273 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:10,288 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:14,296 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:18,302 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:22,313 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:26,324 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:30,336 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:34,347 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:38,360 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:42,372 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:46,381 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:50,391 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:54,403 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:45:58,418 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:02,428 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:06,441 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:10,453 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:14,457 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:18,468 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:22,477 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:26,489 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:30,502 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:34,512 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:38,524 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:42,535 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:46,546 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:50,556 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:54,569 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:46:58,581 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:02,586 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:06,601 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:10,611 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:14,617 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:18,854 - Dovetail - INFO - the sensors are disabled by the configurations
+2021-06-02 21:47:19,123 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:23,311 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:27,330 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:31,342 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:35,348 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:39,367 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:43,377 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:47,390 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:51,402 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:55,412 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:47:59,429 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:03,473 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:07,507 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:11,511 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:15,522 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:19,536 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:23,546 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:27,558 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:31,569 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:35,582 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:39,598 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:43,610 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:47,621 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:51,631 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:55,647 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:48:59,653 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:03,663 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:07,677 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:11,688 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:15,699 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:19,711 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:23,720 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:27,731 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:31,742 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+    timeout=0.5)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:35,745 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:39,756 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:43,764 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:47,773 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:51,785 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:55,795 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:49:59,806 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:03,817 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:07,829 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:11,841 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:15,851 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:19,865 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:23,875 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:27,887 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:31,901 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:35,912 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:39,922 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:43,932 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:47,943 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:51,954 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:55,966 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:50:59,972 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:03,983 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:07,992 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:12,004 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:16,015 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:20,026 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:24,038 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:28,046 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:32,049 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:36,067 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:40,076 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:44,086 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:48,097 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:52,114 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:51:56,124 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:00,134 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:04,143 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:08,155 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:12,169 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:16,183 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:20,195 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:24,204 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:28,218 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:32,222 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:36,234 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:40,248 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:44,261 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:48,272 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:52,282 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:52:56,294 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:00,305 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:04,315 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:08,327 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:12,338 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:16,350 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:20,361 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:24,376 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:28,379 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:32,382 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:36,385 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:40,394 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:44,407 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:48,423 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:52,437 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:53:56,446 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:54:00,459 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:54:04,471 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:54:08,481 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+2021-06-02 21:54:12,491 - Dovetail - ERROR - could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Traceback (most recent call last):
+  File "C:\Users\shop\Documents\dovetail_drill_dowel\models\esteper_serial_parser.py", line 153, in reconnect
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 31, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialutil.py", line 240, in __init__
+    self.open()
+  File "C:\Users\shop\AppData\Local\Programs\Python\Python37\lib\site-packages\serial\serialwin32.py", line 62, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port '/dev/ttyACM0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)

@@ -83,7 +83,6 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.__clock_timer.start(1000)  # update clock every 1sec
         self.calculator_btn.clicked.connect(self._handle_display_calculator)
 
-
     def _handle_display_calculator(self):
         self.__calculator = Calculator()
         self.__calculator.show()

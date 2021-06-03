@@ -18,7 +18,7 @@ class RecState(Enum):
 
 
 class RecPacketType(Enum):
-    EstepperStatusPacket = 0
+    EstopStatusPacket = 0
 
 
 class ModuleStatus(Enum):
@@ -40,11 +40,11 @@ START_LO = (0xAA ^ 255)
 DATA_LEN = 3  # packet type, 2 bytes payload
 
 
-class EStepperSerialInterface(QtCore.QThread):
-    updateEstepperSignal = QtCore.Signal(str)
+class EStopSerialInterface(QtCore.QThread):
+    updateEstopSignal = QtCore.Signal(str)
 
     def __init__(self):
-        super(EStepperSerialInterface, self).__init__()
+        super(EStopSerialInterface, self).__init__()
         self.__is_serial_dev_connected = False
         self.__serial_dev = None
         self.data_buffer = []
@@ -52,7 +52,7 @@ class EStepperSerialInterface(QtCore.QThread):
         self.__last_time_status_checked = time.time()
 
     def run(self):
-        if static_configurations.IS_ESTEPPER_MODULE_ENABLED is False:
+        if static_configurations.IS_ESTOP_MODULE_ENABLED is False:
             module_logger.info("the sensors are disabled by the configurations")
             return
         while not self.isInterruptionRequested():
@@ -82,22 +82,22 @@ class EStepperSerialInterface(QtCore.QThread):
                                 packet_type = self.data_buffer[0]
                                 packet_value = (self.data_buffer[1] << 8) + self.data_buffer[2]
                                 packet_type = RecPacketType(packet_type)
-                                if packet_type == RecPacketType.EstepperStatusPacket:
+                                if packet_type == RecPacketType.EstopStatusPacket:
                                     self.__last_time_status_checked = time.time()
                                     if packet_value == ModuleStatus.STATUS_UNKNOWN:
-                                        self.updateEstepperSignal.emit("unknown status")
+                                        self.updateEstopSignal.emit("unknown status")
                                     elif packet_value == ModuleStatus.STATUS_DISABLED:
-                                        self.updateEstepperSignal.emit("estepper disabled")
+                                        self.updateEstopSignal.emit("E-stop disabled")
                                     elif packet_value == ModuleStatus.STATUS_ENABLED:
-                                        self.updateEstepperSignal.emit("estepper enabled")
+                                        self.updateEstopSignal.emit("E-stop enabled")
                                     elif packet_value == ModuleStatus.STATUS_ERROR:
-                                        self.updateEstepperSignal.emit("estepper error")
+                                        self.updateEstopSignal.emit("E-stop error")
                             self.__current_rec_state = RecState.waitStartHi
                 else:
                     self.msleep(50)  # sleep 50 ms
                 current_time = time.time()
                 if (
-                        current_time - self.__last_time_status_checked) >= static_configurations.ESTEPPER_CHECK_STATUS_EVERY:
+                        current_time - self.__last_time_status_checked) >= static_configurations.ESTOP_CHECK_STATUS_EVERY:
                     self.get_module_status()
                     self.__last_time_status_checked = time.time()
             except OSError:
@@ -148,8 +148,8 @@ class EStepperSerialInterface(QtCore.QThread):
                 pass
             self.__serial_dev = None
         try:
-            self.__serial_dev = serial.Serial(static_configurations.ESTEPPER_MODULE_COM_PORT,
-                                              static_configurations.ESTEPPER_MODULE_BAUD_RATE,
+            self.__serial_dev = serial.Serial(static_configurations.ESTOP_MODULE_COM_PORT,
+                                              static_configurations.ESTOP_MODULE_BAUD_RATE,
                                               timeout=0.5)
             if self.__serial_dev.isOpen():
                 self.__is_serial_dev_connected = True
