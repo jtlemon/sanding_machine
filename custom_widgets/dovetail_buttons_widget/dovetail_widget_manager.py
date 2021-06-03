@@ -105,6 +105,7 @@ class DovetailSideButtons(QtWidgets.QWidget):
         self.button_widgets_list = list()
         for i in range(no_of_lvl):
             btn_widget = LeftRightCenterButtonWidget(i)
+            btn_widget.setFixedHeight(70)
             self.widget_layout.addWidget(btn_widget)
             btn_widget.btnClicked.connect(self._handle_btn_widget_pressed)
             self.button_widgets_list.append(btn_widget)

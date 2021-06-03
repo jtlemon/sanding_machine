@@ -89,7 +89,7 @@ class MachineInterfaceUi(QtWidgets.QWidget):
 
     def _update_app_clock(self):
         time = QtCore.QTime.currentTime()
-        if MainConfigurationLoader.get_time_format_value() == 24:
+        if MainConfigurationLoader.get_value("time_format") == 24:
             text = time.toString('hh:mm:ss')
         else:
             text = time.toString('hh:mm AP')
@@ -108,6 +108,7 @@ class MachineInterfaceUi(QtWidgets.QWidget):
             self.__mm_btn.setChecked(True)
         else:
             raise ValueError("not implemented")
+        MainConfigurationLoader.set_value("measure_unit", new_unit.value, True)
         self.measureUnitChangedSignal.emit(new_unit)
 
     def add_app_window_widget(self, ref_widget):

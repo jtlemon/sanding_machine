@@ -192,7 +192,7 @@ DOVETAIL_SETTING_CONFIGURATION = [
 
 # ************************* dovetail left/right active mapper *************
 DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]
-DOVETAIL_SUPPORTED_LEVELS = 4
+DOVETAIL_SUPPORTED_LEVELS = 5 # the first lvl off
 BASE_LEVEL_CONFIGURATION_KEY = "dovetail_setting_standard_width_"  # "dovetail_setting_standard_width_4" for lvl 4
 
 # ******************************************** Errors ****************************

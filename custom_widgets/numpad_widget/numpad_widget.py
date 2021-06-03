@@ -1,10 +1,18 @@
-from PySide2 import QtWidgets,QtCore
-from .numpad_widget_gen import Ui_numpad
+from PySide2 import QtWidgets, QtCore, QtGui
+from numpad_widget_gen import Ui_numpad
+import inspect
 
 class NumpadWidget(QtWidgets.QDialog , Ui_numpad):
     def __init__(self,min_val,max_val,current_value_mm,title=""):
         super(NumpadWidget, self).__init__()
         self.setupUi(self)
+        self.is_dialog_running = False
+        self.msg_dialog = None
+        # change the focus policy for the buttons
+        for key, value in inspect.getmembers(self):
+            if not key.startswith('_'):
+                if isinstance(value, QtWidgets.QPushButton):
+                    value.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.__current_value_mm = current_value_mm
         self.__min_val_mm = min_val
         self.__max_val_mm = max_val
@@ -39,6 +47,22 @@ class NumpadWidget(QtWidgets.QDialog , Ui_numpad):
         self.setWindowTitle(title)
         self.show()
 
+    def keyPressEvent(self, event) -> None:
+        event_text = event.text()
+        if len(event_text) == 1 and event_text in "0123456789.c":
+            self.button_pressed(event_text)
+
+    def keyReleaseEvent(self, event) -> None:
+        if (event.key() == QtCore.Qt.Key_Enter or event.key() == QtCore.Qt.Key_Return):
+            if self.is_dialog_running:
+                self.is_dialog_running = False
+            else:
+                self.btn_save.click()
+        elif event.key() == QtCore.Qt.Key_Backspace :
+            self.__current_digits = self.__current_digits[:-1]
+            self.disp_pannel.setText(self.__current_digits)
+
+
     def reset_defaults(self):
         if self.__current_mode == "mm":
             self.__current_digits = str(self.__current_value_mm)
@@ -48,10 +72,6 @@ class NumpadWidget(QtWidgets.QDialog , Ui_numpad):
         self.disp_pannel.setText(self.__current_digits)
 
     def change_mode(self):
-        try:
-            current_val = float(self.__current_digits)
-        except ValueError:
-            current_val = 0
         if self.__current_mode == "mm":
             self.__current_mode = "\""
             self.min_val.setText("%.3f"%(self.__min_val_mm/25.4))
@@ -98,27 +118,35 @@ class NumpadWidget(QtWidgets.QDialog , Ui_numpad):
                 if self.__current_mode == '"':
                     min_range = round(min_range/25.4 , 4)
                     max_range = round(max_range/25.4 , 4)
-                msg = QtWidgets.QMessageBox()
-                msg.setIcon(QtWidgets.QMessageBox.Warning)
-                msg.setWindowTitle("Range Error")
-                msg.setText("valid value must be between {} and {}".format(min_range, max_range))
-                msg.exec_()
+                self.display_dialog("Range Error", "valid value must be between {} and {}".format(min_range, max_range))
                 return
             self.__saved_value = current_value_mm
             self.accept()
 
         except ValueError:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setWindowTitle("Value")
             if len(self.__current_digits) == 0:
-                 msg.setText("value couldn't be empty")
+                 self.display_dialog("Value", "value couldn't be empty")
             else:
-                msg.setText("pls enter valid number")
-            msg.exec_()
+                self.display_dialog("Value", "pls enter valid number")
+
+    def display_dialog(self, header, body):
+        self.is_dialog_running = True
+        self.msg_dialog =QtWidgets.QMessageBox(self)
+        self.msg_dialog.setIcon(QtWidgets.QMessageBox.Warning)
+        self.msg_dialog.setWindowTitle(header)
+        self.msg_dialog.setText(body)
+        self.msg_dialog.keyReleaseEvent = lambda ev: False
+        self.msg_dialog.exec_()
+        self.msg_dialog = None
+
+
 
     def get_value(self):
         return self.__saved_value
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 {
-  "zip_code": "84116",
-  "time_format": 24,
-  "measure_unit": "in"
+    "measure_unit": 1,
+    "time_format": 24,
+    "zip_code": "84116"
 }
