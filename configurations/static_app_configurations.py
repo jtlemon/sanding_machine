@@ -73,7 +73,8 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "lbl": "Bit #",
         "target_key": "bit_profile_number",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_profile_number
+        "range": machine_ranges.bit_profile_number,
+        "unit": "#"
     },
     {
         "lbl": "Bit length",
@@ -97,21 +98,23 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "lbl": "Number of flutes",
         "target_key": "bit_profile_number_of_flutes",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_profile_number_of_flutes
+        "range": machine_ranges.bit_profile_number_of_flutes,
+        "unit": "#"
     },
     {
         "lbl": "Feed speed",
         "target_key": "bit_profile_feed_speed",
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.bit_profile_feed_speed,
-        "unit": "RPM"
+        "custom_lbl": {SpinUnitMode.MM_MODE: "mm/m", SpinUnitMode.IN_MODE: "IPM"}
+
     },
     {
         "lbl": "Spindle speed",
         "target_key": "bit_profile_spindle_speed",
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.bit_profile_spindle_speed,
-        "custom_lbl": {SpinUnitMode.MM_MODE: "mm/m", SpinUnitMode.IN_MODE: "IPM"}
+        "unit": "RPM"
 
     },
     {
