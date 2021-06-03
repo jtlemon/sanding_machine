@@ -8,6 +8,9 @@
     "dovetail_setting_x_zero": 5.0,
     "dovetail_setting_y_zero": 5,
     "dovetail_setting_z_zero": 2,
-    "left_active": 4,
-    "right_active": 4
+    "left_active": 6,
+    "right_active": 6,
+    "bit_measure_location": [15, 10],
+    "bit_change_location": [150, 0, 0],
+    "current_bit": 0
 }

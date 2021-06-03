@@ -28,6 +28,7 @@ from apps.dowel_profiles.models import DowelProfile
 from apps.bit_profiles.models import BitProfile
 from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 
+
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
         super(MachineGuiInterface, self).__init__()
@@ -69,7 +70,6 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__sensors_board_thread = SensorConnector()
         self.__grbl_interface = GrblControllerHal()
         self.__estop_interface = EStopSerialInterface()
-
 
         # connect signals
         self.measureUnitChangedSignal.connect(self.handle_measure_unit_changed)
