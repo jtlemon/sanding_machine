@@ -16,6 +16,7 @@ class AppSupportedSettingValues(Enum):
     standardWidth3 = 2
     standardWidth4 = 3
 
+
 class WidgetsType(Enum):
     rangeWidget = 0
     boolWidget = 1

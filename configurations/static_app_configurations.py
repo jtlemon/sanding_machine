@@ -187,12 +187,15 @@ DOVETAIL_SETTING_CONFIGURATION = [
 # ************************* dovetail left/right active mapper *************
 DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]
 DOVETAIL_SUPPORTED_LEVELS = 4
-BASE_LEVEL_CONFIGURATION_KEY = "dovetail_setting_standard_width_" # "dovetail_setting_standard_width_4" for lvl 4
+BASE_LEVEL_CONFIGURATION_KEY = "dovetail_setting_standard_width_"  # "dovetail_setting_standard_width_4" for lvl 4
+
 # ******************************************** Errors ****************************
 INSTALLED_ERRORS = {
     "type1": {"txt": "Door opened", "flashing": True, "color": "blue"},
     "type2": {"txt": "error message", "flashing": False, "color": "blue"},
+    "machineerror": {"txt": "Machine Error", "flashing": True, "color": "red"}
 }
+
 # main logging info
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
 LOGGER_NAME = "Dovetail"
@@ -220,4 +223,4 @@ SENSOR_MAP = [101.6, 228.6, 304.8, 381, 457.2, 533.4, 609.6, 685.8, 762, 914.4]
 IS_ESTEPPER_MODULE_ENABLED = True
 ESTEPPER_MODULE_COM_PORT = "/dev/ttyACM0"
 ESTEPPER_MODULE_BAUD_RATE = 4800
-ESTEPPER_CHECK_STATUS_EVERY = 0.5 # check status every 0.5 sec
+ESTEPPER_CHECK_STATUS_EVERY = 0.5  # check status every 0.5 sec
