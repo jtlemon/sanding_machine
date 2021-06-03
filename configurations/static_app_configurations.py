@@ -31,6 +31,8 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
      "range": machine_ranges.joint_profile_distance_from_bottom},
+    {"lbl": "Bit to use", "target_key": "dovetail_bit_to_use", "range": machine_ranges.bit_to_use}
+    # this will need to be selectable from the bit profiles that have been added to the machine
 ]
 
 DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
@@ -63,6 +65,14 @@ DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
         "target_key": "dowel_profile_edge_depth",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dowel_profile_edge_depth
+    },
+    # the bit to use needs to be selectable from the bit profiles that have been created.
+    # i added it as a range widget for now
+    {
+        "lbl": "Bit to use",
+        "target_key": "dowel_bit_to_use",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_to_use
     }
 ]
 
@@ -172,6 +182,12 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_setting_b_zero
     },
+    {
+        "lbl": "Distance between Fences",
+        "target_key": "dovetail_fence_distance",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_fence_distance
+    }
 ]
 
 # ************************* dovetail left/right active mapper *************

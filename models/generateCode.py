@@ -50,7 +50,7 @@ class GenerateCode(QtCore.QObject):
         """
         x = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050]
         y = MainConfigurationLoader.get_table_variations_readings()
-        print(len(x) , len(y))
+        print(len(x), len(y))
         self.y_interpolate = scipy.interpolate.interp1d(x, y)
 
     def calculate(self, left_part, right_part, dowels_profiles={}):

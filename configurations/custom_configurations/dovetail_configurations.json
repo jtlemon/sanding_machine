@@ -1,4 +1,15 @@
 {
+    "bit_change_location": [
+        150,
+        0,
+        0
+    ],
+    "bit_measure_location": [
+        15,
+        10
+    ],
+    "current_bit": 0,
+    "dovetail_fence_distance": 605.2,
     "dovetail_setting_a_zero": 1,
     "dovetail_setting_b_zero": 1,
     "dovetail_setting_standard_width_1": 101.6,
@@ -9,8 +20,5 @@
     "dovetail_setting_y_zero": 5,
     "dovetail_setting_z_zero": 2,
     "left_active": 6,
-    "right_active": 6,
-    "bit_measure_location": [15, 10],
-    "bit_change_location": [150, 0, 0],
-    "current_bit": 0
+    "right_active": 6
 }
