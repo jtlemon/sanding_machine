@@ -30,7 +30,7 @@ class ProfileListWidget(QtWidgets.QWidget):
         col_names = ["Name"]
         names, self.target_db_keys, self.default_values = get_supported_profiles_meta(AppSupportedOperations.dowelsProfileOperation)
         col_names.extend(names)
-        col_names.extend(["#", "#"])
+        col_names.extend(["Bit", "#", "#"])
         self.widget_table = QtWidgets.QTableWidget()
         self.widget_table.setColumnCount(len(col_names))
         self.widget_table.setHorizontalHeaderLabels(col_names)
@@ -69,12 +69,13 @@ class ProfileListWidget(QtWidgets.QWidget):
                 value = default_value
                 dowel_profile.set_value(key, value)
             add_item_to_table(self.widget_table, row_index, col_index+1, value)
+        col_index = col_index + 2
+        add_item_to_table(self.widget_table, row_index, col_index, dowel_profile.bit_profile.profile_name)
         if update_opt is False:
             edit_btn = RecordTrackBtn(dowel_profile.pk, ":/icons/icons/icons8-edit-96.png")
             del_btn = RecordTrackBtn(dowel_profile.pk, ":/icons/icons/icons8-delete-bin-96.png")
-            col_index = col_index+2
-            self.widget_table.setCellWidget(row_index, col_index, edit_btn)
-            self.widget_table.setCellWidget(row_index, col_index+1 , del_btn)
+            self.widget_table.setCellWidget(row_index, col_index+1, edit_btn)
+            self.widget_table.setCellWidget(row_index, col_index+2 , del_btn)
             edit_btn.customClickSignal.connect(self.handle_edit_profile)
             del_btn.customClickSignal.connect(self.handle_delete_profile)
             if has_to_update_model:

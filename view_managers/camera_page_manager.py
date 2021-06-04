@@ -1,16 +1,50 @@
 from PySide2 import QtWidgets
+
+import custom_widgets.spin_box
 from models import MeasureUnitType
 from .abs_operation_widget_manager import AbstractOperationWidgetManger
 from views import DovetailCameraPageView
 import configurations.static_app_configurations as static_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
 from configurations.system_configuration_loader import MainConfigurationLoader
-
+from view_managers.dialog_configured_prams import widget_create_from_dict, set_field_value
 
 class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetManger):
     def __init__(self, footer_btn):
         super(DovetailCameraPageManager, self).__init__()
         self.__footer_btn_text = footer_btn
+        # create dynamic widgets
+        self.internal_widgets = list()
+        for config_dict in static_configurations.DOVETAIL_JOINT_PROFILE_OPTIONS:
+            name, key, control_widget = widget_create_from_dict(config_dict)
+            lbl = QtWidgets.QLabel(name)
+            self.joint_options_frame_layout.addWidget(lbl)
+            self.joint_options_frame_layout.addWidget(control_widget)
+            self.internal_widgets.append(control_widget)
+            default_value = CustomMachineParamManager.get_value(key, None)
+            if default_value is None:
+                default_value = control_widget.value()
+                CustomMachineParamManager.set_value(key, default_value, False)
+            else:
+                set_field_value(control_widget, default_value)
+
+        for config_dict in static_configurations.DOVETAIL_DOWEL_PROFILE_OPTIONS:
+            name, key, control_widget = widget_create_from_dict(config_dict)
+            if isinstance(control_widget, custom_widgets.spin_box.CustomSpinBox):
+                control_widget.setMinimumWidth(300)
+            lbl = QtWidgets.QLabel(name)
+            self.dowel_option_frame_layout.addWidget(lbl)
+            self.dowel_option_frame_layout.addWidget(control_widget)
+            self.internal_widgets.append(control_widget)
+            default_value = CustomMachineParamManager.get_value(key, None)
+            if default_value is None:
+                default_value = control_widget.value()
+                CustomMachineParamManager.set_value(key, default_value, False)
+            else:
+                set_field_value(control_widget, default_value)
+        CustomMachineParamManager.store()
+        self.dowel_option_frame.setVisible(False)
+        self.joint_options_frame.setVisible(False)
         # take ref to signal
         self.sideBtnClicked = self.side_buttons_widget.sideBtnClicked
         self.startBtnClicked = self.start_button.clicked
@@ -19,33 +53,28 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
         rec = QtWidgets.QApplication.desktop().screenGeometry()
         width = rec.width()
         height = rec.height()
-        required_height = height - 375
+        required_height = height - 425
         required_width = int(1.5*required_height)
         self.camera_display.setMaximumSize(required_width, required_height)
         self.load_mid_btn_text()
         # install signals
-        self.bit_profile_combo.currentTextChanged.connect(self.check_if_all_profiles_selected)
-        self.joint_profile_combo.currentTextChanged.connect(self.check_if_all_profiles_selected)
-        self.dowel_profile_combo.currentTextChanged.connect(self.check_if_all_profiles_selected)
+        self.joint_dowel_profile_combo.currentTextChanged.connect(self.check_if_profile_selected)
         self.start_button.setEnabled(False)
 
-    def check_if_all_profiles_selected(self, profile):
-        bit_profile =  self.bit_profile_combo.currentText()
-        joint_profile = self.joint_profile_combo.currentText()
-        dowel_profile = self.dowel_profile_combo.currentText()
-        if len(bit_profile) == 0 or len(joint_profile) == 0 or len(dowel_profile) == 0:
+    def check_if_profile_selected(self, profile_text:str):
+        if len(profile_text) == 0 :
             self.start_button.setEnabled(False)
+            self.dowel_option_frame.setVisible(False)
+            self.joint_options_frame.setVisible(False)
         else:
+            if profile_text.lower()[0] == "j":
+                self.dowel_option_frame.setVisible(False)
+                self.joint_options_frame.setVisible(True)
+            else:
+                self.dowel_option_frame.setVisible(True)
+                self.joint_options_frame.setVisible(False)
             self.start_button.setEnabled(True)
 
-    def get_bit_profile_name(self):
-        return self.bit_profile_combo.currentText()
-
-    def get_dowel_profile_name(self):
-        return self.dowel_profile_combo.currentText()
-
-    def get_joint_profile_name(self):
-        return self.dowel_profile_combo.currentText()
 
     def manage_start_cancel_active_state(self, is_start_active):
         if is_start_active:
@@ -55,8 +84,8 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
             self.start_button.setChecked(False)
             self.cancel_Button.setChecked(True)
 
-    def get_joint_profile_name(self):
-        return self.joint_profile_combo.currentText()
+    def get_selected_profile(self):
+        return self.joint_dowel_profile_combo.currentText()
 
     def change_measure_mode(self, unit: MeasureUnitType):
         self.load_mid_btn_text(unit)
@@ -90,14 +119,8 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
         if camera_index == 0:
             self.camera_display.setPixmap(pix_map)
 
-    def handle_joint_profile_updated(self, new_profiles):
-        self.joint_profile_combo.load_new_options(new_profiles)
-
-    def handle_dowel_profile_updated(self, new_profiles):
-        self.dowel_profile_combo.load_new_options(new_profiles)
-
-    def handle_bit_profile_updated(self, new_profiles):
-        self.bit_profile_combo.load_new_options(new_profiles)
+    def handle_joint_dowel_profile_updated(self, new_profiles):
+        self.joint_dowel_profile_combo.load_new_options(new_profiles)
 
     def handle_setting_changed(self):
         target_unit = MeasureUnitType(MainConfigurationLoader.get_value("measure_unit", 1))

@@ -135,5 +135,28 @@ TrackableCheckBox
 {
     height:40px;
 }
+QTabBar::tab
+{
+     background-color:black;
+     border-top-right-radius: 12px;
+     border-top-left-radius: 12px;
+     height:40px;
+     width:300 px;
+     border:1px solid white;
+     color:white;
+     margin-right: 5px;
+     padding: 6px;
+}
+QTabBar::tab:selected {
+  border:1px solid green;
+  color:green;
+}
+QTabWidget::tab-bar
+{
+   alignment: center;
+}
 
-
+#dowel_option_frame, #joint_options_frame
+{
+    border:none;
+}

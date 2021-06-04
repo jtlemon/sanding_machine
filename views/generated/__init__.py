@@ -1,1 +1,2 @@
 from .dovetail_camera_page import Ui_DovetailCameraPageUI
+from .reset_page import Ui_ResetPage

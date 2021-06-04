@@ -11,8 +11,7 @@ except Exception as e:
 
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
-from view_managers import JointProfilesPageManager, DovetailCameraPageManager, DowelProfileManager, BitProfileManager, \
-    MachineSettingsManager
+from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager
 from views import MachineInterfaceUi
 from configurations import static_app_configurations, AppSupportedOperations
 import time
@@ -37,9 +36,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__current_machine_cycle = 0
         self.__camera_image_subscribers = {index: list() for index in
                                            range(static_app_configurations.AVAILABLE_CAMERAS)}
-        self.__joint_profile_update_subscribers = set()
+        self.__joint_dowel_profile_update_subscribers = set()
         self.__bit_profile_update_subscribers = set()
-        self.__dowel_profile_update_subscribers = set()
         self.__machine_setting_changed_subscribers = set()
         self.__installed_operations = {}
         self.__current_dowel_profile = None
@@ -50,16 +48,15 @@ class MachineGuiInterface(MachineInterfaceUi):
             if app_operation == static_app_configurations.AppSupportedOperations.dovetailCameraOperation:
                 operation_page_widget = DovetailCameraPageManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
-                self.__joint_profile_update_subscribers.add(operation_page_widget)
-                self.__bit_profile_update_subscribers.add(operation_page_widget)
-                self.__dowel_profile_update_subscribers.add(operation_page_widget)
+                self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
-            elif app_operation == static_app_configurations.AppSupportedOperations.jointProfilesOperation:
-                operation_page_widget = JointProfilesPageManager()
-                operation_page_widget.jointProfilesUpdatedSignal.connect(self.handle_joint_profile_updates)
-            elif app_operation == static_app_configurations.AppSupportedOperations.dowelsProfileOperation:
-                operation_page_widget = DowelProfileManager()
-                operation_page_widget.profilesChanged.connect(self.handle_dowel_profile_updates)
+            elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
+                operation_page_widget = ResetPageManager()
+                for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
+                    self.subscribe_to_image(cam_index, operation_page_widget)
+            elif app_operation == static_app_configurations.AppSupportedOperations.jointDowelBitProfilesOperation:
+                operation_page_widget = DowelJointProfileManager()
+                operation_page_widget.profileChanged.connect(self.handle_joint_dowel_profile_updates)
             elif app_operation == static_app_configurations.AppSupportedOperations.bitProfilesOperation:
                 operation_page_widget = BitProfileManager()
                 operation_page_widget.profilesChanged.connect(self.handle_bit_profile_updates)
@@ -95,14 +92,10 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__camera_check_timer.start(int(1000 / static_app_configurations.FRAME_RATE))
 
         # initiate all signals
-        if AppSupportedOperations.jointProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
+        if AppSupportedOperations.jointDowelBitProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
             available_profile_names = self.__installed_operations[
-                AppSupportedOperations.jointProfilesOperation].get_loaded_profiles()
-            self.handle_joint_profile_updates(available_profile_names)
-        if AppSupportedOperations.dowelsProfileOperation in static_app_configurations.SUPPORTED_OPERATIONS:
-            available_profile_names = self.__installed_operations[
-                AppSupportedOperations.dowelsProfileOperation].get_loaded_profiles()
-            self.handle_dowel_profile_updates(available_profile_names)
+                AppSupportedOperations.jointDowelBitProfilesOperation].get_loaded_profiles()
+            self.handle_joint_dowel_profile_updates(available_profile_names)
 
         if AppSupportedOperations.bitProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
             available_profile_names = self.__installed_operations[
@@ -208,13 +201,9 @@ class MachineGuiInterface(MachineInterfaceUi):
                 pix_map = QtGui.QPixmap.fromImage(q_image)
                 active_widget.new_image_received(cam_index, pix_map)
 
-    def handle_joint_profile_updates(self, new_profiles):
-        for subscriber_widget in self.__joint_profile_update_subscribers:
-            subscriber_widget.handle_joint_profile_updated(new_profiles)
-
-    def handle_dowel_profile_updates(self, new_profiles):
-        for subscriber_widget in self.__dowel_profile_update_subscribers:
-            subscriber_widget.handle_dowel_profile_updated(new_profiles)
+    def handle_joint_dowel_profile_updates(self, new_profiles):
+        for subscriber_widget in self.__joint_dowel_profile_update_subscribers:
+            subscriber_widget.handle_joint_dowel_profile_updated(new_profiles)
 
     def handle_bit_profile_updates(self, new_profiles):
         for subscriber_widget in self.__bit_profile_update_subscribers:

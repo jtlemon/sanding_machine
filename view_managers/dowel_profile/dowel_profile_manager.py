@@ -21,7 +21,7 @@ class DowelProfileManager(QtWidgets.QStackedWidget):
         self.addWidget(self.dowel_joint_widget)
         self.dowel_profile_widget.profileClicked.connect(self.load_dowel_joints)
         self.dowel_joint_widget.backSignal.connect(lambda :self.setCurrentIndex(0))
-        self.profilesChanged = self.dowel_profile_widget.profilesChanged
+        self.profileChanged = self.dowel_profile_widget.profilesChanged
 
     def load_dowel_joints(self, profile_id):
         dowel_profile = models.DowelProfile.objects.get(pk= profile_id)

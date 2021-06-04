@@ -11,9 +11,9 @@ from custom_widgets import SpinUnitMode
 
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
-    AppSupportedOperations.jointProfilesOperation,
-    AppSupportedOperations.dowelsProfileOperation,
+    AppSupportedOperations.jointDowelBitProfilesOperation,
     AppSupportedOperations.bitProfilesOperation,
+    AppSupportedOperations.restMachineOperation,
     AppSupportedOperations.settingParametersOperation
 ]
 SUPPORTED_SETTING_VALUES = {
@@ -30,9 +30,13 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
      "range": machine_ranges.joint_profile_pin_spacing},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
-     "range": machine_ranges.joint_profile_distance_from_bottom},
-    {"lbl": "Bit to use", "target_key": "dovetail_bit_to_use", "range": machine_ranges.bit_to_use}
-    # this will need to be selectable from the bit profiles that have been added to the machine
+     "range": machine_ranges.joint_profile_distance_from_bottom}
+]
+DOVETAIL_JOINT_PROFILE_OPTIONS = [
+    {"lbl": "shallow", "target_key": "joint_shallow_opt",
+     "field_type": WidgetsType.boolWidget},
+    {"lbl": "deep", "target_key": "joint_deep_opt",
+     "field_type": WidgetsType.boolWidget}
 ]
 
 DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
@@ -65,15 +69,17 @@ DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
         "target_key": "dowel_profile_edge_depth",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dowel_profile_edge_depth
-    },
-    # the bit to use needs to be selectable from the bit profiles that have been created.
-    # i added it as a range widget for now
-    {
-        "lbl": "Bit to use",
-        "target_key": "dowel_bit_to_use",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_to_use
     }
+]
+DOVETAIL_DOWEL_PROFILE_OPTIONS = [
+    {"lbl": "Opt1", "target_key": "come_value_key",
+     "field_type": WidgetsType.rangeWidget,
+     "range": (1, 10, 1)
+     },
+    {"lbl": "Opt2", "target_key": "come_value_key_1",
+     "field_type": WidgetsType.rangeWidget,
+     "range": (1, 10, 1)
+     },
 ]
 
 DOVETAIL_BIT_PROFILES_CONFIGURATION = [
@@ -190,9 +196,34 @@ DOVETAIL_SETTING_CONFIGURATION = [
     }
 ]
 
+# ************************* reset page *******************
+DOVETAIL_RESET_PAGE_BUTTONS = \
+    [
+        {
+            "lbl": "RESET CONTROLLER",
+            "target_key": "reset_controller_btn",
+        },
+        {
+            "lbl": "HOME",
+            "target_key": "home_btn",
+        },
+        {
+            "lbl": "GO TO PARK",
+            "target_key": "go_to_park_btn",
+        },
+        {
+            "lbl": "CLEAR DOWELS",
+            "target_key": "clear_dowels_btn",
+        },
+        {
+            "lbl": "PURGE INJECTOR",
+            "target_key": "purge_injector_btn",
+        },
+    ]
+
 # ************************* dovetail left/right active mapper *************
 DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]
-DOVETAIL_SUPPORTED_LEVELS = 5 # the first lvl off
+DOVETAIL_SUPPORTED_LEVELS = 5  # the first lvl off
 BASE_LEVEL_CONFIGURATION_KEY = "dovetail_setting_standard_width_"  # "dovetail_setting_standard_width_4" for lvl 4
 
 # ******************************************** Errors ****************************
@@ -205,7 +236,6 @@ INSTALLED_ERRORS = {
 # main logging info
 LOGGER_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "logs")
 LOGGER_NAME = "Dovetail"
-
 
 AVAILABLE_CAMERAS = 1
 FRAME_RATE = 5  # we will take image every 0.1 sec

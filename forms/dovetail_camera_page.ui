@@ -129,7 +129,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,0,1,0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,0">
        <item>
         <spacer name="horizontalSpacer_5">
          <property name="orientation">
@@ -151,28 +151,17 @@
         </widget>
        </item>
        <item>
-        <widget class="ProfileComboBox" name="joint_profile_combo" native="true">
+        <widget class="ProfileComboBox" name="joint_dowel_profile_combo" native="true">
          <property name="minimumSize">
           <size>
            <width>150</width>
            <height>50</height>
           </size>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Dowel Profile</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="ProfileComboBox" name="dowel_profile_combo" native="true">
-         <property name="minimumSize">
+         <property name="maximumSize">
           <size>
-           <width>150</width>
-           <height>50</height>
+           <width>400</width>
+           <height>16777215</height>
           </size>
          </property>
         </widget>
@@ -198,7 +187,7 @@
         <number>0</number>
        </property>
        <item>
-        <spacer name="horizontalSpacer_4">
+        <spacer name="horizontalSpacer_7">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -211,24 +200,41 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Bit Profile</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="ProfileComboBox" name="bit_profile_combo" native="true">
+        <widget class="QFrame" name="joint_options_frame">
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>50</height>
+           <width>50</width>
+           <height>0</height>
           </size>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="joint_options_frame_layout"/>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_3">
+        <widget class="QFrame" name="dowel_option_frame">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="dowel_option_frame_layout"/>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>

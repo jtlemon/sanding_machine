@@ -1,5 +1,5 @@
 from .generated import Ui_DovetailCameraPageUI
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtCore
 from custom_widgets.dovetail_buttons_widget import DovetailSideButtons
 import configurations.static_app_configurations as app_configurations
 
@@ -14,5 +14,13 @@ class DovetailCameraPageView(QtWidgets.QWidget, Ui_DovetailCameraPageUI):
         v_spacer_item_1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Preferred,
                                                 QtWidgets.QSizePolicy.Expanding)
         self.sidebar_frame_layout.addItem(v_spacer_item_1)
+        self.loaded_bit_lbl = QtWidgets.QLabel("loaded bit name")
+        self.loaded_bit_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.sidebar_frame_layout.addWidget(self.loaded_bit_lbl)
+        self.change_bit_btn = QtWidgets.QPushButton("Change Machine Bit")
+        self.change_bit_btn.setFixedHeight(60)
+        self.change_bit_btn.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        self.sidebar_frame_layout.addWidget(self.change_bit_btn)
+
         self.start_button.setCheckable(True)
         self.cancel_Button.setCheckable(True)

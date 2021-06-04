@@ -9,7 +9,9 @@ except Exception as e:
 from PySide2 import QtWidgets
 import configurations.static_app_configurations as static_configurations
 from apps.joint_profiles import models
+from apps.bit_profiles.models import BitProfile
 from custom_widgets.spin_box import CustomSpinBox
+from view_managers.utils import display_error_message
 
 
 class AddEditJoinProfile(QtWidgets.QDialog):
@@ -46,8 +48,14 @@ class AddEditJoinProfile(QtWidgets.QDialog):
             self.grid_layout.addWidget(lbl, target_row, 0, 1, 1)
             self.grid_layout.addWidget(spinbox_widget, target_row, 1, 1, 1)
             self.joint_profiles_spinbox_widgets.append(spinbox_widget)
-
         self.widget_layout.addLayout(self.grid_layout)
+        self.bit_profile_objects = BitProfile.objects.all()
+        bit_profile_names = [bit_profile.profile_name for bit_profile in self.bit_profile_objects]
+        lbl = QtWidgets.QLabel("Bit Profile")
+        self.bit_combo_box = QtWidgets.QComboBox()
+        self.bit_combo_box.addItems(bit_profile_names)
+        self.grid_layout.addWidget(lbl, target_row+1, 0, 1, 1)
+        self.grid_layout.addWidget(self.bit_combo_box, target_row+1, 1, 1, 1)
         # save/cancel buttons
         self.save_btn = QtWidgets.QPushButton("Save")
         self.save_btn.setMinimumSize(200, 60)
@@ -70,7 +78,20 @@ class AddEditJoinProfile(QtWidgets.QDialog):
         self.setMinimumWidth(600)
 
     def handle_save_profile(self):
-        profile_name = self.profile_name_edit.text()
+        profile_name = self.profile_name_edit.text().strip()
+        bit_profile_index = self.bit_combo_box.currentIndex()
+        if bit_profile_index == -1:
+            display_error_message("you have to add bit profile first", "bit profiles", self)
+            return
+        if len(profile_name) == 0:
+            display_error_message("please select the profile name first", "profile name", self)
+            return
+        # make sure that the name is not exist
+        if (self.__current_profile and profile_name != self.__current_profile.profile_name) or self.__current_profile is None:
+            available_profiles = models.JoinProfile.objects.filter(profile_name=profile_name)
+            if available_profiles.exists():
+                display_error_message("choose another profile name", "name already exists", self)
+                return
         json_data = {}
         for spin_box in self.joint_profiles_spinbox_widgets:
             json_data[spin_box.get_key()] = spin_box.value()
@@ -80,10 +101,12 @@ class AddEditJoinProfile(QtWidgets.QDialog):
             current_payload = self.__current_profile.get_decoded_json()
             current_payload.update(json_data)
             self.__current_profile.json_payload = current_payload
+            self.__current_profile.bit_profile = self.bit_profile_objects[bit_profile_index]
             self.__current_profile.save()
         else:
             self.__current_profile = models.JoinProfile(profile_name=profile_name, json_payload=json_data,
-                                                        machine=static_configurations.CURRENT_MACHINE
+                                                        machine=static_configurations.CURRENT_MACHINE,
+                                                        bit_profile=self.bit_profile_objects[bit_profile_index]
                                                         )
             self.__current_profile.save()
         self.accept()

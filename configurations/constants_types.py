@@ -8,6 +8,8 @@ class AppSupportedOperations(Enum):
     bitProfilesOperation = 3
     restMachineOperation = 4
     settingParametersOperation = 5
+    jointDowelBitProfilesOperation = 6
+
 
 
 class AppSupportedSettingValues(Enum):
