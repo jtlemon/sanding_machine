@@ -1,5 +1,5 @@
 from PySide2 import QtWidgets, QtCore, QtGui
-from numpad_widget_gen import Ui_numpad
+from .numpad_widget_gen import Ui_numpad
 import inspect
 
 class NumpadWidget(QtWidgets.QDialog , Ui_numpad):
