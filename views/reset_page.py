@@ -2,6 +2,7 @@ from PySide2 import QtWidgets
 
 import configurations.static_app_configurations as static_configurations
 from views.camera_viewer import CameraViewer
+from views.serial_monitor_widget import SerialMonitorWidget
 
 
 class ResetPageView(QtWidgets.QWidget):
@@ -13,7 +14,7 @@ class ResetPageView(QtWidgets.QWidget):
         self.serial_monitor_grid_layout = QtWidgets.QGridLayout()
         self.main_grid_layout.addLayout(self.widgets_grid_layout, 0, 0, 1, 2)
         self.main_grid_layout.addLayout(self.camera_grid_layout, 1, 0, 1, 1)
-        self.main_grid_layout.addLayout(self.serial_monitor_grid_layout, 1, 2, 1, 1)
+        self.main_grid_layout.addLayout(self.serial_monitor_grid_layout, 1, 1, 1, 1)
         # to split the main view
         self.main_grid_layout.setColumnStretch(0, 4)
         self.main_grid_layout.setColumnStretch(1, 2)
@@ -27,16 +28,16 @@ class ResetPageView(QtWidgets.QWidget):
             btn_config_dict = static_configurations.DOVETAIL_RESET_PAGE_BUTTONS[i]
             btn = QtWidgets.QPushButton(btn_config_dict.get("lbl"))
             btn.setFixedHeight(60)
-            btn.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+            btn.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
             setattr(self, btn_config_dict.get("target_key"), btn)
             row_index = i // no_of_buttons_per_row
             col_index = i % no_of_buttons_per_row
             self.widgets_grid_layout.addWidget(btn, row_index, col_index, 1, 1)
 
         self.camera_viewer = CameraViewer([cam_index for cam_index in range(static_configurations.AVAILABLE_CAMERAS)])
-        self.serial_frame = QtWidgets.QFrame()
+        self.serial_monitor_widget = SerialMonitorWidget()
         self.camera_grid_layout.addWidget(self.camera_viewer, 0, 0, 1, 1)
-        self.serial_monitor_grid_layout.addWidget(self.serial_frame, 0, 0, 1, 1)
+        self.serial_monitor_grid_layout.addWidget(self.serial_monitor_widget, 0, 0, 1, 1)
 
     def new_image_received(self, camera_index, pix_map):
         self.camera_viewer.new_image_received(camera_index, pix_map)

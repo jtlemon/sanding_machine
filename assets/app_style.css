@@ -160,3 +160,15 @@ QTabWidget::tab-bar
 {
     border:none;
 }
+#monitor_send_btn , #monitor_clear_btn
+{
+    border-radius:20px;
+}
+#monitor_cmd_to_send_line
+{
+    text-transform: none;
+}
+#monitor_received_response_browser{
+    text-transform: none;
+    font-size:14pt;
+}

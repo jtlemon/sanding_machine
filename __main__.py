@@ -85,6 +85,17 @@ class MachineGuiInterface(MachineInterfaceUi):
         # this to control on/of servo
         self.__grbl_interface.servoStartSignal.connect(self.__sensors_board_thread.control_servo_state)
         self.__grbl_interface.machineStateChangedSignal.connect(self.handle_update_machine_state_lbl)
+        if AppSupportedOperations.restMachineOperation in self.__installed_operations:
+            reset_widget = self.__installed_operations[AppSupportedOperations.restMachineOperation]
+            reset_widget.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
+                                                                                 self.__grbl_interface.grbl_stream.send_direct_command(
+                                                                                     cmd,
+                                                                                     clr_buffer=True
+                                                                                 ))
+            self.__response_checker = QtCore.QTimer()
+            self.__response_checker.setSingleShot(False)
+            self.__response_checker.timeout.connect(self.get_latest_responses)
+            self.__response_checker.start(200)
 
         # camera
         self.__camera_check_timer = QtCore.QTimer()
@@ -116,6 +127,11 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         # load defaults
         self.load_defaults()
+
+    def get_latest_responses(self):
+        reset_widget = self.__installed_operations[AppSupportedOperations.restMachineOperation]
+        responses = self.__grbl_interface.get_latest_responses()
+        reset_widget.serial_monitor_widget.response_received(responses)
 
     def load_defaults(self):
         target_unit = MeasureUnitType(MainConfigurationLoader.get_value("measure_unit", 1))

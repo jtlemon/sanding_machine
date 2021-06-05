@@ -35,3 +35,4 @@ class CameraViewer(QtWidgets.QWidget):
         if camera_index in self.__camera_index_list:
             lbl_index = self.__camera_index_list.index(camera_index)
             self.__camera_lbl_list[lbl_index].setPixmap(pix_map)
+

@@ -384,3 +384,5 @@ class GrblControllerHal(QtCore.QObject):
         self.turn_off_machine()
         self.grbl_stream.close_service()
 
+
+
