@@ -1,9 +1,9 @@
-from PySide2 import QtWidgets, QtCore
-
+from PySide2 import QtWidgets, QtCore, QtGui
+from configurations import grbl_error_codes
 
 class SerialMonitorWidget(QtWidgets.QGroupBox):
     monitorSendCmdSignal = QtCore.Signal(str)
-
+    errorReceivedSignal = QtCore.Signal(str, str, str, str)
     def __init__(self):
         super(SerialMonitorWidget, self).__init__()
         self.setTitle("Grbl Serial Monitor")
@@ -42,6 +42,15 @@ class SerialMonitorWidget(QtWidgets.QGroupBox):
                 self.received_response_browser.append(f">> {cmd_to_send}")
             if len(response) > 0:
                 self.received_response_browser.append(f"<< {response}")
+                for cat_str in grbl_error_codes.SUPPORTED_CATEGORIES:
+                    if cat_str in response:
+                        error_text = grbl_error_codes.GRBL_ERROR_DICT.get(response, None)
+                        if error_text :
+                            color = grbl_error_codes.SUPPORTED_CATEGORIES.get(cat_str, "gray")
+                            self.received_response_browser.setTextColor(QtGui.QColor(color))
+                            self.received_response_browser.append(f"( {error_text} )")
+                            self.errorReceivedSignal.emit(cat_str, color, response , error_text)
+                            self.received_response_browser.setTextColor(QtCore.Qt.black)
 
 
 if __name__ == "__main__":

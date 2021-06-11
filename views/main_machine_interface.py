@@ -32,9 +32,9 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         h_spacer_item_0 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
                                                 QtWidgets.QSizePolicy.Preferred)
         self.header_frame_layout.addItem(h_spacer_item_0)
-        self.__error_lbl = ErrorWidgetLabel()
-        self.__error_lbl.set_error(static_configurations.INSTALLED_ERRORS["machineerror"])
-        self.header_frame_layout.addWidget(self.__error_lbl)
+        self.header_error_lbl = ErrorWidgetLabel()
+        self.header_error_lbl.clr_errors()
+        self.header_frame_layout.addWidget(self.header_error_lbl)
         h_spacer_item_1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding,
                                                 QtWidgets.QSizePolicy.Preferred)
         self.header_frame_layout.addItem(h_spacer_item_1)

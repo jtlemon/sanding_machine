@@ -27,6 +27,8 @@ from apps.dowel_profiles.models import DowelProfile
 from apps.bit_profiles.models import BitProfile
 from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 from configurations.system_configuration_loader import MainConfigurationLoader
+from views import AlarmViewerDialog
+from configurations import grbl_error_codes
 
 
 
@@ -92,6 +94,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                                                                                      cmd,
                                                                                      clr_buffer=True
                                                                                  ))
+            reset_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
             self.__response_checker = QtCore.QTimer()
             self.__response_checker.setSingleShot(False)
             self.__response_checker.timeout.connect(self.get_latest_responses)
@@ -127,6 +130,28 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         # load defaults
         self.load_defaults()
+
+        # alarms
+        self.latest_errors_container = list()
+        self.header_error_lbl.mousePressEvent = self.handle_display_all_errors
+
+    def handle_new_error_decoded(self,category ,color, error_key, error_text):
+        self.latest_errors_container.append((error_key, error_text, color))
+        self.header_error_lbl.set_error(category, preferred_color=color)
+
+
+    def handle_display_all_errors(self, ev):
+        if len(self.latest_errors_container):
+            current_errors = self.latest_errors_container.copy()
+            self.latest_errors_container.clear()
+            dia = AlarmViewerDialog(current_errors, self)
+            if dia.exec_():
+                if len(self.latest_errors_container) == 0:
+                    self.header_error_lbl.clr_errors()
+            else:
+                current_errors.extend(self.latest_errors_container)
+                self.latest_errors_container = current_errors
+
 
     def get_latest_responses(self):
         reset_widget = self.__installed_operations[AppSupportedOperations.restMachineOperation]
