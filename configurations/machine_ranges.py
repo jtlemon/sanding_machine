@@ -11,6 +11,8 @@ dowel_profile_face_depth = (2, 25, 0.1)
 dowel_profile_dis_from_face = (2, 25, 0.1)
 dowel_profile_dis_from_edge = (2, 100, 0.1)
 dowel_profile_spacing = (2, 400, 0.1)
+joint_shallow_adjustment = (1, 10, .01)
+joint_deep_adjustment = (1, 10, .01)
 bit_profile_number = (1, 100, 1)
 bit_profile_angle = (0, 15, 0.1)
 bit_profile_diameter = (1, 25, 1)
@@ -18,6 +20,7 @@ bit_profile_cutting_edge_length = (1, 50, 1)
 bit_profile_number_of_flutes = (1, 4, 1)
 bit_profile_feed_speed = (1, 20000, 1)
 bit_profile_spindle_speed = (1, 24000, 1)
+
 
 # dovetail setting ranges
 dovetail_setting_standard_width_1 = (1, 610, 1)
