@@ -29,6 +29,7 @@ from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 from configurations.system_configuration_loader import MainConfigurationLoader
 from views import AlarmViewerDialog
 from configurations import grbl_error_codes
+from view_managers import RetrieveMachinePramsDialog
 
 
 
@@ -275,15 +276,17 @@ class MachineGuiInterface(MachineInterfaceUi):
 
 if __name__ == "__main__":
     from views import utils
-    camera_process = CameraMangerProcess()
-    camera_process.daemon = True
-    camera_process.start()
     app = QtWidgets.QApplication(sys.argv)
     utils.load_app_fonts()
-    machine_gui_interface = MachineGuiInterface()
-    machine_gui_interface.showMaximized()
     app.setStyleSheet(utils.load_app_style())
-    app.exec_()
-    camera_process.close_service()
-    time.sleep(1)
+    start_dia = RetrieveMachinePramsDialog()
+    if start_dia.exec_():
+        camera_process = CameraMangerProcess()
+        camera_process.daemon = True
+        camera_process.start()
+        machine_gui_interface = MachineGuiInterface()
+        machine_gui_interface.showMaximized()
+        app.exec_()
+        camera_process.close_service()
+        time.sleep(1)
     sys.exit(0)
