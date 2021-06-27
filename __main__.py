@@ -142,8 +142,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.header_error_lbl.mousePressEvent = self.handle_display_all_errors
 
     def handle_measure_tool_clicked(self):
-        bit_length = some_function()
-        CustomMachineParamManager.set_value("bit_length" , bit_length, True)
+        self.__grbl_interface.measure_tool()
+
 
     def handle_new_error_decoded(self,category ,color, error_key, error_text):
         self.latest_errors_container.append((error_key, error_text, color))

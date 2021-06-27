@@ -18,9 +18,11 @@ class GrblControllerHal(QtCore.QObject):
     servoStartSignal = QtCore.Signal(bool)
     machineStartedSignal = QtCore.Signal(int)
     machineStateChangedSignal = QtCore.Signal(str)
-
+    bitLengthReceivedSignal = QtCore.Signal(float)
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
+        self.__measure_prob_counter = 0
+        self.__retrieved_z_values = list()
         self.__current_dowel_profile = None
         self.__current_bit_profile = None
         self.__current_joint_profile = None
@@ -268,12 +270,11 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
     def measure_tool(self):
-
+        self.__measure_prob_counter = 0
+        self.__retrieved_z_values.clear()
         def probe():
             self.grbl_stream.add_new_command('g0z3')  # retract 3 mm
-            self.grbl_stream.add_new_command('g38.2z-3f50')  # probe with error return, 3mm, feed 50mm/m
-
-            return 0  # return the grbl response for z
+            self.grbl_stream.add_new_command('g38.2z-3f50', notify_message="emit_measure_response")  # probe with error return, 3mm, feed 50mm/m
 
         self.grbl_stream.add_new_command('g90')  # switch to absolute units
         self.grbl_stream.add_new_command('g0z0')  # move z to zero to make sure we are clear of probe sensor
@@ -287,7 +288,6 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g90')  # switch back to absolute units
         self.grbl_stream.add_new_command('g0z0')  # retract z back to 0
         self.spindle_off()  # turn spindle back off
-        return 0  # return the lowest result from the 3 probe cycles, save this to the bit profile length parameter
 
 
     def check_events(self):
@@ -298,7 +298,24 @@ class GrblControllerHal(QtCore.QObject):
         cur_date = datetime.datetime.now().date()
         while not self.__event_queue.empty():
             event = self.__event_queue.get()
-            if event.get("type") == "notification":
+            if event.get("type") == "received_response" and event.get("value")== "emit_measure_response":
+                response = event.get("response")
+                print(response)
+                if response.startswith("[PRB:"):
+                    axis_values_str = response[5:-3].split(",")
+                    if len(axis_values_str) == 5:
+                        try:
+                            z_value = float(axis_values_str[2])
+                            self.__retrieved_z_values.append(z_value)
+                        except Exception as e:
+                            print(e)
+                        self.__measure_prob_counter += 1
+                        if self.__measure_prob_counter == 3:
+                            self.__retrieved_z_values.sort()
+                            print(self.__retrieved_z_values)
+
+
+            elif event.get("type") == "notification":
                 self.machineStateChangedSignal.emit(event.get("value"))
             elif event.get("type") == "displacement":
                 displacement_dict = event.get("value")

@@ -114,8 +114,12 @@ class SerialConnector(Process):
                             val_str += letter
                     letters_values[track_letter] = val_str
                     self.modify_pos_track_value(letters_values)
-        if len(cmd_to_send.get("notify_message")) > 0:
-            self.__event_queue.put({"type": "notification", "value": cmd_to_send.get("notify_message")})
+        notify_message = cmd_to_send.get("notify_message")
+        if len(notify_message) > 0:
+            if notify_message != "emit_measure_response":
+                self.__event_queue.put({"type": "notification", "value": notify_message})
+            else:
+                self.__event_queue.put({"type": "received_response", "value": notify_message, "response":response})
         if cmd_to_send.get("wait_time") > 0:
             start_time = time.time()
             while time.time() - start_time < cmd_to_send.get("wait_time") and not self.fast_interrupt_occur():
