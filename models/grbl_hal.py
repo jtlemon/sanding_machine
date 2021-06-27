@@ -187,7 +187,8 @@ class GrblControllerHal(QtCore.QObject):
     def park(self):
         self.spindle_off()
         self.deactivate_solenoids()
-        self.grbl_stream.add_new_command('g0x-20y-15z0a0')
+        self.grbl_stream.add_new_command('g0z0')
+        self.grbl_stream.add_new_command('g0x-150y0')
         module_logger.debug("parking machine")
 
     def spindle_on(self):
@@ -256,7 +257,7 @@ class GrblControllerHal(QtCore.QObject):
         self.deactivate_solenoids()
         self.spindle_off()
         self.grbl_stream.send_direct_command("$H", clr_buffer=True)
-        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0", notify_message='Homing Complete-Ready')
+        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
     def reset_and_home(self):
         self.grbl_stream.add_new_command('$slp')
@@ -264,7 +265,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command(chr(0x18), wait_after=2, notify_message="Homing")
         self.grbl_stream.add_new_command("")
         self.grbl_stream.add_new_command("$H")
-        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0", notify_message='Homing Complete-Ready')
+        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
     def check_events(self):
         total_num_of_holes = 0
