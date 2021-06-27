@@ -301,9 +301,11 @@ class GrblControllerHal(QtCore.QObject):
             event = self.__event_queue.get()
             if event.get("type") == "received_response" and event.get("value")== "emit_measure_response":
                 response = event.get("response")
+                response = response.lower()
                 print(response)
-                if response.startswith("[PRB:"):
+                if response.startswith("[prb:"):
                     axis_values_str = response[5:-3].split(",")
+                    print(axis_values_str)
                     if len(axis_values_str) == 5:
                         try:
                             z_value = float(axis_values_str[2])
