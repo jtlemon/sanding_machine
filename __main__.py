@@ -126,6 +126,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             camera_widget_manager.sideBtnClicked.connect(self.handle_side_buttons_changed)
             camera_widget_manager.startBtnClicked.connect(self.handle_soft_start_cycle)
             camera_widget_manager.cancelBtnClicked.connect(self.handle_soft_cancel_cycle)
+            camera_widget_manager.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
 
         # start all threads
         self.__temperature_thread.start()
@@ -139,6 +140,10 @@ class MachineGuiInterface(MachineInterfaceUi):
         # alarms
         self.latest_errors_container = list()
         self.header_error_lbl.mousePressEvent = self.handle_display_all_errors
+
+    def handle_measure_tool_clicked(self):
+        bit_length = some_function()
+        CustomMachineParamManager.set_value("bit_length" , bit_length, True)
 
     def handle_new_error_decoded(self,category ,color, error_key, error_text):
         self.latest_errors_container.append((error_key, error_text, color))
