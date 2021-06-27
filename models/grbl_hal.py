@@ -18,7 +18,7 @@ class GrblControllerHal(QtCore.QObject):
     servoStartSignal = QtCore.Signal(bool)
     machineStartedSignal = QtCore.Signal(int)
     machineStateChangedSignal = QtCore.Signal(str)
-    bitLengthReceivedSignal = QtCore.Signal(float)
+
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
         self.__measure_prob_counter = 0
