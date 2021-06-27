@@ -1,4 +1,4 @@
-joint_profile_pin_spacing = (2, 400, 0.1) # min, max, step
+joint_profile_pin_spacing = (2, 400, 0.1)  # min, max, step
 joint_profile_depth = (2, 20, 0.1)
 joint_profile_bit_height = (2, 20, 0.1)
 joint_profile_bit_width = (2, 24, 0.1)
@@ -19,9 +19,9 @@ bit_profile_diameter = (1, 25, 1)
 bit_profile_cutting_edge_length = (1, 50, 1)
 bit_profile_number_of_flutes = (1, 4, 1)
 bit_profile_feed_speed = (1, 20000, 1)
-bit_profile_spindle_speed = (1, 24000, 1)
+bit_profile_spindle_speed = (1, 24000, 1) # this is only allowing 944.882 rpm
 
-spindle_time_out = (2, 35, 0.1)
+spindle_time_out = (2, 240, 1)
 
 
 # dovetail setting ranges

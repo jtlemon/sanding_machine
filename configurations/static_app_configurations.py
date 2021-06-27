@@ -86,17 +86,18 @@ DOVETAIL_DOWEL_PROFILE_OPTIONS = [
 
 DOVETAIL_BIT_PROFILES_CONFIGURATION = [
     {
-        "lbl": "Bit #",
+        "lbl": "Bit #",  # this should be displaying as int, and with tag #, not mm
         "target_key": "bit_profile_number",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number,
         "unit": "#"
     },
     {
-        "lbl": "Bit Angle",
+        "lbl": "Bit Angle", # this should be displaying with unit deg, not mm
         "target_key": "bit_profile_angle",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_profile_angle
+        "range": machine_ranges.bit_profile_angle,
+        "unit": "Deg"
     },
     {
         "lbl": "Bit diameter",
@@ -111,7 +112,7 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "range": machine_ranges.bit_profile_cutting_edge_length
     },
     {
-        "lbl": "Number of flutes",
+        "lbl": "Number of flutes",  # this should be displaying as in and with unit tag #, not mm
         "target_key": "bit_profile_number_of_flutes",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number_of_flutes,
