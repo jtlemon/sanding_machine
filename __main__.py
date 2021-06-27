@@ -94,6 +94,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             reset_widget.reset_controller_btn.clicked.connect(self.__grbl_interface.reset_machine)
             reset_widget.home_btn.clicked.connect(self.__grbl_interface.reset_and_home)
             reset_widget.go_to_park_btn.clicked.connect(self.__grbl_interface.park)
+            reset_widget.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
             reset_widget.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
                                                                                  self.__grbl_interface.grbl_stream.send_direct_command(
                                                                                      cmd,

@@ -200,9 +200,9 @@ DOVETAIL_SETTING_CONFIGURATION = [
     {
         "lbl": "spindle time out",
         "target_key": "spindle_time_out",
-        "field_type": WidgetsType.rangeWidget,
+        "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.spindle_time_out,
-        "unit": "secs"
+        "unit": "sec"
     },
 ]
 
@@ -221,7 +221,10 @@ DOVETAIL_RESET_PAGE_BUTTONS = \
             "lbl": "GO TO PARK",
             "target_key": "go_to_park_btn",
         },
-
+        {
+            "lbl": "Measure Tool",
+            "target_key": "measure_tool_btn",
+        },
     ]
 
 # ************************* dovetail left/right active mapper *************
