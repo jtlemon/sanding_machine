@@ -25,5 +25,7 @@
     "joint_shallow_adjustment": 1,
     "joint_shallow_opt": false,
     "left_active": 6,
-    "right_active": 6
+    "right_active": 6,
+    "spindle_time_out": 2,
+    "spindle_speed": 20
 }

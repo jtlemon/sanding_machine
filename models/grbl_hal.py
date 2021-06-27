@@ -10,7 +10,7 @@ from configurations import MainConfigurationLoader
 from models.generateCode import GenerateCode
 from .grbl_serial_connector import SerialConnector
 import configurations.static_app_configurations as static_configurations
-
+from configurations.custom_pram_loader import  CustomMachineParamManager
 module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
 
 
@@ -194,8 +194,8 @@ class GrblControllerHal(QtCore.QObject):
         module_logger.debug("parking machine")
 
     def spindle_on(self):
-        spindle_time_out = MainConfigurationLoader.get_spindle_off_value()
-        spindle_speed = MainConfigurationLoader.get_spindle_speed_value()
+        spindle_time_out = CustomMachineParamManager.get_value("spindle_time_out")
+        spindle_speed = CustomMachineParamManager.get_value("spindle_speed")
         if self.spindle_state:
             self.__spindle_timer.start(spindle_time_out * 1000)
             self.grbl_stream.add_new_command(f'm3s{spindle_speed}')

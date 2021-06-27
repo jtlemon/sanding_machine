@@ -55,7 +55,7 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
         self.__min_val = min_val_mm
         self.__max_val = max_val_mm
         self.__original_val__mm = initial_mm
-        self.__current_mode = "mm"
+        self.__current_mode = SpinUnitMode.MM_MODE
         self.display_type = display_type
         self.__use_relative_value = display_relative
         if len(special_lbl) == 0:
@@ -143,6 +143,8 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
                 self._update_display()
             else:
                 raise ValueError("mode must be mm or in")
+        else:
+            self.__current_mode = SpinUnitMode.MM_MODE
 
     def set_value(self, value_in_mm, update_display=True, emit_change_signal=False, extra_lbl=None):
         self.__current_val_mm = value_in_mm
