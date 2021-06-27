@@ -221,7 +221,10 @@ DOVETAIL_RESET_PAGE_BUTTONS = \
             "lbl": "GO TO PARK",
             "target_key": "go_to_park_btn",
         },
-
+        {
+            "lbl": "Measure Tool",
+            "target_key": "measure_tool_btn",
+        },
     ]
 
 # ************************* dovetail left/right active mapper *************
