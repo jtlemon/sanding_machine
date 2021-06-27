@@ -201,7 +201,8 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "lbl": "spindle time out",
         "target_key": "spindle_time_out",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.spindle_time_out
+        "range": machine_ranges.spindle_time_out,
+        "unit": "secs"
     },
 ]
 
