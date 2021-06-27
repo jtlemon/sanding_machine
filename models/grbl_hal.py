@@ -305,7 +305,7 @@ class GrblControllerHal(QtCore.QObject):
                 response = response.lower()
                 print(response)
                 if response.startswith("[prb:"):
-                    axis_values_str = response[5:-3].split(",")
+                    axis_values_str = response.split(":")[1].split(",")
                     print(axis_values_str)
                     if len(axis_values_str) == 5:
                         try:
@@ -316,6 +316,7 @@ class GrblControllerHal(QtCore.QObject):
                         self.__measure_prob_counter += 1
                         if self.__measure_prob_counter == 3:
                             self.__retrieved_z_values.sort()
+                            CustomMachineParamManager.set_value("loaded_bit_length", self.__retrieved_z_values, True)
                             print(self.__retrieved_z_values)
 
 
