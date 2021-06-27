@@ -21,7 +21,8 @@
     "dovetail_setting_x_zero": 5.0,
     "dovetail_setting_y_zero": 5,
     "dovetail_setting_z_zero": 2,
-    "joint_deep_opt": false,
+    "joint_deep_adjustment": 1,
+    "joint_shallow_adjustment": 1,
     "joint_shallow_opt": false,
     "left_active": 6,
     "right_active": 6

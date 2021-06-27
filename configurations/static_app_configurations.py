@@ -33,10 +33,12 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
      "range": machine_ranges.joint_profile_distance_from_bottom}
 ]
 DOVETAIL_JOINT_PROFILE_OPTIONS = [
-    {"lbl": "shallow", "target_key": "joint_shallow_opt",
-     "field_type": WidgetsType.boolWidget},
-    {"lbl": "deep", "target_key": "joint_deep_opt",
-     "field_type": WidgetsType.boolWidget}
+    {"lbl": "shallow", "target_key": "joint_shallow_adjustment",
+     "field_type": WidgetsType.rangeWidget,
+     "range": machine_ranges.joint_shallow_adjustment},
+    {"lbl": "deep", "target_key": "joint_deep_adjustment",
+     "field_type": WidgetsType.rangeWidget,
+     "range": machine_ranges.joint_deep_adjustment}
 ]
 
 DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
@@ -211,14 +213,7 @@ DOVETAIL_RESET_PAGE_BUTTONS = \
             "lbl": "GO TO PARK",
             "target_key": "go_to_park_btn",
         },
-        {
-            "lbl": "CLEAR DOWELS",
-            "target_key": "clear_dowels_btn",
-        },
-        {
-            "lbl": "PURGE INJECTOR",
-            "target_key": "purge_injector_btn",
-        },
+
     ]
 
 # ************************* dovetail left/right active mapper *************
