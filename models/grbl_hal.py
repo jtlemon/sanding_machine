@@ -291,6 +291,11 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g0z0')  # retract z back to 0
         self.spindle_off()  # turn spindle back off
 
+    def change_machine_bit(self):
+        self.park()
+        # open dialog and have the user select what bit they would like to load, then tell them to load the bit
+        # once they confirm they have completed changing the bit, we will measure the tool
+        self.measure_tool()
 
     def check_events(self):
         total_num_of_holes = 0
