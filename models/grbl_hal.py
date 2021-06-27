@@ -196,7 +196,8 @@ class GrblControllerHal(QtCore.QObject):
 
     def spindle_on(self):
         spindle_time_out = CustomMachineParamManager.get_value("spindle_time_out")
-        spindle_speed = CustomMachineParamManager.get_value("spindle_speed")
+        # spindle_speed = CustomMachineParamManager.get_value("spindle_speed")
+        spindle_speed = CustomMachineParamManager.get_value("probe_spindle_speed")
         if self.spindle_state:
             self.__spindle_timer.start(spindle_time_out * 1000)
             self.grbl_stream.add_new_command(f'm3s{spindle_speed}')

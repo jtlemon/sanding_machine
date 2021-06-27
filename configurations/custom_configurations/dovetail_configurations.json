@@ -25,6 +25,7 @@
     "joint_shallow_adjustment": 1,
     "joint_shallow_opt": false,
     "left_active": 6,
+    "probe_spindle_speed": 8000,
     "right_active": 6,
     "spindle_time_out": 60.0
 }
