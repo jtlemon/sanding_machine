@@ -267,6 +267,28 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command("$H")
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
+    def measure_tool(self):
+
+        def probe():
+            self.grbl_stream.add_new_command('g38.2z-3f50')
+            self.grbl_stream.add_new_command('g0z3')
+            return 0  # return the grbl response for z
+
+        self.grbl_stream.add_new_command('g90')
+        self.grbl_stream.add_new_command('g0z0')
+        self.grbl_stream.add_new_command('g0x0y0')
+        self.spindle_on()
+        self.grbl_stream.add_new_command('g38.2z-35f150')
+        self.grbl_stream.add_new_command('g91')
+        probe()
+        probe()
+        probe()
+        self.grbl_stream.add_new_command('g90')
+        self.grbl_stream.add_new_command('g0z0')
+        self.spindle_off()
+        return 0  # return the lowest result from the 3 probe cycles
+
+
     def check_events(self):
         total_num_of_holes = 0
         total_num_of_dowels = 0
