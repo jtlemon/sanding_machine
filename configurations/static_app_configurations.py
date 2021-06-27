@@ -196,7 +196,13 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "target_key": "dovetail_fence_distance",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_fence_distance
-    }
+    },
+    {
+        "lbl": "spindle time out",
+        "target_key": "spindle_time_out",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.spindle_time_out
+    },
 ]
 
 # ************************* reset page *******************
