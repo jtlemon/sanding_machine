@@ -224,7 +224,7 @@ DOVETAIL_RESET_PAGE_BUTTONS = \
         {
             "lbl": "Measure Tool",
             "target_key": "measure_tool_btn",
-        },
+        }
     ]
 
 # ************************* dovetail left/right active mapper *************

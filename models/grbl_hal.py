@@ -19,7 +19,7 @@ class GrblControllerHal(QtCore.QObject):
     servoStartSignal = QtCore.Signal(bool)
     machineStartedSignal = QtCore.Signal(int)
     machineStateChangedSignal = QtCore.Signal(str)
-
+    newBitLengthCaptured = QtCore.Signal(float)
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
         self.__measure_prob_counter = 0
@@ -321,8 +321,8 @@ class GrblControllerHal(QtCore.QObject):
                         self.__measure_prob_counter += 1
                         if self.__measure_prob_counter == 3:
                             self.__retrieved_z_values.sort()
-                            CustomMachineParamManager.set_value("loaded_bit_length", self.__retrieved_z_values, True)
-                            print(self.__retrieved_z_values)
+                            CustomMachineParamManager.set_value("loaded_bit_length", self.__retrieved_z_values[0], True)
+                            self.newBitLengthCaptured.emit(self.__retrieved_z_values[0])
 
 
             elif event.get("type") == "notification":

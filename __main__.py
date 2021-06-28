@@ -29,6 +29,7 @@ from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 from configurations.system_configuration_loader import MainConfigurationLoader
 from views import AlarmViewerDialog
 from configurations import grbl_error_codes
+from view_managers.change_bit_dialog import ChangeBitDialog
 from view_managers import RetrieveMachinePramsDialog
 
 
@@ -128,6 +129,8 @@ class MachineGuiInterface(MachineInterfaceUi):
             camera_widget_manager.startBtnClicked.connect(self.handle_soft_start_cycle)
             camera_widget_manager.cancelBtnClicked.connect(self.handle_soft_cancel_cycle)
             camera_widget_manager.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
+            camera_widget_manager.change_bit_btn.clicked.connect(self.change_machine_bit)
+
 
         # start all threads
         self.__temperature_thread.start()
@@ -233,6 +236,19 @@ class MachineGuiInterface(MachineInterfaceUi):
         if index in self.__camera_image_subscribers:
             self.__camera_image_subscribers[index].append(widget)
 
+    def change_machine_bit(self):
+        self.__grbl_interface.park()
+        dia = ChangeBitDialog()
+        dia.callMeasureToolSignal.connect(lambda :self.__grbl_interface.measure_tool())
+        self.__grbl_interface.newBitLengthCaptured.connect(lambda loaded_bit_length:dia.accept())
+        if dia.exec_():
+            bit_profile = dia.get_selected_bit_profile()
+            profile_name = bit_profile.profile_name
+            CustomMachineParamManager.set_value("loaded_bit_id", bit_profile.pk, True)
+            camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
+            camera_widget_manager.loaded_bit_lbl.setText(f"loaded bit name :{profile_name}")
+
+
     def check_available_images(self):
         for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
             subscribers_list = self.__camera_image_subscribers[cam_index]
@@ -283,6 +299,15 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__grbl_interface.release_resources()
         self.__estop_interface.requestInterruption()
 
+    def is_bit_loaded(self):
+        loaded_bit_id = CustomMachineParamManager.get_value("loaded_bit_id")
+        if loaded_bit_id is None:
+            CustomMachineParamManager.set_value("loaded_bit_id", -1, True)
+            loaded_bit_id = -1
+        return False if loaded_bit_id < 0 else True
+
+
+
 
 if __name__ == "__main__":
     from views import utils
@@ -294,6 +319,8 @@ if __name__ == "__main__":
         camera_process = CameraMangerProcess()
         camera_process.daemon = True
         camera_process.start()
+        # make sure that the selected bit id field exist
+
         machine_gui_interface = MachineGuiInterface()
         machine_gui_interface.showMaximized()
         app.exec_()

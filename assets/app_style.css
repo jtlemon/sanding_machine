@@ -172,3 +172,7 @@ QTabWidget::tab-bar
     text-transform: none;
     font-size:14pt;
 }
+#bit_dialog_footer_error_lbl
+{
+   color:red;
+}
