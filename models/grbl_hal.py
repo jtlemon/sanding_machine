@@ -20,6 +20,7 @@ class GrblControllerHal(QtCore.QObject):
     machineStartedSignal = QtCore.Signal(int)
     machineStateChangedSignal = QtCore.Signal(str)
     newBitLengthCaptured = QtCore.Signal(float)
+
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
         self.__measure_prob_counter = 0
@@ -274,9 +275,11 @@ class GrblControllerHal(QtCore.QObject):
     def measure_tool(self):
         self.__measure_prob_counter = 0
         self.__retrieved_z_values.clear()
+
         def probe():
             self.grbl_stream.add_new_command('g0z3')  # retract 3 mm
-            self.grbl_stream.add_new_command('g38.2z-3f50', notify_message="emit_measure_response")  # probe with error return, 3mm, feed 50mm/m
+            self.grbl_stream.add_new_command('g38.2z-3f50',
+                                             notify_message="emit_measure_response")  # probe with error return, 3mm, feed 50mm/m
 
         self.grbl_stream.add_new_command('g90')  # switch to absolute units
         self.grbl_stream.add_new_command('g0z0')  # move z to zero to make sure we are clear of probe sensor
@@ -305,7 +308,7 @@ class GrblControllerHal(QtCore.QObject):
         cur_date = datetime.datetime.now().date()
         while not self.__event_queue.empty():
             event = self.__event_queue.get()
-            if event.get("type") == "received_response" and event.get("value")== "emit_measure_response":
+            if event.get("type") == "received_response" and event.get("value") == "emit_measure_response":
                 response = event.get("response")
                 response = response.lower()
                 print(response)
@@ -370,6 +373,7 @@ class GrblControllerHal(QtCore.QObject):
             p.no_of_holes += total_num_of_holes
             p.date = cur_date
             p.save()
+
     # *****************  added from the old code *************************
     def cycle_start_1(self):
         """
@@ -386,6 +390,16 @@ class GrblControllerHal(QtCore.QObject):
         self.clamp_right_horizontal()
         self.clamp_left_horizontal()
         # @ToDo generate grbl code
+        # this is where the dovetail_code_generate will need to be called
+        # then we need to send the g-code to grbl
+        from models.dovetail_code_generator_new import GenerateCode
+        grbl_generator = GenerateCode()
+        grbl_generator.calculate()
+        g_code = grbl_generator.g_code  # this already a list of commands
+        for cmd in g_code:
+            print(f"debug {cmd}")
+            self.grbl_stream.add_new_command(cmd)
+
         self.machineStateChangedSignal.emit('ready')
         time_to_run = self.calculate_run_time()
         self.machineStartedSignal.emit(time_to_run)
@@ -423,7 +437,6 @@ class GrblControllerHal(QtCore.QObject):
     def clamp_left_horizontal(self):
         self.grbl_stream.add_new_command('m62')
 
-
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
         self.__current_dowel_profile = dowel_profile
         self.__current_bit_profile = bit_profile
@@ -434,6 +447,3 @@ class GrblControllerHal(QtCore.QObject):
         self.spindle_off()
         self.turn_off_machine()
         self.grbl_stream.close_service()
-
-
-

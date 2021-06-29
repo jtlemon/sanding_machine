@@ -3,6 +3,7 @@ joint_profile_depth = (2, 20, 0.1)
 joint_profile_bit_height = (2, 20, 0.1)
 joint_profile_bit_width = (2, 24, 0.1)
 joint_profile_distance_from_bottom = (2, 100, 0.1)
+joint_profile_material_thickness = (6, 26, 0.1)
 bit_to_use = (1, 100, 0)  # this needs to be from the bits that are added to the bit profiles
 
 
@@ -11,8 +12,8 @@ dowel_profile_face_depth = (2, 25, 0.1)
 dowel_profile_dis_from_face = (2, 25, 0.1)
 dowel_profile_dis_from_edge = (2, 100, 0.1)
 dowel_profile_spacing = (2, 400, 0.1)
-joint_shallow_adjustment = (-10, 10, .01)
-joint_deep_adjustment = (-5, 10, .01)
+joint_deep_adjustment = (-2, 2, .01)
+joint_tightness_adjustment = (-2, 2, .01)
 bit_profile_number = (1, 100, 1)
 bit_profile_angle = (0, 15, 0.1)
 bit_profile_diameter = (1, 25, 1)

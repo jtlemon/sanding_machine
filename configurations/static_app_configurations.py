@@ -30,13 +30,15 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
      "range": machine_ranges.joint_profile_pin_spacing},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
     {"lbl": "Distance from bottom", "target_key": "joint_profile_distance_from_bottom",
-     "range": machine_ranges.joint_profile_distance_from_bottom}
+     "range": machine_ranges.joint_profile_distance_from_bottom},
+    {"lbl": "Material Thickness", "target_key": "joint_profile_material_thickness",
+     "range": machine_ranges.joint_profile_material_thickness},
 ]
 DOVETAIL_JOINT_PROFILE_OPTIONS = [
-    {"lbl": "shallow", "target_key": "joint_shallow_adjustment",
+    {"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
      "field_type": WidgetsType.rangeWidget,
-     "range": machine_ranges.joint_shallow_adjustment},
-    {"lbl": "deep", "target_key": "joint_deep_adjustment",
+     "range": machine_ranges.joint_deep_adjustment},
+    {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",
      "field_type": WidgetsType.rangeWidget,
      "range": machine_ranges.joint_deep_adjustment}
 ]
@@ -93,7 +95,7 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "unit": "#"
     },
     {
-        "lbl": "Bit Angle", # this should be displaying with unit deg, not mm
+        "lbl": "Bit Angle",  # this should be displaying with unit deg, not mm
         "target_key": "bit_profile_angle",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_angle,

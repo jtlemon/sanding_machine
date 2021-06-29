@@ -1,5 +1,7 @@
 from configurations.custom_pram_loader import CustomMachineParamManager
 from apps.bit_profiles.models import BitProfile
+from apps.joint_profiles.models import JoinProfile
+from apps.dowel_profiles.models import DowelProfile
 
 
 def get_loaded_bit_profile():
@@ -13,3 +15,10 @@ def get_loaded_bit_profile():
             bit_profile = None
     return bit_profile
 
+
+def get_loaded_joint_profile():
+    return JoinProfile.objects.first()
+
+
+def get_loaded_dowel_profile():
+    return DowelProfile.objects.first()

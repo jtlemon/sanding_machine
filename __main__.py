@@ -198,28 +198,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.handle_soft_cancel_cycle()
 
     def is_profiles_loaded(self):
-        camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
-        bit_profile_name = camera_widget_manager.get_bit_profile_name()
-        joint_profile_name = camera_widget_manager.get_joint_profile_name()
-        dowel_profile_name = camera_widget_manager.get_dowel_profile_name()
-        if len(bit_profile_name) == 0 or len(joint_profile_name) == 0 or len(dowel_profile_name) == 0:
-            # all profile should be selected
-            return False
-        # load the profiles
-        new_profile_loaded = False
-        if self.__current_dowel_profile is None or self.__current_dowel_profile.profile_name != dowel_profile_name:
-            self.__current_dowel_profile = DowelProfile.objects.get(profile_name=dowel_profile_name)
-            new_profile_loaded = True
-        if self.__current_joint_profile is None or self.__current_joint_profile.profile_name != joint_profile_name:
-            self.__current_joint_profile = JoinProfile.objects.get(profile_name=joint_profile_name)
-            new_profile_loaded = True
-        if self.__current_bit_profile is None or self.__current_bit_profile.profile_name != bit_profile_name:
-            self.__current_bit_profile = BitProfile.objects.get(profile_name=bit_profile_name)
-            new_profile_loaded = True
-        if new_profile_loaded:
-            self.__grbl_interface.update_machine_profiles(joint_profile=self.__current_joint_profile,
-                                                          dowel_profile=self.__current_dowel_profile,
-                                                          bit_profile=self.__current_bit_profile)
+        # @todo remove bit profile selection from the camera page.
         # all fine
         return True
 
