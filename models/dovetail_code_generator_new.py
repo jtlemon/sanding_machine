@@ -18,8 +18,10 @@ except Exception as e:
     print(e)
 
 import math
+import configurations.static_app_configurations
 from configurations import MainConfigurationLoader
 from configurations.custom_pram_loader import CustomMachineParamManager
+from models import db_utils
 
 """
 i am establishing temporary variables to test the script
