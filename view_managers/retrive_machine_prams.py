@@ -228,6 +228,7 @@ class RetrieveMachinePramsDialog(QtWidgets.QDialog):
                     self.changes_footer_frame.setVisible(True)
                 else:
                     self.no_changes_footer_frame.setVisible(True)
+                    self.accept() # if no changes detected just start the machine
                 self.dialog_pages.setCurrentIndex(1)
 
             else:
