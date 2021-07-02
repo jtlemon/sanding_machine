@@ -35,7 +35,7 @@ class CameraManger:
                 frame_loss_counter += 1
                 if frame_loss_counter > 20:
                     self.__close_event.set()
-            self.__close_event.wait(0.05)
+            self.__close_event.wait(0.1)
         # try to close the camera
         try:
             self.__cam.release()
@@ -66,7 +66,7 @@ class CameraManger:
 
 class CameraMangerProcess(Process):
     process_close_event = Event()
-    images_queue = [Queue(maxsize=2) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
+    images_queue = [Queue(maxsize=4) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
     @staticmethod
     def run():
         sys_cameras_list = [CameraManger(i) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]

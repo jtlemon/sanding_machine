@@ -31,7 +31,8 @@ from views import AlarmViewerDialog
 from configurations import grbl_error_codes
 from view_managers.change_bit_dialog import ChangeBitDialog
 from view_managers import RetrieveMachinePramsDialog
-
+from models.db_utils import is_bit_loaded, get_loaded_bit_name
+from view_managers.utils import display_error_message
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -131,7 +132,6 @@ class MachineGuiInterface(MachineInterfaceUi):
             camera_widget_manager.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
             camera_widget_manager.change_bit_btn.clicked.connect(self.change_machine_bit)
 
-
         # start all threads
         self.__temperature_thread.start()
         self.__sensors_board_thread.start()
@@ -144,6 +144,22 @@ class MachineGuiInterface(MachineInterfaceUi):
         # alarms
         self.latest_errors_container = list()
         self.header_error_lbl.mousePressEvent = self.handle_display_all_errors
+
+        # check the bit state
+        if is_bit_loaded():
+            profile_name = get_loaded_bit_name()
+            if profile_name is None:
+                self.bit_not_loaded()
+            else:
+                camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
+                camera_widget_manager.loaded_bit_lbl.setText(f"loaded bit name :{profile_name}")
+
+        else:
+            self.bit_not_loaded()
+
+    def bit_not_loaded(self):
+        pass
+
 
     def handle_measure_tool_clicked(self):
         self.__grbl_interface.measure_tool()
@@ -184,8 +200,25 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("right_active", right_value)
 
     def handle_soft_start_cycle(self):
-        if self.is_profiles_loaded():
-            camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
+        camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
+        if is_bit_loaded():
+            # validate that this the required bit for the profile
+            profile_name_with_type = camera_widget_manager.get_selected_profile()
+            profile_type, profile_name =  profile_name_with_type.split("-")
+            if profile_type.lower().startswith("j"):
+                target_profile = JoinProfile.objects.get(profile_name=profile_name)
+                CustomMachineParamManager.set_value("loaded_profile_type", "joint")
+                CustomMachineParamManager.set_value("loaded_joint_profile_id", target_profile.pk)
+            else:
+                target_profile = DowelProfile.objects.get(profile_name=profile_name)
+                CustomMachineParamManager.set_value("loaded_profile_type", "dowel")
+                CustomMachineParamManager.set_value("loaded_dowel_profile_id", target_profile.pk)
+            target_bit_profile_id = target_profile.bit_profile.pk
+            loaded_bit_profile_id = CustomMachineParamManager.get_value("loaded_bit_id", -1)
+            if loaded_bit_profile_id != target_bit_profile_id:
+                camera_widget_manager.start_button.setChecked(False)
+                display_error_message(f"this profile requires {target_profile.bit_profile.profile_name} you have to load it first.")
+                return
             camera_widget_manager.manage_start_cancel_active_state(True)
             if self.__current_machine_cycle == 0:
                 self.__grbl_interface.cycle_start_1()
@@ -196,11 +229,13 @@ class MachineGuiInterface(MachineInterfaceUi):
             else:
                 self.__current_machine_cycle = 0
                 self.handle_soft_cancel_cycle()
+        else:
+            display_error_message("bit must loaded first")
+            camera_widget_manager.start_button.setChecked(False)
 
-    def is_profiles_loaded(self):
-        # @todo remove bit profile selection from the camera page.
-        # all fine
-        return True
+
+
+
 
     def handle_soft_cancel_cycle(self):
         # change the buttons colors
@@ -278,12 +313,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__grbl_interface.release_resources()
         self.__estop_interface.requestInterruption()
 
-    def is_bit_loaded(self):
-        loaded_bit_id = CustomMachineParamManager.get_value("loaded_bit_id")
-        if loaded_bit_id is None:
-            CustomMachineParamManager.set_value("loaded_bit_id", -1, True)
-            loaded_bit_id = -1
-        return False if loaded_bit_id < 0 else True
+
+
 
 
 

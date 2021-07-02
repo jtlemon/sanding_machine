@@ -20,7 +20,7 @@ class GrblControllerHal(QtCore.QObject):
     machineStartedSignal = QtCore.Signal(int)
     machineStateChangedSignal = QtCore.Signal(str)
     newBitLengthCaptured = QtCore.Signal(float)
-
+    bitNotLoadedSignal = QtCore.Signal()
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
         self.__measure_prob_counter = 0
@@ -447,3 +447,5 @@ class GrblControllerHal(QtCore.QObject):
         self.spindle_off()
         self.turn_off_machine()
         self.grbl_stream.close_service()
+
+

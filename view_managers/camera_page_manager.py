@@ -60,6 +60,7 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
         # install signals
         self.joint_dowel_profile_combo.currentTextChanged.connect(self.check_if_profile_selected)
         self.start_button.setEnabled(False)
+        self.__current_selected_profile_type = ""
 
     def check_if_profile_selected(self, profile_text:str):
         if len(profile_text) == 0 :
@@ -70,9 +71,11 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
             if profile_text.lower()[0] == "j":
                 self.dowel_option_frame.setVisible(False)
                 self.joint_options_frame.setVisible(True)
+                self.__current_selected_profile_type = "J"
             else:
                 self.dowel_option_frame.setVisible(True)
                 self.joint_options_frame.setVisible(False)
+                self.__current_selected_profile_type = "D"
             self.start_button.setEnabled(True)
 
 
