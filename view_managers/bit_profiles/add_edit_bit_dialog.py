@@ -14,7 +14,8 @@ from view_managers.dialog_configured_prams import RenderInternalPramsWidget
 import configurations.static_app_configurations as static_configurations
 from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import SaveCancelButtons, QLineEditWithSideLabel
-
+from view_managers.utils import display_error_message
+import django
 
 class AddEditBitProfileDialog(QtWidgets.QDialog):
     def __init__(self, bit_profile= None, parent=None):
@@ -45,13 +46,18 @@ class AddEditBitProfileDialog(QtWidgets.QDialog):
                 default_prams_json=new_configured_json,
                 machine= static_configurations.CURRENT_MACHINE
             )
-            self.__bit_profile.save()
         else:
             current_payload = self.__bit_profile.get_decoded_json()
             current_payload.update(new_configured_json)
             self.__bit_profile.profile_name = profile_name
             self.__bit_profile.default_prams_json = current_payload
+        try:
             self.__bit_profile.save()
+        except django.db.IntegrityError:
+            display_error_message("bit profile name must be unique")
+            return
+
+
         self.accept()
 
     def get_profile(self):

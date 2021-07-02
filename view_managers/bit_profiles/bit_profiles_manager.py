@@ -16,6 +16,8 @@ from view_managers.bit_profiles.add_edit_bit_dialog import AddEditBitProfileDial
 from views.custom_app_widgets import RecordTrackBtn, CenterPagePushButton
 from configurations.constants_types import AppSupportedOperations
 from models import MeasureUnitType
+from configurations.custom_pram_loader import CustomMachineParamManager
+from view_managers.utils import display_error_message
 
 
 class BitProfileManager(QtWidgets.QWidget):
@@ -83,6 +85,9 @@ class BitProfileManager(QtWidgets.QWidget):
 
     def handle_delete_profile(self, dowel_profile_id):
         bit_profile = models.BitProfile.objects.get(pk=dowel_profile_id)
+        if CustomMachineParamManager.get_value("loaded_bit_id", -1) == dowel_profile_id:
+            display_error_message("you can't delete the loaded bit.")
+            return
         self.__all_loaded_profiles.remove(bit_profile.profile_name)
         bit_profile.delete()
         row_index = self.get_row_id(dowel_profile_id)

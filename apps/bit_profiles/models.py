@@ -1,9 +1,9 @@
 from django.db import models
 import jsonfield, json
 from apps.commons import SupportedMachines
-
+#django.db.IntegrityError
 class BitProfile(models.Model):
-    profile_name = models.CharField(max_length=20, default="")
+    profile_name = models.CharField(max_length=20, default="", unique=True)
     default_prams_json = jsonfield.JSONField()
     machine = models.IntegerField(choices=SupportedMachines.choices)
 
