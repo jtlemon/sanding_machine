@@ -92,7 +92,8 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "target_key": "bit_profile_number",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number,
-        "unit": "#"
+        "unit": "#",
+        "precession":0
     },
     {
         "lbl": "Bit Angle",  # this should be displaying with unit deg, not mm
@@ -118,7 +119,8 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "target_key": "bit_profile_number_of_flutes",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number_of_flutes,
-        "unit": "#"
+        "unit": "#",
+        "precession":0
     },
     {
         "lbl": "Feed speed",

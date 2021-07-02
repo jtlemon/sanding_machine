@@ -15,12 +15,18 @@ def widget_create_from_dict(config_dict):
         initial_value = widget_range[0]
         if initial_value is None:
             initial_value = widget_range[0]
+        unit = config_dict.get("unit", "")
+        disp_precession = config_dict.get("precession", 2)
+        allow_mode_change = True if len(unit) == 0 else False
         control_widget = CustomSpinBox(
             *widget_range,
             initial_mm=initial_value,
-            disp_precession=2,
+            disp_precession=disp_precession,
             numpad_title=name,
-            target_config_key=key
+            target_config_key=key,
+            allow_mode_change=allow_mode_change,
+            extra=unit
+
         )
     elif field_type == WidgetsType.boolWidget:
         control_widget = TrackableCheckBox(key_name=key)
