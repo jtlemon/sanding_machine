@@ -12,6 +12,8 @@ from apps.joint_profiles import models
 from apps.bit_profiles.models import BitProfile
 from custom_widgets.spin_box import CustomSpinBox
 from view_managers.utils import display_error_message
+import django
+
 
 
 class AddEditJoinProfile(QtWidgets.QDialog):
@@ -102,13 +104,17 @@ class AddEditJoinProfile(QtWidgets.QDialog):
             current_payload.update(json_data)
             self.__current_profile.json_payload = current_payload
             self.__current_profile.bit_profile = self.bit_profile_objects[bit_profile_index]
-            self.__current_profile.save()
         else:
             self.__current_profile = models.JoinProfile(profile_name=profile_name, json_payload=json_data,
                                                         machine=static_configurations.CURRENT_MACHINE,
                                                         bit_profile=self.bit_profile_objects[bit_profile_index]
                                                         )
+        try:
             self.__current_profile.save()
+        except django.db.IntegrityError:
+            display_error_message("joint profile name must be unique")
+            return
+
         self.accept()
 
     def get_profile(self):

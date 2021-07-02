@@ -4,7 +4,7 @@ from apps.commons import SupportedMachines
 from apps.bit_profiles.models import BitProfile
 
 class JoinProfile(models.Model):
-    profile_name = models.CharField(max_length=20, default="")
+    profile_name = models.CharField(max_length=20, default="", unique=True)
     bit_profile = models.ForeignKey(BitProfile, on_delete=models.CASCADE)
     json_payload = jsonfield.JSONField()
     machine = models.IntegerField(choices=SupportedMachines.choices)

@@ -16,6 +16,7 @@ from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import SaveCancelButtons, QLineEditWithSideLabel
 from apps.bit_profiles.models import BitProfile
 from view_managers.utils import display_error_message
+import django
 
 
 
@@ -73,14 +74,18 @@ class AddEditDowelProfileDialog(QtWidgets.QDialog):
                 machine= static_configurations.CURRENT_MACHINE,
                 bit_profile=self.bit_profile_objects[bit_profile_index]
             )
-            self.__dowel_profile.save()
         else:
             current_payload = self.__dowel_profile.get_decoded_json()
             current_payload.update(new_configured_json)
             self.__dowel_profile.profile_name = profile_name
             self.__dowel_profile.default_prams_json = current_payload
             self.__dowel_profile.bit_profile = self.bit_profile_objects[bit_profile_index]
+        try:
             self.__dowel_profile.save()
+        except django.db.IntegrityError:
+            display_error_message("dowel profile name must be unique")
+            return
+
         self.accept()
 
     def get_profile(self):
