@@ -235,6 +235,13 @@ class GrblControllerHal(QtCore.QObject):
         return 10
 
     def cancel(self):
+        """
+        this cancel behaviour is not quite correct.  we want it to stop sending commands to grbl, clear the buffer,
+        and send a new set of commands to grbl.  this would be a retract, stop spindle, extend locating bar,
+        and release all clamps
+
+        :return:
+        """
         self.spindle_off()
         self.deactivate_solenoids()
         #  self.grbl_stream.send_direct_command("i", clr_buffer=True)  # i don't know why we are sending an i
