@@ -237,7 +237,8 @@ class GrblControllerHal(QtCore.QObject):
     def cancel(self):
         self.spindle_off()
         self.deactivate_solenoids()
-        self.grbl_stream.send_direct_command("i", clr_buffer=True)
+        #  self.grbl_stream.send_direct_command("i", clr_buffer=True)  # i don't know why we are sending an i
+
 
     def reset_machine(self):
         module_logger.debug("reset the machine")
