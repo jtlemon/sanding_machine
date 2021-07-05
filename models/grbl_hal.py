@@ -191,6 +191,7 @@ class GrblControllerHal(QtCore.QObject):
     def park(self):
         self.spindle_off()
         self.deactivate_solenoids()
+        self.grbl_stream.add_new_command('g90')
         self.grbl_stream.add_new_command('g0z0')
         self.grbl_stream.add_new_command('g0x-150y0')
         module_logger.debug("parking machine")
@@ -242,7 +243,7 @@ class GrblControllerHal(QtCore.QObject):
 
         :return:
         """
-        self.grbl_stream.send_direct_command("g91", clr_buffer=True)
+        self.grbl_stream.send_direct_command("g90", clr_buffer=True)
         self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)  # i don't know why we are sending an i
         self.spindle_off()
         self.deactivate_solenoids()
