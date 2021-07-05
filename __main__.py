@@ -226,9 +226,6 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif self.__current_machine_cycle == 1:
                 self.__grbl_interface.cycle_start_2()
                 self.__current_machine_cycle = 2
-            else:
-                self.__current_machine_cycle = 0
-                self.handle_soft_cancel_cycle()
         else:
             display_error_message("bit must loaded first")
             camera_widget_manager.start_button.setChecked(False)
@@ -244,6 +241,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         # stop timer
         CountDownTimerManager.clear()
         # stop the actual machine
+        self.__current_machine_cycle = 0
         self.__grbl_interface.cancel()
 
     def subscribe_to_image(self, index, widget):
