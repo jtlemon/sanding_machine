@@ -11,6 +11,7 @@ from models.generateCode import GenerateCode
 from .grbl_serial_connector import SerialConnector
 import configurations.static_app_configurations as static_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
+import time
 
 module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
 
@@ -245,6 +246,9 @@ class GrblControllerHal(QtCore.QObject):
         """
         self.grbl_stream.send_direct_command("g90", clr_buffer=True)
         self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)  # i don't know why we are sending an i
+        time.sleep(1)
+        self.grbl_stream.add_new_command('g90')
+        self.grbl_stream.add_new_command('g0y0')
         self.spindle_off()
         self.deactivate_solenoids()
 
