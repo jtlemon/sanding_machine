@@ -33,9 +33,7 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
      "range": machine_ranges.joint_profile_distance_from_bottom},
     {"lbl": "Material Thickness", "target_key": "joint_profile_material_thickness",
      "range": machine_ranges.joint_profile_material_thickness},
-]
-DOVETAIL_JOINT_PROFILE_OPTIONS = [
-    {"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
+{"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
      "field_type": WidgetsType.rangeWidget,
      "range": machine_ranges.joint_deep_adjustment},
     {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",

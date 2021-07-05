@@ -15,18 +15,6 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
         self.__footer_btn_text = footer_btn
         # create dynamic widgets
         self.internal_widgets = list()
-        for config_dict in static_configurations.DOVETAIL_JOINT_PROFILE_OPTIONS:
-            name, key, control_widget = widget_create_from_dict(config_dict)
-            lbl = QtWidgets.QLabel(name)
-            self.joint_options_frame_layout.addWidget(lbl)
-            self.joint_options_frame_layout.addWidget(control_widget)
-            self.internal_widgets.append(control_widget)
-            default_value = CustomMachineParamManager.get_value(key, None)
-            if default_value is None:
-                default_value = control_widget.value()
-                CustomMachineParamManager.set_value(key, default_value, False)
-            else:
-                set_field_value(control_widget, default_value)
 
         for config_dict in static_configurations.DOVETAIL_DOWEL_PROFILE_OPTIONS:
             name, key, control_widget = widget_create_from_dict(config_dict)
