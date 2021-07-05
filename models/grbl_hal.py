@@ -441,7 +441,7 @@ class GrblControllerHal(QtCore.QObject):
     def clamp_left_horizontal(self):
         self.grbl_stream.add_new_command('m68')
 
-    def release_left_horizontal(self):
+    def release_clamp_left_horizontal(self):
             self.grbl_stream.add_new_command('m71')
 
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
