@@ -27,7 +27,10 @@
     "joint_tightness_adjustment": -2,
     "left_active": 6,
     "loaded_bit_id": 2,
+    "loaded_dowel_profile_id": 1,
+    "loaded_joint_profile_id": 1,
+    "loaded_profile_type": "dowel",
     "probe_spindle_speed": 8000,
-    "right_active": 0,
+    "right_active": 6,
     "spindle_time_out": 60.0
 }

@@ -34,18 +34,25 @@ class GenerateCode:
     def __init__(self):
         # general settings
         self.g_code = []
-        self.left_active = CustomMachineParamManager.get_value("left_active")
-        self.right_active = CustomMachineParamManager.get_value("right_active")
+        self.left_active = 25.4 * (CustomMachineParamManager.get_value("left_active"))
+        self.right_active = 25.4 * (CustomMachineParamManager.get_value("right_active"))
+        self.x_offset = CustomMachineParamManager.get_value("dovetail_setting_x_zero")
+        self.y_offset = CustomMachineParamManager.get_value("dovetail_setting_y_zero")
+        self.z_offset = CustomMachineParamManager.get_value("dovetail_setting_z_zero")
+        self.fence_offset = CustomMachineParamManager.get_value("dovetail_fence_distance")
 
     def calculate(self):
-        def dovetail_score_cut():
+        def dovetail_score_cut(x_score_cut):
+            self.g_code.append(
+                f'g0x-{x_score_cut + self.left_active + loaded_pin_spacing}y-{(self.y_offset + joint_deep_adjustment)+ depth + large_radius}z-{z_cut_height}')
+            self.g_code.append(f'g1x-{x_score_cut}f{loaded_bit_feed_speed}')
             pass
 
-        def dovetail_pre_position():
+        def dovetail_pre_position(x_pre_position):
             self.g_code.append('g21')
             self.g_code.append(f'f{loaded_bit_feed_speed}')
             self.g_code.append(
-                f"g0x-{starting_x}y-{loaded_material_thickness - loaded_bit_diameter}z-{loaded_bit_height}")
+                f"g0x-{x_pre_position}y-{(self.y_offset + joint_deep_adjustment)+ loaded_material_thickness - loaded_bit_diameter}z-{z_cut_height}")
             self.g_code.append(f'g1y-{depth}')
             self.g_code.append('g91')
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
@@ -55,7 +62,7 @@ class GenerateCode:
             self.g_code.append(f'g3x-{large_radius * 2}y0r{large_radius + .01}')
             self.g_code.append('g90')
             self.g_code.append(f'g1y-{depth}')
-            
+
         def dovetail_pattern():
             number_of_cuts = (math.ceil(self.left_active / loaded_pin_spacing))
             for i in range(number_of_cuts):
@@ -67,13 +74,13 @@ class GenerateCode:
                 self.g_code.append(f'g3x-{large_radius * 2}y0r{large_radius + .01}')
                 self.g_code.append('g90')
                 self.g_code.append(f'g1y-{depth}')
+            self.g_code.append(f'g0y{depth + large_radius}')
 
         loaded_joint_profile = db_utils.get_loaded_joint_profile()
         if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
             # create joint variables
             joint_deep_adjustment = loaded_joint_profile.get_value("joint_deep_adjustment")
             loaded_bit = db_utils.get_loaded_bit_profile()
-            x = loaded_joint_profile.get_value("bit_profile_diameter")
             loaded_pin_spacing = loaded_joint_profile.get_value("joint_profile_pin_spacing")
             loaded_material_thickness = loaded_joint_profile.get_value("joint_profile_material_thickness")
             loaded_bit_height = loaded_joint_profile.get_value("joint_profile_bit_height")
@@ -83,34 +90,32 @@ class GenerateCode:
             loaded_bit_diameter = loaded_bit.get_value("bit_profile_diameter")
             loaded_bit_feed_speed = loaded_bit.get_value("bit_profile_feed_speed")
             loaded_bit_angle_rad = loaded_bit.get_value("bit_profile_angle")
+            loaded_bit_offset = loaded_bit.get_value("loaded_bit_length")
+            print(f'loaded bit length {loaded_bit_offset}')
+
             # calculate cutting params
+            z_cut_height = loaded_bit_height + loaded_bit_offset + self.z_offset
             bit_angle = loaded_bit_angle_rad * (math.pi / 180)
-            tan_test = math.tan(bit_angle)
-            print(f'tangent test {tan_test}')
             pin_width = ((loaded_pin_spacing + (
                     (loaded_bit_height * math.tan(bit_angle)) * 2)) / 2) - loaded_bit_diameter
             bit_taper = math.tan(bit_angle) * loaded_bit_height
-            print(f'pin width {pin_width}')
-            print(f'bit taper {bit_taper}')
             small_radius = round(pin_width / 2, 4)
-            print(f'small radius {small_radius}')
             large_radius = round((loaded_pin_spacing - pin_width) / 2, 2)
-            print(f'large radius {large_radius}')
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
-            print(f'straight cut {straight_cut}')
-            starting_x = round(loaded_pin_spacing - (loaded_distance_from_bottom + (.5 * loaded_bit_diameter)), 4)
-            print(f'starting point {starting_x}')
-            depth = round(loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1, 4)
-            print(f'depth {depth}')
+            starting_x = round(
+                (loaded_pin_spacing - (loaded_distance_from_bottom + (.5 * loaded_bit_diameter)) + self.x_offset), 4)
+            depth = round((loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1)+(self.y_offset), 4)
 
             if self.left_active != 0:
                 # perform cuts
-                dovetail_score_cut()
-                dovetail_pre_position()
+                dovetail_score_cut(starting_x)
+                dovetail_pre_position(starting_x)
                 dovetail_pattern()
 
             if self.right_active != 0:
-                pass
+                dovetail_score_cut(starting_x + self.fence_offset - self.right_active)
+                dovetail_pre_position(starting_x + self.fence_offset - self.right_active)
+                dovetail_pattern()
 
         else:
             print("this means dowel profile selected")
