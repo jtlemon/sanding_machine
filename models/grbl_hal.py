@@ -242,6 +242,7 @@ class GrblControllerHal(QtCore.QObject):
 
         :return:
         """
+        self.grbl_stream.send_direct_command("g91", clr_buffer=True)
         self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)  # i don't know why we are sending an i
         self.spindle_off()
         self.deactivate_solenoids()
