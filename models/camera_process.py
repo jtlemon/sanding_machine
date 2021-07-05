@@ -30,7 +30,7 @@ class CameraManger:
             is_valid, image = self.__cam.read()
             if is_valid:
                 frame_loss_counter = 0
-                image = cv2.flip(image, 0)
+                image = cv2.rotate(image, cv2.ROTATE_180)
                 self.__latest_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             else:
                 frame_loss_counter += 1
