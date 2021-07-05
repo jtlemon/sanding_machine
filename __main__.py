@@ -225,7 +225,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__current_machine_cycle = 1
             elif self.__current_machine_cycle == 1:
                 self.__grbl_interface.cycle_start_2()
-                self.__current_machine_cycle = 2
+                self.__current_machine_cycle = 0
+                camera_widget_manager.start_button.setChecked(False)
         else:
             display_error_message("bit must loaded first")
             camera_widget_manager.start_button.setChecked(False)
