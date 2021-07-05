@@ -399,43 +399,50 @@ class GrblControllerHal(QtCore.QObject):
         for cmd in g_code:
             print(f"debug {cmd}")
             self.grbl_stream.add_new_command(cmd)
-
+        self.extend_locating_bar()
+        self.release_clamp_right_horizontal()
+        self.release_clamp_left_horizontal()
+        self.release_clamp_left_vertical()
+        self.release_clamp_right_vertical()
         self.machineStateChangedSignal.emit('ready')
         time_to_run = self.calculate_run_time()
         self.machineStartedSignal.emit(time_to_run)
 
     def release_clamp_left_vertical(self):
         module_logger.debug('releasing left vertical clamp')
-        self.grbl_stream.add_new_command('m71')
+        self.grbl_stream.add_new_command('m65')
 
     def release_clamp_right_vertical(self):
         module_logger.debug('releasing right vertical clamp')
-        self.grbl_stream.add_new_command('m73')
+        self.grbl_stream.add_new_command('m67')
 
     def clamp_left_vertical(self):
         module_logger.debug('clamping left vertical')
-        self.grbl_stream.add_new_command('m70')
+        self.grbl_stream.add_new_command('m64')
 
     def clamp_right_vertical(self):
         module_logger.debug('clamping right vertical')
-        self.grbl_stream.add_new_command('m72')
+        self.grbl_stream.add_new_command('m66')
 
     def retract_locating_bar(self):
         module_logger.debug('retracting locating bar')
-        self.grbl_stream.add_new_command('m69')
+        self.grbl_stream.add_new_command('m63')
 
     def extend_locating_bar(self):
         module_logger.debug('extending locating bar')
-        self.grbl_stream.add_new_command('m68')
+        self.grbl_stream.add_new_command('m62')
 
     def clamp_right_horizontal(self):
-        self.grbl_stream.add_new_command('m66')
+        self.grbl_stream.add_new_command('m70')
 
     def release_clamp_right_horizontal(self):
-        self.grbl_stream.add_new_command('m67')
+        self.grbl_stream.add_new_command('m71')
 
     def clamp_left_horizontal(self):
-        self.grbl_stream.add_new_command('m62')
+        self.grbl_stream.add_new_command('m68')
+
+    def release_left_horizontal(self):
+            self.grbl_stream.add_new_command('m71')
 
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
         self.__current_dowel_profile = dowel_profile

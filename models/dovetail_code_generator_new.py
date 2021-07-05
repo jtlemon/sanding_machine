@@ -65,7 +65,7 @@ class GenerateCode:
 
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
             self.g_code.append('g90')
-            self.g_code.append(f'g0y-{self.y_offset - depth - large_radius}')
+            self.g_code.append('g0y-0')
 
         loaded_joint_profile = db_utils.get_loaded_joint_profile()
         if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
@@ -114,6 +114,8 @@ class GenerateCode:
                 dovetail_score_cut(starting_x + self.fence_offset - self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern()
+
+            self.g_code.append('g0x-300')
 
         else:
             print("this means dowel profile selected")
