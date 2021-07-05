@@ -14,6 +14,7 @@ if not os.path.isfile(CONFIGURATION_FILE_PATH):
 
 class CustomMachineParamManager:
     __is_loaded = False
+
     @staticmethod
     def store():
         configuration_dict = dict()
@@ -44,13 +45,3 @@ class CustomMachineParamManager:
             CustomMachineParamManager.load_configuration()
             CustomMachineParamManager.__is_loaded = True
         return getattr(CustomMachineParamManager, key, default)
-
-
-
-
-
-
-
-
-
-
