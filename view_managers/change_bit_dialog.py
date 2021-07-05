@@ -4,10 +4,9 @@ from views.spinner import  WaitingSpinner
 
 class ChangeBitDialog(QtWidgets.QDialog):
     callMeasureToolSignal = QtCore.Signal()
-    def __init__(self,time_out_ms = 5000, parent=None):
+    def __init__(self,time_out_ms = 10000, parent=None):
         super(ChangeBitDialog, self).__init__(parent= parent)
         self.__time_out_ms = time_out_ms
-        self.setWindowFlags(self.windowFlags() | QtCore.Qt.FramelessWindowHint)
         self.dialog_layout = QtWidgets.QVBoxLayout(self)
         self.header_label = QtWidgets.QLabel("Bit Profile")
         self.bit_profile_objects = BitProfile.objects.all()
@@ -53,7 +52,7 @@ class ChangeBitDialog(QtWidgets.QDialog):
         self.param_retrieve_fail_timer.timeout.connect(self.handle_time_out)
         self.footer_error_lbl.show()
         self.footer_error_lbl.hide()
-        self.setMinimumHeight(160)
+        self.setMinimumHeight(200)
 
 
     def handle_time_out(self):
