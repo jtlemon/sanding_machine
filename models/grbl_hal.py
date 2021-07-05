@@ -249,9 +249,13 @@ class GrblControllerHal(QtCore.QObject):
         time.sleep(1)
         self.grbl_stream.add_new_command('g90')
         self.grbl_stream.add_new_command('g0y0')
+        self.grbl_stream.add_new_command('g0z0')
         self.spindle_off()
-        self.deactivate_solenoids()
-
+        self.extend_locating_bar()
+        self.release_clamp_right_vertical()
+        self.release_clamp_left_vertical()
+        self.release_clamp_right_horizontal()
+        self.release_clamp_left_horizontal()
 
 
     def reset_machine(self):
