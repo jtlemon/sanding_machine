@@ -385,8 +385,10 @@ class GrblControllerHal(QtCore.QObject):
         self.clamp_right_vertical()
         self.clamp_left_vertical()
         self.retract_locating_bar()
+        print('you pressed start 1')
 
     def cycle_start_2(self):
+        print('you pressed start 2')
         self.machineStateChangedSignal.emit("pending- cycle 2")
         self.clamp_right_horizontal()
         self.clamp_left_horizontal()
