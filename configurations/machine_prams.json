@@ -32,7 +32,7 @@
     "a_max_rate_mm_by_min": 1000.0,
     "b_max_rate_mm_by_min": 1000.0,
     "x_accel_mm_by_sec_2": 360.0,
-    "y_accel_mm_by_sec_2": 120.0,
+    "y_accel_mm_by_sec_2": 100.0,
     "z_accel_mm_by_sec_2": 120.0,
     "a_accel_mm_by_sec_2": 50.0,
     "b_accel_mm_by_sec_2": 50.0,
