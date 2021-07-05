@@ -245,8 +245,8 @@ class GrblControllerHal(QtCore.QObject):
         :return:
         """
         self.grbl_stream.send_direct_command("g90", clr_buffer=True)
-        self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)  # i don't know why we are sending an i
-        time.sleep(1)
+        self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)
+        time.sleep(1) # i couldn't get it to work without a pause,  can you add a real qt timer here?
         self.grbl_stream.add_new_command('g90')
         self.grbl_stream.add_new_command('g0y0')
         self.grbl_stream.add_new_command('g0z0')
@@ -399,6 +399,7 @@ class GrblControllerHal(QtCore.QObject):
         @ToDo added from the old code we have to check it
         """
         self.turn_on_machine()
+        self.spindle_on()
         self.machineStateChangedSignal.emit("pending- cycle 1")
         self.clamp_right_vertical()
         self.clamp_left_vertical()
