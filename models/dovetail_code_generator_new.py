@@ -65,7 +65,7 @@ class GenerateCode:
 
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
             self.g_code.append('g90')
-            self.g_code.append('g0y-0')
+            self.g_code.append('g1y-0')
 
         loaded_joint_profile = db_utils.get_loaded_joint_profile()
         if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
