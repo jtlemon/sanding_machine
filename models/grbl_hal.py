@@ -11,6 +11,7 @@ from models.generateCode import GenerateCode
 from .grbl_serial_connector import SerialConnector
 import configurations.static_app_configurations as static_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
+import time
 
 module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
 
@@ -191,9 +192,9 @@ class GrblControllerHal(QtCore.QObject):
     def park(self):
         self.spindle_off()
         self.deactivate_solenoids()
-        self.grbl_stream.add_new_command('g90')
+        self.grbl_stream.add_new_command('g90', notify_message='Parked')
         self.grbl_stream.add_new_command('g0z0')
-        self.grbl_stream.add_new_command('g0x-150y0')
+        self.grbl_stream.add_new_command('g0x-150y0', notify_message='Parked-Ready')
         module_logger.debug("parking machine")
 
     def spindle_on(self):
@@ -244,10 +245,17 @@ class GrblControllerHal(QtCore.QObject):
         :return:
         """
         self.grbl_stream.send_direct_command("g90", clr_buffer=True)
-        self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)  # i don't know why we are sending an i
+        self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)
+        time.sleep(1) # i couldn't get it to work without a pause,  can you add a real qt timer here?
+        self.grbl_stream.add_new_command('g90')
+        self.grbl_stream.add_new_command('g0y0')
+        self.grbl_stream.add_new_command('g0z0')
         self.spindle_off()
-        self.deactivate_solenoids()
-
+        self.extend_locating_bar()
+        self.release_clamp_right_vertical()
+        self.release_clamp_left_vertical()
+        self.release_clamp_right_horizontal()
+        self.release_clamp_left_horizontal()
 
 
     def reset_machine(self):
@@ -302,7 +310,7 @@ class GrblControllerHal(QtCore.QObject):
         probe()  # repeat for consistent results
         probe()  # repeat again
         self.grbl_stream.add_new_command('g90')  # switch back to absolute units
-        self.grbl_stream.add_new_command('g0z0')  # retract z back to 0
+        self.grbl_stream.add_new_command('g0z0',  notify_message='Measuring complete')  # retract z back to 0
         self.spindle_off()  # turn spindle back off
 
     def change_machine_bit(self):
@@ -391,6 +399,7 @@ class GrblControllerHal(QtCore.QObject):
         @ToDo added from the old code we have to check it
         """
         self.turn_on_machine()
+        self.spindle_on()
         self.machineStateChangedSignal.emit("pending- cycle 1")
         self.clamp_right_vertical()
         self.clamp_left_vertical()
