@@ -29,3 +29,4 @@ class DovetailCameraPageView(QtWidgets.QWidget, Ui_DovetailCameraPageUI):
 
         self.start_button.setCheckable(True)
         self.cancel_Button.setCheckable(True)
+        self.camera_display.setMaximumSize(640, 360)

@@ -4,7 +4,6 @@ import time
 import threading
 from configurations import static_app_configurations
 
-
 class CameraManger:
     def __init__(self, cam_index):
         self.__cam_index = cam_index
@@ -15,11 +14,12 @@ class CameraManger:
         self.__cam = None
 
     def __main__loop(self):
-        self.__cam = cv2.VideoCapture(self.__cam_index)
+        self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
         self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
         self.__cam.set(cv2.CAP_PROP_FPS, static_app_configurations.FRAME_RATE)
         self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, static_app_configurations.IMAGE_WIDTH)
         self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, static_app_configurations.IMAGE_HEIGHT)
+        self.__cam.set(cv2.CAP_PROP_BUFFERSIZE, 3)
         time.sleep(1)
         if self.__cam.isOpened():
             self.__is_camera_running = True
@@ -65,18 +65,57 @@ class CameraManger:
         self.__thread_handler.join()
 
 
+class CameraOnly:
+    def __init__(self, cam_index):
+        self.__cam_index = cam_index
+        self.__latest_image = None
+        self.__is_camera_running = False
+        self.__cam = None
+        self.frame_loss_counter = 0
+
+    def connect(self):
+        self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
+        self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+        self.__cam.set(cv2.CAP_PROP_FPS, static_app_configurations.FRAME_RATE)
+        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, static_app_configurations.IMAGE_WIDTH)
+        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, static_app_configurations.IMAGE_HEIGHT)
+        self.__cam.set(cv2.CAP_PROP_BUFFERSIZE, 3)
+        if self.__cam.isOpened():
+            self.__is_camera_running = True
+
+    def read_cycle(self):
+        if self.__cam.isOpened():
+            is_valid, image = self.__cam.read()
+            if is_valid:
+                self.frame_loss_counter = 0
+                image = cv2.rotate(image, cv2.ROTATE_180)
+                return  cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            else:
+                self.frame_loss_counter += 1
+                return None
+        else:
+            return None
+
+    def close_cam(self):
+        try:
+            self.__cam.release()
+        except Exception as e :
+            pass
+        self.__cam = None
+
+
 class CameraMangerProcess(Process):
     process_close_event = Event()
     images_queue = [Queue(maxsize=4) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
     @staticmethod
     def run():
-        sys_cameras_list = [CameraManger(i) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
+        sys_cameras_list = [CameraOnly(i) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
         for cam in sys_cameras_list:
-            cam.start_stream()
+            cam.connect()
         while not CameraMangerProcess.process_close_event.is_set():
             time.sleep(1/static_app_configurations.FRAME_RATE)
             for index, cam in enumerate(sys_cameras_list):
-                image = cam.get_image()
+                image = cam.read_cycle()
                 if not (image is None):
                     queue_ref = CameraMangerProcess.images_queue[index]
                     if queue_ref.full():
@@ -84,8 +123,7 @@ class CameraMangerProcess(Process):
                     queue_ref.put(image)
         # release camera
         for cam in sys_cameras_list:
-            cam.stop_stream()
-            cam.th_join()
+            cam.close_cam()
 
 
     @staticmethod

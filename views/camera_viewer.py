@@ -11,6 +11,7 @@ class CameraViewer(QtWidgets.QWidget):
             camera_lbl.setAlignment(QtCore.Qt.AlignCenter)
             camera_lbl.setPixmap(QtGui.QPixmap(u":/icons/icons/icons8-camera-96.png"))
             camera_lbl.setScaledContents(True)
+            camera_lbl.setMaximumSize(640, 360)
             self.widget_layout.addWidget(camera_lbl, 0, index, 1, 1)
         self.resize_camera_widgets()
 
@@ -29,7 +30,8 @@ class CameraViewer(QtWidgets.QWidget):
         # width height
         height_per_camera = int(width_per_camera*9/16)
         for camera_lbl in self.__camera_lbl_list:
-            camera_lbl.setMaximumSize(width_per_camera, height_per_camera)
+            #camera_lbl.setMaximumSize(width_per_camera, height_per_camera)
+            pass
 
     def new_image_received(self, camera_index, pix_map):
         if camera_index in self.__camera_index_list:
