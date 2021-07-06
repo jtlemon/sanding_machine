@@ -310,7 +310,7 @@ class GrblControllerHal(QtCore.QObject):
         probe()  # repeat for consistent results
         probe()  # repeat again
         self.grbl_stream.add_new_command('g90')  # switch back to absolute units
-        self.grbl_stream.add_new_command('g0z0')  # retract z back to 0
+        self.grbl_stream.add_new_command('g0z0',  notify_message='Measuring complete')  # retract z back to 0
         self.spindle_off()  # turn spindle back off
 
     def change_machine_bit(self):
