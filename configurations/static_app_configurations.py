@@ -24,8 +24,13 @@ SUPPORTED_SETTING_VALUES = {
 }
 # ******************************** dovetail Joint profiles configurations ***********************
 
-
-DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
+DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN = [{"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
+     "field_type": WidgetsType.rangeWidget,
+     "range": machine_ranges.joint_deep_adjustment},
+    {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",
+     "field_type": WidgetsType.rangeWidget,
+     "range": machine_ranges.joint_deep_adjustment}]
+DOVETAIL_JOINT_PROFILE_CONFIGURATION =[
     {"lbl": "Pin spacing", "target_key": "joint_profile_pin_spacing",
      "range": machine_ranges.joint_profile_pin_spacing},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
@@ -33,13 +38,9 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
      "range": machine_ranges.joint_profile_distance_from_bottom},
     {"lbl": "Material Thickness", "target_key": "joint_profile_material_thickness",
      "range": machine_ranges.joint_profile_material_thickness},
-{"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
-     "field_type": WidgetsType.rangeWidget,
-     "range": machine_ranges.joint_deep_adjustment},
-    {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",
-     "field_type": WidgetsType.rangeWidget,
-     "range": machine_ranges.joint_deep_adjustment}
+
 ]
+DOVETAIL_JOINT_PROFILE_CONFIGURATION.extend(DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN)
 
 DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
     {

@@ -35,6 +35,9 @@ class CountDownTimerWidget(QtWidgets.QLabel):
         txt = " timer :%02d:%02d:%02d" % (hours, min, sec)
         self.setText(txt)
 
+    def is_finished(self):
+        return self.__remaining_time <= 0
+
 
 class CountDownTimerManager:
     __timer_widget = None
@@ -47,6 +50,10 @@ class CountDownTimerManager:
     def start(timeout):
         if CountDownTimerManager.__timer_widget:
             CountDownTimerManager.__timer_widget.start(timeout)
+
+    @staticmethod
+    def is_finished():
+        return CountDownTimerManager.__timer_widget.is_finished()
 
     @staticmethod
     def stop():

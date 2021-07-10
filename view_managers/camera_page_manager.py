@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtCore
 
 import custom_widgets.spin_box
 from models import MeasureUnitType
@@ -10,19 +10,20 @@ from configurations.system_configuration_loader import MainConfigurationLoader
 from view_managers.dialog_configured_prams import widget_create_from_dict, set_field_value
 
 class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetManger):
+    selectedProfileChanged = QtCore.Signal(str, str)
     def __init__(self, footer_btn):
         super(DovetailCameraPageManager, self).__init__()
         self.__footer_btn_text = footer_btn
         # create dynamic widgets
         self.internal_widgets = list()
-
-        for config_dict in static_configurations.DOVETAIL_DOWEL_PROFILE_OPTIONS:
+        for config_dict in static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN:
             name, key, control_widget = widget_create_from_dict(config_dict)
             if isinstance(control_widget, custom_widgets.spin_box.CustomSpinBox):
                 control_widget.setMinimumWidth(300)
             lbl = QtWidgets.QLabel(name)
-            self.dowel_option_frame_layout.addWidget(lbl)
-            self.dowel_option_frame_layout.addWidget(control_widget)
+            lbl.setWordWrap(True)
+            self.joint_options_frame_layout.addWidget(lbl)
+            self.joint_options_frame_layout.addWidget(control_widget)
             self.internal_widgets.append(control_widget)
             default_value = CustomMachineParamManager.get_value(key, None)
             if default_value is None:
@@ -49,6 +50,21 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
         self.joint_dowel_profile_combo.currentTextChanged.connect(self.check_if_profile_selected)
         self.start_button.setEnabled(False)
         self.__current_selected_profile_type = ""
+        self.__current_selected_profile = ""
+
+    def set_joint_prams(self, prams_list:list):
+        for index, widget in enumerate(self.internal_widgets):
+            widget.set_value_and_reset_state(prams_list[index])
+
+    def get_joint_prams(self):
+        prams = []
+        for widget in self.internal_widgets:
+            prams.append(widget.value())
+        return prams
+
+    def prams_stored(self):
+        for widget in self.internal_widgets:
+            widget.reset_state()
 
     def check_if_profile_selected(self, profile_text:str):
         if len(profile_text) == 0 :
@@ -65,7 +81,13 @@ class DovetailCameraPageManager(DovetailCameraPageView, AbstractOperationWidgetM
                 self.joint_options_frame.setVisible(False)
                 self.__current_selected_profile_type = "D"
             self.start_button.setEnabled(True)
+        if profile_text != self.__current_selected_profile:
+            self.selectedProfileChanged.emit(self.__current_selected_profile, profile_text)
+            self.__current_selected_profile = profile_text
 
+    def reject_profile_change(self, old_profile_name):
+        self.__current_selected_profile = old_profile_name
+        self.joint_dowel_profile_combo.setCurrentText(old_profile_name)
 
     def manage_start_cancel_active_state(self, is_start_active):
         if is_start_active:

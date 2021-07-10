@@ -33,6 +33,7 @@ from view_managers.change_bit_dialog import ChangeBitDialog
 from view_managers import RetrieveMachinePramsDialog
 from models.db_utils import is_bit_loaded, get_loaded_bit_name
 from view_managers.utils import display_error_message
+from custom_widgets.countdown_timer import CountDownTimerManager
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -55,6 +56,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.subscribe_to_image(0, operation_page_widget)
                 self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
+
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
                 for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -131,6 +133,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             camera_widget_manager.cancelBtnClicked.connect(self.handle_soft_cancel_cycle)
             camera_widget_manager.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
             camera_widget_manager.change_bit_btn.clicked.connect(self.change_machine_bit)
+            camera_widget_manager.selectedProfileChanged.connect(self.handle_selected_profile_changed)
 
         # start all threads
         self.__temperature_thread.start()
@@ -156,6 +159,11 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         else:
             self.bit_not_loaded()
+
+        # init the loaded bit
+        CustomMachineParamManager.set_value("left_active", 0)
+        CustomMachineParamManager.set_value("right_active", 0)
+        CustomMachineParamManager.store()
 
     def bit_not_loaded(self):
         pass
@@ -199,14 +207,42 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("left_active", left_value)
         CustomMachineParamManager.set_value("right_active", right_value)
 
+    def handle_selected_profile_changed(self, old_profile_name, new_profile_name):
+        camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
+        profile_type, profile_name = new_profile_name.split("-")
+        msg = QtWidgets.QMessageBox(self)
+        msg.setIcon(QtWidgets.QMessageBox.Question)
+        msg.setWindowTitle("change joint type")
+        if len(old_profile_name) > 0:
+            msg.setText(f"are you sure you want to change the joint type from {old_profile_name} to {new_profile_name}")
+        else:
+            msg.setText(f"are you sure you want to change the joint type to {new_profile_name}")
+        msg.addButton(QtWidgets.QMessageBox.Yes)
+        msg.addButton(QtWidgets.QMessageBox.No)
+        if msg.exec_() == QtWidgets.QMessageBox.Yes:
+            #@TODO send command to the machine
+            if profile_type.lower().startswith("j"):
+                target_profile = JoinProfile.objects.get(profile_name=profile_name)
+                target_values = []
+                for config_dict in static_app_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN:
+                    target_values.append(target_profile.get_value(config_dict["target_key"]))
+                camera_widget_manager.set_joint_prams(target_values)
+        else:
+            camera_widget_manager.reject_profile_change(old_profile_name)
+
     def handle_soft_start_cycle(self):
         camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
         if is_bit_loaded():
             # validate that this the required bit for the profile
             profile_name_with_type = camera_widget_manager.get_selected_profile()
-            profile_type, profile_name =  profile_name_with_type.split("-")
+            profile_type, profile_name = profile_name_with_type.split("-")
             if profile_type.lower().startswith("j"):
                 target_profile = JoinProfile.objects.get(profile_name=profile_name)
+                joint_values = camera_widget_manager.get_joint_prams()
+                camera_widget_manager.prams_stored()
+                for index, config_dict in enumerate(static_app_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN):
+                    target_profile.set_value(config_dict["target_key"], joint_values[index])
+                target_profile.save()
                 CustomMachineParamManager.set_value("loaded_profile_type", "joint")
                 CustomMachineParamManager.set_value("loaded_joint_profile_id", target_profile.pk)
             else:
@@ -220,20 +256,19 @@ class MachineGuiInterface(MachineInterfaceUi):
                 display_error_message(f"this profile requires {target_profile.bit_profile.profile_name} you have to load it first.")
                 return
             camera_widget_manager.manage_start_cancel_active_state(True)
-            if self.__current_machine_cycle == 0:
-                self.__grbl_interface.cycle_start_1()
-                self.__current_machine_cycle = 1
-            elif self.__current_machine_cycle == 1:
-                self.__grbl_interface.cycle_start_2()
-                self.__current_machine_cycle = 0
-                camera_widget_manager.start_button.setChecked(False)
+            if CountDownTimerManager.is_finished():
+                if self.__current_machine_cycle == 0:
+                    self.__grbl_interface.cycle_start_1()
+                    self.__current_machine_cycle = 1
+                    CountDownTimerManager.start(10) # 10 sec
+                elif self.__current_machine_cycle == 1:
+                    self.__grbl_interface.cycle_start_2()
+                    self.__current_machine_cycle = 0
+                    camera_widget_manager.start_button.setChecked(False)
+                    CountDownTimerManager.start(5)  # 5 sec
         else:
             display_error_message("bit must loaded first")
             camera_widget_manager.start_button.setChecked(False)
-
-
-
-
 
     def handle_soft_cancel_cycle(self):
         # change the buttons colors
