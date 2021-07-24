@@ -43,10 +43,13 @@ class GenerateCode:
         print(f'offsets {self.x_offset}, {self.y_offset}, {self.z_offset}')
 
     def calculate(self):
+        def drill_hole():
+            self.g_code.append(f'g0z-{drill_depth}')
+
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
-                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius + depth_adjustment}z-{z_cut_height}') # needs depth adjustment
+                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius + depth_adjustment}z-{z_cut_height}')  # needs depth adjustment
             self.g_code.append(f'g1x-{x_score_cut}f{loaded_bit_feed_speed}')
             pass
 
@@ -65,11 +68,14 @@ class GenerateCode:
 
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
             self.g_code.append('g90')
-            self.g_code.append('g1y-0') # retracting a lot further than needed, find strategy to not retract so far.
+            self.g_code.append('g1y-0')  # retracting a lot further than needed, find strategy to not retract so far.
 
-        loaded_joint_profile = db_utils.get_loaded_joint_profile()
-        if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
+        # loaded_joint_profile = db_utils.get_loaded_joint_profile()
 
+        # if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
+        if db_utils.is_joint_selected():
+            loaded_joint_profile = db_utils.get_loaded_joint_profile()
+            print('dovetail joint')
             # create joint variables
             joint_deep_adjustment = loaded_joint_profile.get_value("joint_deep_adjustment")
             loaded_bit = db_utils.get_loaded_bit_profile()
@@ -102,7 +108,8 @@ class GenerateCode:
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
             starting_x = round(
                 (loaded_pin_spacing - (loaded_distance_from_bottom + (.5 * loaded_bit_diameter)) + self.x_offset), 4)
-            depth = round((loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
+            depth = round((loaded_material_thickness - (
+                        large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
 
             if self.left_active != 0:
                 # perform cuts
@@ -118,9 +125,21 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append('g0x-300')
 
-        else:
+        elif db_utils.is_dowel_selected():
+            loaded_joint_profile = db_utils.get_loaded_dowel_profile()
+            print('dowel joint')
+
+            # else:
             print("this means dowel profile selected")
+
+            loaded_bit = db_utils.get_loaded_bit_profile()
+            drill_depth = 15
+            distance_from_edge = loaded_joint_profile.get_value("dowel_profile_dis_from_edge")
+            print(f'distance from edge {distance_from_edge}')
             #  place code for drill here.
+
+        else:
+            raise ValueError("you have to select a profile first")
 
         return self.g_code
 
