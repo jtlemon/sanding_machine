@@ -304,7 +304,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g0z0')  # move z to zero to make sure we are clear of probe sensor
         self.grbl_stream.add_new_command('g0x0y0')  # move to x zero, y zero, starting position underneath probe sensor
         self.spindle_on()  # turn spindle on,  using line break sensor, we need bit spining to ensure we are getting accurate measure of tool
-        self.grbl_stream.add_new_command('g38.2z-35f150')  # probe on, z 35mm, feed speed of 150mm/m
+        self.grbl_stream.add_new_command('g38.2z-60f150')  # probe on, z 35mm, feed speed of 150mm/m
         self.grbl_stream.add_new_command('g91')  # switch to incremental units
         probe()  # perform slow probe cycle
         probe()  # repeat for consistent results
