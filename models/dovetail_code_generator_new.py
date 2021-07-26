@@ -43,9 +43,9 @@ class GenerateCode:
         print(f'offsets {self.x_offset}, {self.y_offset}, {self.z_offset}')
 
     def set_fences(self):
+
         if db_utils.is_joint_selected():
-            joint_profile = db_utils.get_loaded_joint_profile()
-            fence_offset = joint_profile.get_value("joint_profile_pin_spacing") / 2
+            fence_offset = CustomMachineParamManager.get_value("joint_profile_pin_spacing") / 2
             print(f'fence offset: {fence_offset}')
             left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero") - fence_offset
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero") - fence_offset
@@ -61,23 +61,30 @@ class GenerateCode:
 
     def calculate(self):
         def drill_locations():
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset-distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_edge}')
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset + distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_face}')
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append('g0z0y0')
+            self.g_code.append('g0z0}')
             drill_hole()
+            self.g_code.append('g0z0y0')
 
         def drill_hole():
-            number_of_holes = (math.ceil(self.left_active / spacing))
-            print(f'# holes: {number_of_holes}')
-            holes = []
+            number_of_holes = (math.ceil(self.left_active-distance_from_edge / spacing)) - 1
+            points = []
             for i in range(number_of_holes):
-                holes.append(distance_from_edge+i*spacing)
-
+                points.append(distance_from_edge + i * spacing)
+            for i in list(points):
+                print(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
+                print(f'g0z-{z_drill_depth_edge}')
+                print(f'g0z-{z_drill_zero}')
+                print(f'g0y-{self.y_offset + distance_from_face}')
+                print(f'g0z-{z_drill_depth_face}')
+                print(f'g0z-{z_drill_zero}')
+                """
+                self.g_code.append(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_edge}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+                self.g_code.append(f'g0y-{self.y_offset + distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_face}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+                """
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
@@ -159,6 +166,7 @@ class GenerateCode:
             print('dowel joint')
             # else:
             print("this means dowel profile selected")
+
             loaded_bit = db_utils.get_loaded_bit_profile()
             print(f'loaded bit: {loaded_bit}')
             distance_from_edge = loaded_joint_profile.get_value("dowel_profile_dis_from_edge")
