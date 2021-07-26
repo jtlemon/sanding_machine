@@ -17,7 +17,7 @@ def get_loaded_bit_profile():
     return bit_profile
 
 
-def get_loaded_joint_profile(get_first=True):
+def get_loaded_joint_profile(get_first=False):
     if get_first:
         return JoinProfile.objects.first()
     else:
@@ -32,7 +32,7 @@ def get_loaded_joint_profile(get_first=True):
         return joint_profile
 
 
-def get_loaded_dowel_profile(get_first=True):
+def get_loaded_dowel_profile(get_first=False):
     if get_first:
         return DowelProfile.objects.first()
     else:
