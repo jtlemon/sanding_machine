@@ -128,14 +128,17 @@ class GenerateCode:
         elif db_utils.is_dowel_selected():
             loaded_joint_profile = db_utils.get_loaded_dowel_profile()
             print('dowel joint')
-
             # else:
             print("this means dowel profile selected")
 
             loaded_bit = db_utils.get_loaded_bit_profile()
-            drill_depth = 15
+            print(f'loaded bit: {loaded_bit}')
             distance_from_edge = loaded_joint_profile.get_value("dowel_profile_dis_from_edge")
-            print(f'distance from edge {distance_from_edge}')
+            spacing = loaded_joint_profile.get_value("dowel_profile_spacing")
+            distance_from_face = loaded_joint_profile.get_value("dowel_profile_dis_from_face")
+            face_depth = loaded_joint_profile.get_value("dowel_profile_face_depth")
+            edge_depth = loaded_joint_profile.get_value("dowel_profile_edge_depth")
+            print(f'params: {distance_from_edge}, {spacing}, {distance_from_face}, {face_depth}, {edge_depth}')
             #  place code for drill here.
 
         else:
