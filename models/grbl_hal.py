@@ -233,6 +233,7 @@ class GrblControllerHal(QtCore.QObject):
     def set_fences(self):
         if db_utils.is_joint_selected():
             fence_offset = CustomMachineParamManager.get_value("joint_profile_pin_spacing") / 2
+            print(f'fence offset: {fence_offset}')
             left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero") - fence_offset
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero") - fence_offset
             print(f'fence positions: {left_fence_position}, {right_fence_position}')
