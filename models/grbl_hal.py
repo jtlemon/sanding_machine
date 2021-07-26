@@ -277,7 +277,7 @@ class GrblControllerHal(QtCore.QObject):
     def turn_on_machine_after_reset(self):
         self.turn_on_machine()
         self.grbl_stream.add_new_command("$H")
-        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0", notify_message='Homing Complete-Ready')
+        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
     def turn_on_machine(self):
         module_logger.debug("turn on the machine")
@@ -299,6 +299,8 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command(chr(0x18), wait_after=2, notify_message="Homing")
         self.grbl_stream.add_new_command("")
         self.grbl_stream.add_new_command("$H")
+        self.grbl_stream.add_new_command("$ha")
+        self.grbl_stream.add_new_command("$hb")
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
 
     def measure_tool(self):
