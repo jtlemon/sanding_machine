@@ -85,10 +85,6 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append('g1y-0')  # retracting a lot further than needed, find strategy to not retract so far.
 
-
-
-
-
         if db_utils.is_joint_selected():
             loaded_joint_profile = db_utils.get_loaded_joint_profile()
             print('dovetail joint')

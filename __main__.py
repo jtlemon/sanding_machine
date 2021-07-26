@@ -220,7 +220,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         msg.addButton(QtWidgets.QMessageBox.Yes)
         msg.addButton(QtWidgets.QMessageBox.No)
         if msg.exec_() == QtWidgets.QMessageBox.Yes:
-            self.__grbl_interface.set_fences()
+            # self.__grbl_interface.set_fences()
             # @TODO send command to the machine
             if profile_type.lower().startswith("j"):
                 target_profile = JoinProfile.objects.get(profile_name=profile_name)
@@ -228,6 +228,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 for config_dict in static_app_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN:
                     target_values.append(target_profile.get_value(config_dict["target_key"]))
                 camera_widget_manager.set_joint_prams(target_values)
+            self.__grbl_interface.set_fences()
         else:
             camera_widget_manager.reject_profile_change(old_profile_name)
 
