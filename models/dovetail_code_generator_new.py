@@ -61,23 +61,30 @@ class GenerateCode:
 
     def calculate(self):
         def drill_locations():
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset-distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_edge}')
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset + distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_face}')
-            self.g_code.append(f'g0z-{z_drill_zero}')
-            self.g_code.append('g0z0y0')
+            self.g_code.append('g0z0}')
             drill_hole()
+            self.g_code.append('g0z0y0')
 
         def drill_hole():
-            number_of_holes = (math.ceil(self.left_active / spacing)) - 1
-            print(f'# holes: {number_of_holes}')
+            number_of_holes = (math.ceil(self.left_active-distance_from_edge / spacing)) - 1
+            points = []
             for i in range(number_of_holes):
-
-                print('for statement')
-
+                points.append(distance_from_edge + i * spacing)
+            for i in list(points):
+                print(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
+                print(f'g0z-{z_drill_depth_edge}')
+                print(f'g0z-{z_drill_zero}')
+                print(f'g0y-{self.y_offset + distance_from_face}')
+                print(f'g0z-{z_drill_depth_face}')
+                print(f'g0z-{z_drill_zero}')
+                """
+                self.g_code.append(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_edge}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+                self.g_code.append(f'g0y-{self.y_offset + distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_face}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+                """
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
