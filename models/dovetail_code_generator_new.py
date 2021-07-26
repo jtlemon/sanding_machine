@@ -66,7 +66,8 @@ class GenerateCode:
             self.g_code.append('g0z0y0')
 
         def drill_hole():
-            number_of_holes = (math.ceil(self.left_active-distance_from_edge / spacing))
+            print(f'active: {self.left_active}')
+            number_of_holes = (math.ceil((self.left_active-distance_from_edge) / spacing))
             print(f'number of holes: {number_of_holes}')
             points = []
             for i in range(number_of_holes):
