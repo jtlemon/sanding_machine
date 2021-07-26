@@ -220,8 +220,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         msg.addButton(QtWidgets.QMessageBox.Yes)
         msg.addButton(QtWidgets.QMessageBox.No)
         if msg.exec_() == QtWidgets.QMessageBox.Yes:
-            GrblControllerHal.set_fences()
-            #@TODO send command to the machine
+            self.__grbl_interface.set_fences()
+            # @TODO send command to the machine
             if profile_type.lower().startswith("j"):
                 target_profile = JoinProfile.objects.get(profile_name=profile_name)
                 target_values = []
