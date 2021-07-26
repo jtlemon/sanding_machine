@@ -61,15 +61,19 @@ class GenerateCode:
 
     def calculate(self):
         def drill_locations():
-            self.g_code.append('g0z0}')
+            self.g_code.append('g0z0')
             drill_hole()
             self.g_code.append('g0z0y0')
 
         def drill_hole():
-            number_of_holes = (math.ceil(self.left_active-distance_from_edge / spacing)) - 1
+            print(f'active: {self.left_active}')
+            number_of_holes = (math.ceil((self.left_active-distance_from_edge) / spacing))
+            print(f'number of holes: {number_of_holes}')
             points = []
             for i in range(number_of_holes):
                 points.append(distance_from_edge + i * spacing)
+
+            print(f'points: {points}')
             for i in list(points):
                 print(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
                 print(f'g0z-{z_drill_depth_edge}')
