@@ -33,7 +33,7 @@ dovetail_setting_standard_width_4 = (1, 610, 1)
 
 dovetail_setting_x_zero = (1, 100, 0.1)
 dovetail_setting_y_zero = (1, 100, 0.1)
-dovetail_setting_z_zero = (-15, 15, 0.1)
+dovetail_setting_z_zero = (-20, 10, 0.1)
 dovetail_setting_a_zero = (1, 100, 0.1)
 dovetail_setting_b_zero = (1, 100, 0.1)
 dovetail_fence_distance = (457.2, 609.6, 0.01)
