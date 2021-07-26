@@ -260,12 +260,12 @@ class MachineGuiInterface(MachineInterfaceUi):
                 if self.__current_machine_cycle == 0:
                     self.__grbl_interface.cycle_start_1()
                     self.__current_machine_cycle = 1
-                    CountDownTimerManager.start(10) # 10 sec
+                    CountDownTimerManager.start(1) # 10 sec
                 elif self.__current_machine_cycle == 1:
                     self.__grbl_interface.cycle_start_2()
                     self.__current_machine_cycle = 0
                     camera_widget_manager.start_button.setChecked(False)
-                    CountDownTimerManager.start(5)  # 5 sec
+                    CountDownTimerManager.start(10)  # 5 sec
         else:
             display_error_message("bit must loaded first")
             camera_widget_manager.start_button.setChecked(False)
