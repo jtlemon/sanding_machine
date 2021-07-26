@@ -43,8 +43,14 @@ class GenerateCode:
         print(f'offsets {self.x_offset}, {self.y_offset}, {self.z_offset}')
 
     def calculate(self):
+        def drill_locations():
+            pass
+
         def drill_hole():
-            self.g_code.append(f'g0z-{drill_depth}')
+            number_of_holes = (math.ceil(self.left_active / spacing))
+            print(f'# holes: {number_of_holes}')
+            for i in range(number_of_holes):
+                print('for statement')
 
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
@@ -70,9 +76,10 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append('g1y-0')  # retracting a lot further than needed, find strategy to not retract so far.
 
-        # loaded_joint_profile = db_utils.get_loaded_joint_profile()
 
-        # if CustomMachineParamManager.get_value("joint_type", "joint_profile") == "joint_profile":
+
+
+
         if db_utils.is_joint_selected():
             loaded_joint_profile = db_utils.get_loaded_joint_profile()
             print('dovetail joint')
@@ -139,6 +146,9 @@ class GenerateCode:
             face_depth = loaded_joint_profile.get_value("dowel_profile_face_depth")
             edge_depth = loaded_joint_profile.get_value("dowel_profile_edge_depth")
             print(f'params: {distance_from_edge}, {spacing}, {distance_from_face}, {face_depth}, {edge_depth}')
+
+            if self.left_active != 0:
+                drill_locations()
             #  place code for drill here.
 
         else:
