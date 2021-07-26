@@ -235,7 +235,9 @@ class GrblControllerHal(QtCore.QObject):
         grbl_generator = GenerateCode()
         grbl_generator.set_fences()
         g_code = grbl_generator.g_code
-        self.grbl_stream.add_new_command(g_code)
+        for cmd in g_code:
+            print(f"debug_fence{cmd}")
+            self.grbl_stream.add_new_command(cmd)
 
     def emit_new_state(self):
         self.machineStateChangedSignal.emit(self.__current_state)
