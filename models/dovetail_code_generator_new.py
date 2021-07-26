@@ -86,20 +86,13 @@ class GenerateCode:
                 points.append(distance_from_edge + i * spacing)
             right_offset = self.fence_offset + self.x_offset
             for i in list(points):
-                print(f'g0x-{right_offset - i}y-{self.y_offset - distance_from_face}')
-                print(f'g0z-{z_drill_depth_edge}')
-                print(f'g0z-{z_drill_zero}')
-                print(f'g0y-{self.y_offset + distance_from_face}')
-                print(f'g0z-{z_drill_depth_face}')
-                print(f'g0z-{z_drill_zero}')
-                """
-                self.g_code.append(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
+                self.g_code.append(f'g0x-{right_offset - i}y-{self.y_offset - distance_from_face}')
                 self.g_code.append(f'g0z-{z_drill_depth_edge}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
                 self.g_code.append(f'g0y-{self.y_offset + distance_from_face}')
                 self.g_code.append(f'g0z-{z_drill_depth_face}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
-                """
+
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
