@@ -12,6 +12,7 @@ from .grbl_serial_connector import SerialConnector
 import configurations.static_app_configurations as static_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
 import time
+from models import db_utils
 
 module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
 
@@ -228,6 +229,18 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('m77')
         self.grbl_stream.add_new_command('m79')
         self.grbl_stream.add_new_command('m81')
+
+    def set_fences(self):
+        if db_utils.is_joint_selected():
+            fence_offset = CustomMachineParamManager.get_value("joint_profile_pin_spacing") / 2
+            left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero") - fence_offset
+            right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero") - fence_offset
+            print(f'fence positions: {left_fence_position}, {right_fence_position}')
+            # self.grbl_stream.add_new_command(f'g0a-{left_fence_position}b-{right_fence_position}')
+        elif db_utils.is_dowel_selected():
+            left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero")
+            right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero")
+            self.grbl_stream.add_new_command(f'g0a-{left_fence_position}b-{right_fence_position}')
 
     def emit_new_state(self):
         self.machineStateChangedSignal.emit(self.__current_state)
@@ -464,7 +477,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('m68')
 
     def release_clamp_left_horizontal(self):
-            self.grbl_stream.add_new_command('m71')
+            self.grbl_stream.add_new_command('m69')
 
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
         self.__current_dowel_profile = dowel_profile

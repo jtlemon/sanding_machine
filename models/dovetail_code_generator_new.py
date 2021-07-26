@@ -46,10 +46,10 @@ class GenerateCode:
         def drill_locations():
             self.g_code.append(f'g0z-{z_drill_zero}')
             self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset-distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_face}')
+            self.g_code.append(f'g0z-{z_drill_depth_edge}')
             self.g_code.append(f'g0z-{z_drill_zero}')
             self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset + distance_from_face}')
-            self.g_code.append(f'g0z-{z_drill_depth_edge}')
+            self.g_code.append(f'g0z-{z_drill_depth_face}')
             self.g_code.append(f'g0z-{z_drill_zero}')
             self.g_code.append('g0z0y0')
             drill_hole()
