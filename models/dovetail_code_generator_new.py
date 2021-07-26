@@ -89,7 +89,6 @@ class GenerateCode:
                 self.g_code.append(f'g0z-{z_drill_depth_face}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
                 """
-
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
