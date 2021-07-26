@@ -46,15 +46,15 @@ class GenerateCode:
         def drill_locations():
             self.g_code.append('g0z0')
             self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset-distance_from_face}')
-            self.g_code.append('g0z-15')
+            self.g_code.append(f'g0z-{z_drill_zero}')
             self.g_code.append('g0z0')
             self.g_code.append(f'g0x-{self.x_offset + distance_from_edge}y-{self.y_offset + distance_from_face}')
-            self.g_code.append('g0z-15')
+            self.g_code.append(f'g0z-{z_drill_zero}')
             self.g_code.append('g0z0')
             drill_hole()
 
         def drill_hole():
-            number_of_holes = (math.ceil(self.left_active / spacing))
+            number_of_holes = (math.ceil(self.left_active / spacing)) - 1
             print(f'# holes: {number_of_holes}')
             for i in range(number_of_holes):
                 print('for statement')
@@ -152,6 +152,8 @@ class GenerateCode:
             distance_from_face = loaded_joint_profile.get_value("dowel_profile_dis_from_face")
             face_depth = loaded_joint_profile.get_value("dowel_profile_face_depth")
             edge_depth = loaded_joint_profile.get_value("dowel_profile_edge_depth")
+            loaded_bit_offset = CustomMachineParamManager.get_value("loaded_bit_length") * - 1
+            z_drill_zero = loaded_bit_offset + self.z_offset
             print(f'params: {distance_from_edge}, {spacing}, {distance_from_face}, {face_depth}, {edge_depth}')
 
             if self.left_active != 0:
