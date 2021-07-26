@@ -231,11 +231,11 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('m81')
 
     def set_fences(self):
+        from models.dovetail_code_generator_new import GenerateCode
         grbl_generator = GenerateCode()
         grbl_generator.set_fences()
         g_code = grbl_generator.g_code
         self.grbl_stream.add_new_command(g_code)
-
 
     def emit_new_state(self):
         self.machineStateChangedSignal.emit(self.__current_state)
