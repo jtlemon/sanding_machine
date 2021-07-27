@@ -93,13 +93,13 @@ class GenerateCode:
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
-                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius - loaded_material_thickness + depth_adjustment+ 3}z-{z_cut_height}')  # needs depth adjustment
+                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius + depth_adjustment}z-{z_cut_height}')  # needs depth adjustment
             self.g_code.append(f'g1x-{x_score_cut}f{loaded_bit_feed_speed}')
             pass
 
         def dovetail_pre_position():
             self.g_code.append('g91')
-            self.g_code.append(f'g1y-{depth + large_radius}')
+            self.g_code.append(f'g1y-{(depth * 2) + large_radius}')
 
         def dovetail_pattern():
             number_of_cuts = (math.ceil(self.left_active / loaded_pin_spacing))
