@@ -93,7 +93,7 @@ class GenerateCode:
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
-                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius + depth_adjustment}z-{z_cut_height}')  # needs depth adjustment
+                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - depth - large_radius - loaded_material_thickness + depth_adjustment+ 3}z-{z_cut_height}')  # needs depth adjustment
             self.g_code.append(f'g1x-{x_score_cut}f{loaded_bit_feed_speed}')
             pass
 
@@ -148,7 +148,7 @@ class GenerateCode:
             print(f'small radius {small_radius}, large radius {large_radius}')
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
             starting_x = round(
-                ((loaded_distance_from_bottom + (.5 * loaded_bit_diameter)) + self.x_offset), 4)
+                (loaded_pin_spacing - (loaded_distance_from_bottom + (.5 * loaded_bit_diameter)) + self.x_offset), 4)
             depth = round((loaded_material_thickness - (
                         large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
 
