@@ -6,7 +6,7 @@ from views.spinner import WaitingSpinner
 class ChangeBitDialog(QtWidgets.QDialog):
     callMeasureToolSignal = QtCore.Signal()
 
-    def __init__(self, time_out_ms=30000, parent=None):
+    def __init__(self, time_out_ms=10000, parent=None):
         super(ChangeBitDialog, self).__init__(parent=parent)
         self.__time_out_ms = time_out_ms
         self.dialog_layout = QtWidgets.QVBoxLayout(self)
@@ -37,7 +37,7 @@ class ChangeBitDialog(QtWidgets.QDialog):
         self.footer_buttons_layout.addItem(h_spacer_4)
         self.dialog_layout.addLayout(self.profile_layout)
 
-        self.footer_error_lbl = QtWidgets.QLabel("the dialog will close automatically after the process complete")
+        self.footer_error_lbl = QtWidgets.QLabel("the dialog will close automatically after the process completes")
         self.footer_error_lbl.setObjectName("bit_dialog_footer_error_lbl")
         self.footer_error_lbl.setWordWrap(True)
         self.footer_error_lbl.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -57,7 +57,7 @@ class ChangeBitDialog(QtWidgets.QDialog):
         self.setMinimumHeight(200)
 
     def handle_time_out(self):
-        self.footer_error_lbl.setText("Timeout Failed to retrieve the Values")
+        self.footer_error_lbl.setText("Timeout: Failed to retrieve the Values")
         self.footer_error_lbl.show()
         self.spinner_widget.stop()
 
@@ -65,7 +65,7 @@ class ChangeBitDialog(QtWidgets.QDialog):
         self.callMeasureToolSignal.emit()
         self.spinner_widget.start()
         self.param_retrieve_fail_timer.start()
-        self.footer_error_lbl.setText("the dialog will close automatically after the process complete")
+        self.footer_error_lbl.setText("the dialog will close automatically after the process completes")
         self.footer_error_lbl.show()
 
     def get_selected_bit_profile(self):
