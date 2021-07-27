@@ -46,14 +46,11 @@ class GenerateCode:
         if db_utils.is_joint_selected():
             joint_profile = db_utils.get_loaded_joint_profile()
             fence_offset = joint_profile.get_value("joint_profile_pin_spacing") / 2
-            print(f'fence offset: {fence_offset}')
             left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero") - fence_offset
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero") - fence_offset
-            print(f'fence positions: {left_fence_position}, {right_fence_position}')
             self.g_code.append(f'g0a-{left_fence_position}b-{right_fence_position}')
             return self.g_code
         elif db_utils.is_dowel_selected():
-            print('setting upper fences')
             left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero")
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero")
             self.g_code.append(f'g0a-{left_fence_position}b-{right_fence_position}')
