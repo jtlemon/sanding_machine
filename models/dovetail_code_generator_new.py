@@ -148,7 +148,7 @@ class GenerateCode:
             print(f'small radius {small_radius}, large radius {large_radius}')
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
             starting_x = round(
-                (loaded_pin_spacing - (loaded_distance_from_bottom + (.5 * loaded_bit_diameter)) + self.x_offset), 4)
+                ((loaded_distance_from_bottom + (loaded_bit_diameter/2)) + self.x_offset) - loaded_pin_spacing, 4)
             depth = round((loaded_material_thickness - (
                         large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
 
