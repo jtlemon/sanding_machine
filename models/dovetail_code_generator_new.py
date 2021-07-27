@@ -43,9 +43,9 @@ class GenerateCode:
         print(f'offsets {self.x_offset}, {self.y_offset}, {self.z_offset}')
 
     def set_fences(self):
-
         if db_utils.is_joint_selected():
-            fence_offset = CustomMachineParamManager.get_value("joint_profile_pin_spacing") / 2
+            joint_profile = db_utils.get_loaded_joint_profile()
+            fence_offset = joint_profile.get_value("joint_profile_pin_spacing") / 2
             print(f'fence offset: {fence_offset}')
             left_fence_position = CustomMachineParamManager.get_value("dovetail_setting_a_zero") - fence_offset
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero") - fence_offset
