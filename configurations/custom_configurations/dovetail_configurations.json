@@ -30,7 +30,7 @@
     "loaded_bit_length": -20.42,
     "loaded_dowel_profile_id": 1,
     "loaded_joint_profile_id": 1,
-    "loaded_profile_type": "joint",
+    "loaded_profile_type": "dowel",
     "probe_spindle_speed": 8000,
     "right_active": 0,
     "spindle_time_out": 60.0

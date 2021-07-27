@@ -38,6 +38,8 @@ DOVETAIL_JOINT_PROFILE_CONFIGURATION =[
      "range": machine_ranges.joint_profile_distance_from_bottom},
     {"lbl": "Material Thickness", "target_key": "joint_profile_material_thickness",
      "range": machine_ranges.joint_profile_material_thickness},
+    {"lbl": "Score Depth", "target_key": "joint_profile_score_depth",
+     "range": machine_ranges.joint_profile_score_depth},
 
 ]
 DOVETAIL_JOINT_PROFILE_CONFIGURATION.extend(DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN)
@@ -212,10 +214,6 @@ DOVETAIL_SETTING_CONFIGURATION = [
 # ************************* reset page *******************
 DOVETAIL_RESET_PAGE_BUTTONS = \
     [
-        {
-            "lbl": "RESET CONTROLLER",
-            "target_key": "reset_controller_btn",
-        },
         {
             "lbl": "HOME",
             "target_key": "home_btn",

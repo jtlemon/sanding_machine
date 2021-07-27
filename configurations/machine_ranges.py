@@ -4,6 +4,7 @@ joint_profile_bit_height = (2, 20, 0.1)
 joint_profile_bit_width = (2, 24, 0.1)
 joint_profile_distance_from_bottom = (2, 100, 0.1)
 joint_profile_material_thickness = (6, 26, 0.1)
+joint_profile_score_depth = (0, 10, 0.1)
 bit_to_use = (1, 100, 0)  # this needs to be from the bits that are added to the bit profiles
 
 

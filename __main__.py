@@ -95,7 +95,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         if AppSupportedOperations.restMachineOperation in self.__installed_operations:
             reset_widget = self.__installed_operations[AppSupportedOperations.restMachineOperation]
             # reset widgets signal
-            reset_widget.reset_controller_btn.clicked.connect(self.__grbl_interface.reset_machine)
+            # reset_widget.reset_controller_btn.clicked.connect(self.__grbl_interface.reset_machine)
             reset_widget.home_btn.clicked.connect(self.__grbl_interface.reset_and_home)
             reset_widget.go_to_park_btn.clicked.connect(self.__grbl_interface.park)
             reset_widget.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
