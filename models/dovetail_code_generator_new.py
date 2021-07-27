@@ -59,33 +59,37 @@ class GenerateCode:
     def calculate(self):
         def drill_locations():
             self.g_code.append('g0z0')
-            drill_hole()
+            drill_hole_left()
+            drill_hole_right()
             self.g_code.append('g0z0y0')
 
-        def drill_hole():
-            print(f'active: {self.left_active}')
+        def drill_hole_left():
             number_of_holes = (math.ceil((self.left_active-distance_from_edge) / spacing))
-            print(f'number of holes: {number_of_holes}')
             points = []
             for i in range(number_of_holes):
                 points.append(distance_from_edge + i * spacing)
-
-            print(f'points: {points}')
             for i in list(points):
-                print(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
-                print(f'g0z-{z_drill_depth_edge}')
-                print(f'g0z-{z_drill_zero}')
-                print(f'g0y-{self.y_offset + distance_from_face}')
-                print(f'g0z-{z_drill_depth_face}')
-                print(f'g0z-{z_drill_zero}')
-                """
                 self.g_code.append(f'g0x-{self.x_offset + i}y-{self.y_offset - distance_from_face}')
                 self.g_code.append(f'g0z-{z_drill_depth_edge}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
                 self.g_code.append(f'g0y-{self.y_offset + distance_from_face}')
                 self.g_code.append(f'g0z-{z_drill_depth_face}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
-                """
+
+        def drill_hole_right():
+            number_of_holes = (math.ceil((self.right_active - distance_from_edge)/ spacing))
+            points = []
+            for i in range(number_of_holes):
+                points.append(distance_from_edge + i * spacing)
+            right_offset = self.fence_offset + self.x_offset
+            for i in list(points):
+                self.g_code.append(f'g0x-{right_offset - i}y-{self.y_offset - distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_edge}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+                self.g_code.append(f'g0y-{self.y_offset + distance_from_face}')
+                self.g_code.append(f'g0z-{z_drill_depth_face}')
+                self.g_code.append(f'g0z-{z_drill_zero}')
+
         def dovetail_score_cut(x_score_cut):
             self.g_code.append('g90')
             self.g_code.append(
