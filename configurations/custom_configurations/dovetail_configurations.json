@@ -32,6 +32,6 @@
     "loaded_joint_profile_id": 1,
     "loaded_profile_type": "joint",
     "probe_spindle_speed": 8000,
-    "right_active": 0,
+    "right_active": 4,
     "spindle_time_out": 60.0
 }

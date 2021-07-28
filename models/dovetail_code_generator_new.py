@@ -94,21 +94,23 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append(
                 f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - loaded_material_thickness - (loaded_bit_diameter / 2) + loaded_score_depth}z-{z_cut_height}')  # needs depth adjustment
-            self.g_code.append(f'g1x-{x_score_cut}f{loaded_bit_feed_speed}')
+            self.g_code.append(f'g1x-{x_score_cut - 5}f{loaded_bit_feed_speed}')
+            self.g_code.append(f'g1x-{x_score_cut}')
             pass
 
         def dovetail_pre_position():
+            print(f'depth: {depth}')
             self.g_code.append('g90')
-            self.g_code.append(f'g1y-{self.y_offset + (depth/2)}')
+            self.g_code.append(f'g1y-{(self.y_offset + depth) + depth_adjustment}')
 
         def dovetail_pattern():
             number_of_cuts = (math.ceil(self.left_active / loaded_pin_spacing))
             for i in range(number_of_cuts):
                 self.g_code.append('g91')
                 self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
-                self.g_code.append(f'g1y{depth}')
+                self.g_code.append(f'g1y{depth * 2}')
                 self.g_code.append(f'g3x-{large_radius * 2}y0r{large_radius + .01}')
-                self.g_code.append(f'g1y-{depth}')
+                self.g_code.append(f'g1y-{depth * 2}')
 
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
             self.g_code.append('g90')
@@ -132,16 +134,19 @@ class GenerateCode:
             # create bit variables
             loaded_bit_diameter = loaded_bit.get_value("bit_profile_diameter")
             loaded_bit_feed_speed = loaded_bit.get_value("bit_profile_feed_speed")
-            loaded_bit_angle_rad = loaded_bit.get_value("bit_profile_angle")
+            loaded_bit_angle_deg = loaded_bit.get_value("bit_profile_angle")
+            print(loaded_bit_angle_deg)
             loaded_bit_offset = CustomMachineParamManager.get_value("loaded_bit_length") * - 1  # needs bit offset
             print(f'loaded bit length {loaded_bit_offset}')
 
             # calculate cutting params
             z_cut_height = loaded_bit_height + loaded_bit_offset + self.z_offset
-            bit_angle = loaded_bit_angle_rad * (math.pi / 180)
+            bit_rad = (math.pi / 180) * loaded_bit_angle_deg
+            print(f'bit angle {bit_rad}')
             pin_width = ((loaded_pin_spacing + (
-                    (loaded_bit_height * math.tan(bit_angle)) * 2)) / 2) - loaded_bit_diameter
-            bit_taper = math.tan(bit_angle) * loaded_bit_height
+                    (loaded_bit_height * math.tan(bit_rad)) * 2)) / 2) - loaded_bit_diameter
+            bit_taper = math.tan(bit_rad) * loaded_bit_height
+            print(f'bit taper {bit_taper}')
             print(f'pin width {pin_width}')
             small_radius = round((pin_width / 2) + width_adjustment, 4)
 
@@ -150,8 +155,7 @@ class GenerateCode:
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
             starting_x = round(
                 ((loaded_distance_from_bottom + (loaded_bit_diameter/2)) + self.x_offset) - loaded_pin_spacing, 4)
-            depth = round((loaded_material_thickness - (
-                        large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
+            depth = round((loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1), 4)
 
             if self.left_active != 0:
                 if self.left_active >= 153:

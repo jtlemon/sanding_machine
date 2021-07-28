@@ -262,6 +262,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g0z0')
         self.spindle_off()
         self.extend_locating_bar()
+        self.grbl_stream.add_new_command('g4p.2')
         self.release_clamp_right_vertical()
         self.release_clamp_left_vertical()
         self.release_clamp_right_horizontal()
