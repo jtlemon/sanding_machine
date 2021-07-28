@@ -99,7 +99,7 @@ class GenerateCode:
 
         def dovetail_pre_position():
             self.g_code.append('g90')
-            self.g_code.append(f'g1y-{self.y_offset + depth}')
+            self.g_code.append(f'g1y-{self.y_offset + (depth/2)}')
 
         def dovetail_pattern():
             number_of_cuts = (math.ceil(self.left_active / loaded_pin_spacing))
