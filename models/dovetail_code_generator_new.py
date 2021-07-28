@@ -103,8 +103,8 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append(f'g1y-{(self.y_offset + depth) + depth_adjustment}')
 
-        def dovetail_pattern():
-            number_of_cuts = (math.ceil(self.left_active / loaded_pin_spacing))
+        def dovetail_pattern(active_side):
+            number_of_cuts = (math.ceil(active_side / loaded_pin_spacing))
             for i in range(number_of_cuts):
                 self.g_code.append('g91')
                 self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
@@ -163,14 +163,14 @@ class GenerateCode:
                 # perform cuts
                 dovetail_score_cut(starting_x, self.left_active)
                 dovetail_pre_position()
-                dovetail_pattern()
+                dovetail_pattern(self.left_active)
 
             if self.right_active != 0:
                 if self.right_active >= 153:
                     self.g_code.append('m72')
                 dovetail_score_cut(starting_x + (self.fence_offset - self.right_active), self.right_active)
                 dovetail_pre_position()
-                dovetail_pattern()
+                dovetail_pattern(self.right_active)
 
             self.g_code.append('g90')
             self.g_code.append('g0x-300')
