@@ -90,10 +90,10 @@ class GenerateCode:
                 self.g_code.append(f'g0z-{z_drill_depth_face}')
                 self.g_code.append(f'g0z-{z_drill_zero}')
 
-        def dovetail_score_cut(x_score_cut):
+        def dovetail_score_cut(x_score_cut, active_width):
             self.g_code.append('g90')
             self.g_code.append(
-                f'g0x-{x_score_cut + self.left_active}y-{self.y_offset - loaded_material_thickness - (loaded_bit_diameter / 2) + loaded_score_depth}z-{z_cut_height}')  # needs depth adjustment
+                f'g0x-{x_score_cut + active_width}y-{self.y_offset - loaded_material_thickness - (loaded_bit_diameter / 2) + loaded_score_depth}z-{z_cut_height}')  # needs depth adjustment
             self.g_code.append(f'g1x-{x_score_cut - 5}f{loaded_bit_feed_speed}')
             self.g_code.append(f'g1x-{x_score_cut}')
             pass
@@ -161,14 +161,14 @@ class GenerateCode:
                 if self.left_active >= 153:
                     self.g_code.append('m72')
                 # perform cuts
-                dovetail_score_cut(starting_x)
+                dovetail_score_cut(starting_x, self.left_active)
                 dovetail_pre_position()
                 dovetail_pattern()
 
             if self.right_active != 0:
                 if self.right_active >= 153:
                     self.g_code.append('m72')
-                dovetail_score_cut(starting_x + self.fence_offset - self.right_active)
+                dovetail_score_cut(starting_x + (self.fence_offset - self.right_active), self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern()
 
