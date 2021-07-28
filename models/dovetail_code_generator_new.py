@@ -153,6 +153,7 @@ class GenerateCode:
             large_radius = round(((loaded_pin_spacing - pin_width) / 2) - width_adjustment, 3)
             print(f'small radius {small_radius}, large radius {large_radius}')
             straight_cut = loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper
+            print(f'distance from bottom 2 :{loaded_distance_from_bottom}')
             starting_x = round(
                 ((loaded_distance_from_bottom + (loaded_bit_diameter/2)) + self.x_offset) - loaded_pin_spacing, 4)
             depth = round((loaded_material_thickness - (large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1), 4)
@@ -166,9 +167,13 @@ class GenerateCode:
                 dovetail_pattern(self.left_active)
 
             if self.right_active != 0:
+                print(f'distance from bottom: {loaded_distance_from_bottom}')
+                right_starting_x = self.x_offset + self.fence_offset + (loaded_pin_spacing - (
+                            (loaded_bit_diameter / 2) + loaded_distance_from_bottom)) - self.right_active
+                print(f'right starting x : {right_starting_x}')
                 if self.right_active >= 153:
                     self.g_code.append('m72')
-                dovetail_score_cut(starting_x + (self.fence_offset - self.right_active), self.right_active)
+                dovetail_score_cut(right_starting_x + (self.fence_offset - self.right_active), self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern(self.right_active)
 

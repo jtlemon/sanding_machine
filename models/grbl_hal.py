@@ -421,6 +421,7 @@ class GrblControllerHal(QtCore.QObject):
 
     def cycle_start_2(self):
         print('you pressed start 2')
+        self.spindle_on()
         self.machineStateChangedSignal.emit("pending- cycle 2")
         self.clamp_right_horizontal()
         self.clamp_left_horizontal()
