@@ -173,7 +173,7 @@ class GenerateCode:
                 print(f'right starting x : {right_starting_x}')
                 if self.right_active >= 153:
                     self.g_code.append('m72')
-                dovetail_score_cut(right_starting_x + (self.fence_offset - self.right_active), self.right_active)
+                dovetail_score_cut(right_starting_x, self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern(self.right_active)
 
