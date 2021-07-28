@@ -154,18 +154,23 @@ class GenerateCode:
                         large_radius - (loaded_bit_diameter / 2)) - bit_taper - 1) - depth_adjustment, 4)
 
             if self.left_active != 0:
+                if self.left_active >= 153:
+                    self.g_code.append('m72')
                 # perform cuts
                 dovetail_score_cut(starting_x)
                 dovetail_pre_position()
                 dovetail_pattern()
 
             if self.right_active != 0:
+                if self.right_active >= 153:
+                    self.g_code.append('m72')
                 dovetail_score_cut(starting_x + self.fence_offset - self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern()
 
             self.g_code.append('g90')
             self.g_code.append('g0x-300')
+            self.g_code.append('m73')
 
         elif db_utils.is_dowel_selected():
             print("hello from the other world..............")

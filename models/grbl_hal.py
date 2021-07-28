@@ -438,6 +438,7 @@ class GrblControllerHal(QtCore.QObject):
         self.release_clamp_left_horizontal()
         self.release_clamp_left_vertical()
         self.release_clamp_right_vertical()
+
         self.machineStateChangedSignal.emit('ready')
         time_to_run = self.calculate_run_time()
         self.machineStartedSignal.emit(time_to_run)
@@ -476,7 +477,13 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('m68')
 
     def release_clamp_left_horizontal(self):
-            self.grbl_stream.add_new_command('m69')
+        self.grbl_stream.add_new_command('m69')
+
+    def clamp_center_pistons(self):
+        self.grbl_stream.add_new_command('m72')
+
+    def release_center_pistons(self):
+        self.grbl_stream.add_new_command('m73')
 
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
         self.__current_dowel_profile = dowel_profile
