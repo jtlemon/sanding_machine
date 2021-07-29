@@ -243,7 +243,8 @@ class GrblControllerHal(QtCore.QObject):
         self.machineStateChangedSignal.emit(self.__current_state)
 
     def calculate_run_time(self):
-        # this machine will requre a different strategy to calculate run time.  will need a base time + time per each dowel
+        # this machine will requre a different strategy to calculate run time.
+        # will need a base time + time per each dowel
         return 10
 
     def cancel(self):
@@ -267,7 +268,6 @@ class GrblControllerHal(QtCore.QObject):
         self.release_clamp_left_vertical()
         self.release_clamp_right_horizontal()
         self.release_clamp_left_horizontal()
-
 
     def reset_machine(self):
         module_logger.debug("reset the machine")
@@ -303,6 +303,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command("$ha")
         self.grbl_stream.add_new_command("$hb")
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0 a0 b0", notify_message='Homing Complete-Ready')
+        self.set_fences()
 
     def measure_tool(self):
         self.__measure_prob_counter = 0

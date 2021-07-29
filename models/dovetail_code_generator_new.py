@@ -55,6 +55,8 @@ class GenerateCode:
             right_fence_position = CustomMachineParamManager.get_value("dovetail_setting_b_zero")
             self.g_code.append(f'g0a-{left_fence_position}b-{right_fence_position}')
             return self.g_code
+        else:
+            pass
 
     def calculate(self):
         def drill_locations():
@@ -140,7 +142,7 @@ class GenerateCode:
             print(f'loaded bit length {loaded_bit_offset}')
 
             # calculate cutting params
-            z_cut_height = loaded_bit_height + loaded_bit_offset + self.z_offset
+            z_cut_height = round(loaded_bit_height + loaded_bit_offset + self.z_offset, 4)
             bit_rad = (math.pi / 180) * loaded_bit_angle_deg
             print(f'bit angle {bit_rad}')
             pin_width = ((loaded_pin_spacing + (
@@ -168,8 +170,8 @@ class GenerateCode:
 
             if self.right_active != 0:
                 print(f'distance from bottom: {loaded_distance_from_bottom}')
-                right_starting_x = self.x_offset + self.fence_offset + (loaded_pin_spacing - (
-                            (loaded_bit_diameter / 2) + loaded_distance_from_bottom)) - self.right_active
+                right_starting_x = round((self.x_offset + self.fence_offset + (loaded_pin_spacing - (
+                            (loaded_bit_diameter / 2) + loaded_distance_from_bottom)) - self.right_active), 4)
                 print(f'right starting x : {right_starting_x}')
                 if self.right_active >= 153:
                     self.g_code.append('m72')
