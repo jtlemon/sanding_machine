@@ -437,6 +437,7 @@ class GrblControllerHal(QtCore.QObject):
             print(f"debug {cmd}")
             self.grbl_stream.add_new_command(cmd)
         self.extend_locating_bar()
+        self.grbl_stream.add_new_command('g4p.3')
         self.release_clamp_right_horizontal()
         self.release_clamp_left_horizontal()
         self.release_clamp_left_vertical()
