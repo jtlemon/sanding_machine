@@ -436,13 +436,22 @@ class GrblControllerHal(QtCore.QObject):
         for cmd in g_code:
             print(f"debug {cmd}")
             self.grbl_stream.add_new_command(cmd)
+        
+        if db_utils.is_joint_selected():
+            
+            self.grbl_stream.add_new_command('$hy')
+            for cmd in g_code:
+                print(f"debug {cmd}")
+                self.grbl_stream.add_new_command(cmd)
         self.extend_locating_bar()
         self.grbl_stream.add_new_command('g4p.3')
         self.release_clamp_right_horizontal()
         self.release_clamp_left_horizontal()
         self.release_clamp_left_vertical()
         self.release_clamp_right_vertical()
-
+        self.grbl_stream.add_new_command('$hy')
+        
+        self.grbl_stream.add_new_command('g10l20p0y0')
         self.machineStateChangedSignal.emit('ready')
         time_to_run = self.calculate_run_time()
         self.machineStartedSignal.emit(time_to_run)

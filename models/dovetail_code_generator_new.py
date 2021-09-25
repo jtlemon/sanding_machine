@@ -8,7 +8,7 @@ created by: Jeremiah Lemon
 """
 # if you gonna work with the db just add these lines
 import os
-
+import time
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     from django.core.wsgi import get_wsgi_application
@@ -95,6 +95,8 @@ class GenerateCode:
         def dovetail_score_cut(x_score_cut, active_width):
             self.g_code.append('g90')
             self.g_code.append(
+                f'g0x-{x_score_cut + active_width}')
+            self.g_code.append(
                 f'g0x-{x_score_cut + active_width}y-{self.y_offset - loaded_material_thickness - (loaded_bit_diameter / 2) + loaded_score_depth}z-{z_cut_height}')  # needs depth adjustment
             self.g_code.append(f'g1x-{x_score_cut - 5}f{loaded_bit_feed_speed}')
             self.g_code.append(f'g1x-{x_score_cut}')
@@ -109,14 +111,18 @@ class GenerateCode:
             number_of_cuts = (math.ceil(active_side / loaded_pin_spacing))
             for i in range(number_of_cuts):
                 self.g_code.append('g91')
+                # self.g_code.append('g4p.02')
                 self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
+                # self.g_code.append('g4p.02')
                 self.g_code.append(f'g1y{depth * 2}')
+                # self.g_code.append('g4p.02')
                 self.g_code.append(f'g3x-{large_radius * 2}y0r{large_radius + .01}')
+                # self.g_code.append('g4p.02')
                 self.g_code.append(f'g1y-{depth * 2}')
 
             self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
             self.g_code.append('g90')
-            self.g_code.append('g1y-0')  # retracting a lot further than needed, find strategy to not retract so far.
+            self.g_code.append('g1y-10')  # retracting a lot further than needed, find strategy to not retract so far.
 
         if db_utils.is_joint_selected():
             loaded_joint_profile = db_utils.get_loaded_joint_profile()
@@ -167,7 +173,10 @@ class GenerateCode:
                 dovetail_score_cut(starting_x, self.left_active)
                 dovetail_pre_position()
                 dovetail_pattern(self.left_active)
-
+                #dovetail_score_cut(starting_x, self.left_active)
+                #dovetail_pre_position()
+                #dovetail_pattern(self.left_active)
+                
             if self.right_active != 0:
                 print(f'distance from bottom: {loaded_distance_from_bottom}')
                 right_starting_x = round((self.x_offset + self.fence_offset + (loaded_pin_spacing - (
@@ -178,7 +187,10 @@ class GenerateCode:
                 dovetail_score_cut(right_starting_x, self.right_active)
                 dovetail_pre_position()
                 dovetail_pattern(self.right_active)
-
+                # dovetail_score_cut(right_starting_x, self.right_active)
+                #dovetail_pre_position()
+                # dovetail_pattern(self.right_active)
+                
             self.g_code.append('g90')
             self.g_code.append('g0x-300')
             self.g_code.append('m73')
