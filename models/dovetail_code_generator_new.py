@@ -107,8 +107,9 @@ class GenerateCode:
             self.g_code.append('g90')
             self.g_code.append(f'g1y-{(self.y_offset + depth) + depth_adjustment}')
 
-        def dovetail_pattern(active_side):
-            number_of_cuts = (math.ceil(active_side / loaded_pin_spacing))
+        def dovetail_pattern(active_side, side):
+            number_of_cuts = (math.ceil(active_side / loaded_pin_spacing)) - 1
+            print(f'active side {active_side}')
             for i in range(number_of_cuts):
                 self.g_code.append('g91')
                 # self.g_code.append('g4p.02')
@@ -120,9 +121,40 @@ class GenerateCode:
                 # self.g_code.append('g4p.02')
                 self.g_code.append(f'g1y-{depth * 2}')
 
-            self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
-            self.g_code.append('g90')
-            self.g_code.append('g1y-10')  # retracting a lot further than needed, find strategy to not retract so far.
+            if side == 'left':
+                print('left')
+                self.g_code.append('g91')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g1y{depth * 2}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g3x-{large_radius * 2}y0r{large_radius + .01}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g1y-{depth * 2}')
+                self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
+                self.g_code.append('g90')
+                self.g_code.append('g1y-10')  # retracting a lot further than needed, find strategy to not retract so far.
+            if side == 'right':
+                print('right')
+                self.g_code.append('g91')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g2x-{small_radius * 2}y0r{small_radius + .01}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g1y{depth * 2}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g3x-{large_radius }y{large_radius}r{large_radius + .01}')
+                self.g_code.append('g1x-10')
+                self.g_code.append(f'g3x-{large_radius }y-{large_radius}r{large_radius + .01}')
+                # self.g_code.append('g4p.02')
+                self.g_code.append(f'g1y-{depth * 2}')
+                self.g_code.append(f'g3x{small_radius}y-{small_radius}r{small_radius * 2}')
+                self.g_code.append(f'g1x10')
+                self.g_code.append(f'g3x{small_radius}y{small_radius}r{small_radius * 2}')
+                self.g_code.append(f'g1y{depth*2}')
+                self.g_code.append(f'g2x{large_radius}y{large_radius}r{large_radius + .01}')
+                self.g_code.append('g0y10')
+
 
         if db_utils.is_joint_selected():
             loaded_joint_profile = db_utils.get_loaded_joint_profile()
@@ -172,7 +204,7 @@ class GenerateCode:
                 # perform cuts
                 dovetail_score_cut(starting_x, self.left_active)
                 dovetail_pre_position()
-                dovetail_pattern(self.left_active)
+                dovetail_pattern(self.left_active, 'left')
                 #dovetail_score_cut(starting_x, self.left_active)
                 #dovetail_pre_position()
                 #dovetail_pattern(self.left_active)
@@ -186,7 +218,7 @@ class GenerateCode:
                     self.g_code.append('m72')
                 dovetail_score_cut(right_starting_x, self.right_active)
                 dovetail_pre_position()
-                dovetail_pattern(self.right_active)
+                dovetail_pattern(self.right_active, 'right')
                 # dovetail_score_cut(right_starting_x, self.right_active)
                 #dovetail_pre_position()
                 # dovetail_pattern(self.right_active)

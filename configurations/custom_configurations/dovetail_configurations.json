@@ -25,13 +25,13 @@
     "joint_shallow_adjustment": 1,
     "joint_shallow_opt": false,
     "joint_tightness_adjustment": -2,
-    "left_active": 0,
+    "left_active": 4,
     "loaded_bit_id": 1,
     "loaded_bit_length": -49.91,
     "loaded_dowel_profile_id": 2,
     "loaded_joint_profile_id": 1,
     "loaded_profile_type": "joint",
     "probe_spindle_speed": 8000,
-    "right_active": 10,
+    "right_active": 4,
     "spindle_time_out": 240.0
 }
