@@ -13,6 +13,8 @@ from apps.bit_profiles.models import BitProfile
 from custom_widgets.spin_box import CustomSpinBox
 from view_managers.utils import display_error_message
 import django
+from apps.commons import SupportedMachines
+from configurations.settings import CURRENT_MACHINE
 
 
 
@@ -20,7 +22,7 @@ class AddEditJoinProfile(QtWidgets.QDialog):
     def __init__(self, current_profile: models.JoinProfile = None, parent=None):
         super(AddEditJoinProfile, self).__init__(parent=parent)
         self.__current_profile = current_profile
-        if static_configurations.CURRENT_MACHINE == static_configurations.SupportedMachines.dovetailMachine:
+        if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
             supported_joint_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
         else:
             raise ValueError("not supported machine.......")
@@ -106,7 +108,7 @@ class AddEditJoinProfile(QtWidgets.QDialog):
             self.__current_profile.bit_profile = self.bit_profile_objects[bit_profile_index]
         else:
             self.__current_profile = models.JoinProfile(profile_name=profile_name, json_payload=json_data,
-                                                        machine=static_configurations.CURRENT_MACHINE,
+                                                        machine=CURRENT_MACHINE,
                                                         bit_profile=self.bit_profile_objects[bit_profile_index]
                                                         )
         try:

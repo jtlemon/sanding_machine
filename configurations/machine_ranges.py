@@ -24,6 +24,16 @@ bit_profile_spindle_speed = (1, 24000, 1) # this is only allowing 944.882 rpm
 
 spindle_time_out = (2, 240, 1)
 
+# sanding
+part_stile_width = (2, 20, 0.1)
+part_profile_width = (2, 20, 0.1)
+part_profile_panel_width = (2, 24, 0.1)
+
+# sanding
+sanding_feed_speed = (1, 24000, 1) # this is only allowing 944.882 rpm
+distance_to_edge_of_sandpaper = (2, 24, 0.1)
+sandpaper_distance_to_edge_of_profile = (2, 24, 0.1)
+sanding_pressure = (0.63, 0.8, 0.01)
 
 # dovetail setting ranges
 dovetail_setting_standard_width_1 = (1, 610, 1)

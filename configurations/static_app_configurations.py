@@ -1,20 +1,21 @@
 import logging
 import os
-
-from apps.commons import SupportedMachines
 from . import machine_ranges
 from .constants_types import AppSupportedOperations, AppSupportedSettingValues, WidgetsType
 
-CURRENT_MACHINE = SupportedMachines.dovetailMachine
 
 from custom_widgets import SpinUnitMode
+
+TOTAL_NO_OF_SANDPAPERS = 6
 
 SUPPORTED_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
     AppSupportedOperations.jointDowelBitProfilesOperation,
     AppSupportedOperations.bitProfilesOperation,
+    AppSupportedOperations.partProfileOperation,
     AppSupportedOperations.restMachineOperation,
-    AppSupportedOperations.settingParametersOperation
+    AppSupportedOperations.settingParametersOperation,
+
 ]
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
@@ -85,6 +86,9 @@ DOVETAIL_DOWEL_PROFILE_OPTIONS = [
      },
 ]
 
+
+
+
 DOVETAIL_BIT_PROFILES_CONFIGURATION = [
     {
         "lbl": "Bit #",  # this should be displaying as int, and with tag #, not mm
@@ -137,6 +141,77 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "unit": "RPM"
 
     },
+]
+
+
+SANDING_PART_PROFILE = [
+   {
+        "lbl": "Stile Width",  # this should be displaying with unit deg, not mm
+        "target_key": "part_stile_width",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.part_stile_width,
+    },
+    {
+        "lbl": "Width",  # this should be displaying with unit deg, not mm
+        "target_key": "part_profile_width",
+        "field_type": WidgetsType.optionalRangeWidget,
+        "range": machine_ranges.part_profile_width,
+    },
+    {
+        "lbl": "Panel Width",  # this should be displaying with unit deg, not mm
+        "target_key": "part_profile_panel_width",
+        "field_type": WidgetsType.optionalRangeWidget,
+        "range": machine_ranges.part_profile_panel_width,
+    },
+]
+
+SANDPAPER_PROFILE = [
+   {
+        "lbl": "GRIT",  # this should be displaying with unit deg, not mm
+        "target_key": "sanding_grit",
+        "field_type": WidgetsType.optionWidget,
+        "options": ["Extra Course 20 - 36", "Course 40 - 50", "MEDIUM 80 - 120", "FINE 150 - 180", "VERY FINE 220 - 240"]
+    },
+    {
+        "lbl": "Feed speed",  # this should be displaying with unit deg, not mm
+        "target_key": "sanding_feed_speed",
+        "field_type": WidgetsType.speedWidget,
+        "range": machine_ranges.sanding_feed_speed,
+         "unit": "RPM"
+    },
+    {
+        "lbl": "Overlap",  # this should be displaying with unit deg, not mm
+        "target_key": "sandpaper_overlap",
+        "field_type": WidgetsType.boolWidget,
+    },
+    {
+        "lbl": "Distance To Sandpaper Edge",
+        "target_key": "distance_to_sandpaper_edge",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.distance_to_edge_of_sandpaper
+    },
+    {
+        "lbl": "Distance To Profile Edge",
+        "target_key": "distance_to_profile_edge",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sandpaper_distance_to_edge_of_profile
+    },
+{
+        "lbl": "Sanding Pressure",  # this should be displaying as in and with unit tag #, not mm
+        "target_key": "sanding_pressure",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.bit_profile_number_of_flutes,
+        "unit": "mpa",
+        "precession":3
+    },
+    {
+        "lbl": "Sanding Paper Type",  # this should be displaying as in and with unit tag #, not mm
+        "target_key": "sanding paper type",
+        "field_type": WidgetsType.optionWidget,
+        "options": ["type1", "type2", "type3"],
+
+    },
+
 ]
 
 DOVETAIL_SETTING_CONFIGURATION = [
@@ -207,6 +282,7 @@ DOVETAIL_SETTING_CONFIGURATION = [
         "range": machine_ranges.spindle_time_out,
         "unit": "sec"
     },
+
 ]
 
 # ************************* reset page *******************

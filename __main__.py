@@ -8,10 +8,10 @@ try:
     application = get_wsgi_application()
 except Exception as e:
     print(e)
-
+import configurations.settings
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
-from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager
+from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager, PartProfileManager
 from views import MachineInterfaceUi
 from configurations import static_app_configurations, AppSupportedOperations
 import time
@@ -56,7 +56,6 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.subscribe_to_image(0, operation_page_widget)
                 self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
-
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
                 for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -70,7 +69,8 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == static_app_configurations.AppSupportedOperations.settingParametersOperation:
                 operation_page_widget = MachineSettingsManager()
                 operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
-
+            elif app_operation == static_app_configurations.AppSupportedOperations.partProfileOperation:
+                operation_page_widget = PartProfileManager()
             self.add_app_window_widget(operation_page_widget)
             self.__installed_operations[app_operation] = operation_page_widget
 

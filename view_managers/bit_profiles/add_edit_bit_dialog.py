@@ -11,11 +11,11 @@ from apps.bit_profiles import models
 from PySide2 import QtWidgets
 from view_managers.profiles_helper_functions import get_supported_profiles
 from view_managers.dialog_configured_prams import RenderInternalPramsWidget
-import configurations.static_app_configurations as static_configurations
 from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import SaveCancelButtons, QLineEditWithSideLabel
 from view_managers.utils import display_error_message
 import django
+from configurations.settings import CURRENT_MACHINE
 
 class AddEditBitProfileDialog(QtWidgets.QDialog):
     def __init__(self, bit_profile= None, parent=None):
@@ -44,7 +44,7 @@ class AddEditBitProfileDialog(QtWidgets.QDialog):
             self.__bit_profile = models.BitProfile(
                 profile_name=profile_name,
                 default_prams_json=new_configured_json,
-                machine= static_configurations.CURRENT_MACHINE
+                machine= CURRENT_MACHINE
             )
         else:
             current_payload = self.__bit_profile.get_decoded_json()

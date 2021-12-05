@@ -9,7 +9,6 @@ except Exception as e:
     print(e)
 from apps.bit_profiles import models
 from PySide2 import QtWidgets, QtCore, QtGui
-import configurations.static_app_configurations as static_configurations
 from view_managers.profiles_helper_functions import get_supported_profiles_meta
 from view_managers.utils import add_item_to_table
 from view_managers.bit_profiles.add_edit_bit_dialog import AddEditBitProfileDialog
@@ -18,6 +17,8 @@ from configurations.constants_types import AppSupportedOperations
 from models import MeasureUnitType
 from configurations.custom_pram_loader import CustomMachineParamManager
 from view_managers.utils import display_error_message
+from apps.commons import SupportedMachines
+from configurations.settings import CURRENT_MACHINE
 
 
 class BitProfileManager(QtWidgets.QWidget):
@@ -51,7 +52,7 @@ class BitProfileManager(QtWidgets.QWidget):
     def reload_profiles_table(self):
         self.__all_loaded_profiles = set()
         self.widget_table.setRowCount(0)
-        for bit_profile in models.BitProfile.objects.filter(machine=static_configurations.CURRENT_MACHINE):
+        for bit_profile in models.BitProfile.objects.filter(machine=CURRENT_MACHINE):
             self.append_profile_to_table(bit_profile)
             self.__all_loaded_profiles.add(bit_profile.profile_name)
         self.profilesChanged.emit(self.__all_loaded_profiles)

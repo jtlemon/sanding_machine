@@ -12,6 +12,8 @@ import configurations.static_app_configurations as static_configurations
 from models.custom_app_types import MeasureUnitType
 from view_managers.utils import add_item_to_table
 from views.custom_app_widgets import RecordTrackBtn
+from apps.commons import SupportedMachines
+from configurations.settings import CURRENT_MACHINE
 
 
 
@@ -23,7 +25,7 @@ class JointProfilesPageManager(QtWidgets.QWidget):
         super(JointProfilesPageManager, self).__init__()
         self.__joint_profiles_names = set()
         self.__footer_btn_text = "Joint Profiles" if len(footer_btn) == 0 else footer_btn
-        if static_configurations.CURRENT_MACHINE == static_configurations.SupportedMachines.dovetailMachine:
+        if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
              supported_joint_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
         else:
             raise ValueError("not supported machine.......")
@@ -65,7 +67,7 @@ class JointProfilesPageManager(QtWidgets.QWidget):
         # clear table
         self.widget_table.setRowCount(0)
         self.__joint_profiles_names = set()
-        for joint_profile in models.JoinProfile.objects.filter(machine=static_configurations.CURRENT_MACHINE):
+        for joint_profile in models.JoinProfile.objects.filter(machine=CURRENT_MACHINE):
             self.append_joint_to_table(joint_profile)
             self.__joint_profiles_names.add(joint_profile.profile_name)
         self.profileChanged.emit(self.__joint_profiles_names)

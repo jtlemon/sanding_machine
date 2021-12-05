@@ -8,12 +8,11 @@ except Exception as e:
 from apps.dowel_profiles import models
 from PySide2 import QtWidgets, QtCore, QtGui
 from view_managers.dowel_profile.add_edit_dowel_profile_dialog import  AddEditDowelProfileDialog
-import configurations.static_app_configurations as static_configurations
 from configurations.constants_types import AppSupportedOperations
 from view_managers.profiles_helper_functions import get_supported_profiles_meta
 from view_managers.utils import add_item_to_table
 from views.custom_app_widgets import RecordTrackBtn, CenterPagePushButton
-
+from configurations.settings import CURRENT_MACHINE
 
 class ProfileListWidget(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
@@ -47,7 +46,7 @@ class ProfileListWidget(QtWidgets.QWidget):
     def reload_profiles_table(self):
         self.widget_table.setRowCount(0)
         self.__all_loaded_profiles = set()
-        for dowel_profile in models.DowelProfile.objects.filter(machine= static_configurations.CURRENT_MACHINE):
+        for dowel_profile in models.DowelProfile.objects.filter(machine= CURRENT_MACHINE):
             self.append_profile_to_table(dowel_profile)
             self.__all_loaded_profiles.add(dowel_profile.profile_name)
         self.profilesChanged.emit(self.__all_loaded_profiles)

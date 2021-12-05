@@ -4,13 +4,45 @@ from configurations.constants_types import WidgetsType
 from custom_widgets.spin_box import CustomSpinBox
 from views.custom_app_widgets import TrackableCheckBox, TrackableLineEdit, TrackableQComboBox
 
+class OptionalRangeWidget(QtWidgets.QWidget):
+    def __init__(self, *args, **kwargs):
+        super(OptionalRangeWidget, self).__init__()
+        self.widget_layout = QtWidgets.QHBoxLayout(self)
+        self.spinbox = CustomSpinBox(*args, **kwargs)
+        self.widget_layout.addWidget(self.spinbox, stretch=1)
+        self.widget_layout.addWidget(QtWidgets.QLabel("Active"))
+        self.check_box = QtWidgets.QCheckBox()
+        self.widget_layout.addWidget(self.check_box)
+        self.check_box.toggled.connect(lambda state:self.spinbox.setEnabled(state))
+
+    def value(self):
+        if self.check_box.isChecked():
+            return self.spinbox.value()
+        else:
+            return None
+
+    def set_value_and_reset_state(self, value):
+        if value is None:
+            self.spinbox.set_value_and_reset_state(0)
+            self.check_box.setChecked(False)
+            self.spinbox.setEnabled(False)
+        else:
+            self.spinbox.set_value_and_reset_state(value)
+            self.check_box.setChecked(True)
+            self.spinbox.setEnabled(True)
+
+    def get_key(self):
+        return self.spinbox.get_key()
+
+
+
 
 def widget_create_from_dict(config_dict):
     name = config_dict.get("lbl")
     key = config_dict.get("target_key")
     field_type = config_dict.get("field_type", WidgetsType.rangeWidget)
     control_widget = None
-    if field_type == WidgetsType.rangeWidget:
+    if field_type == WidgetsType.rangeWidget or field_type==WidgetsType.optionalRangeWidget:
         widget_range = config_dict.get("range")
         initial_value = widget_range[0]
         if initial_value is None:
@@ -18,7 +50,11 @@ def widget_create_from_dict(config_dict):
         unit = config_dict.get("unit", "")
         disp_precession = config_dict.get("precession", 2)
         allow_mode_change = True if len(unit) == 0 else False
-        control_widget = CustomSpinBox(
+        if field_type==WidgetsType.optionalRangeWidget:
+            target_widget_class =  OptionalRangeWidget
+        else:
+            target_widget_class = CustomSpinBox
+        control_widget = target_widget_class(
             *widget_range,
             initial_mm=initial_value,
             disp_precession=disp_precession,
@@ -58,7 +94,7 @@ def widget_create_from_dict(config_dict):
 
 
 def set_field_value(control_widget, value):
-    if isinstance(control_widget, CustomSpinBox):
+    if isinstance(control_widget, CustomSpinBox) or isinstance(control_widget, OptionalRangeWidget):
         control_widget.set_value_and_reset_state(value)
     else:
         control_widget.set_value(value)

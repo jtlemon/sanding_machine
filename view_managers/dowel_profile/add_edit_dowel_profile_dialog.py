@@ -11,12 +11,12 @@ from apps.dowel_profiles import models
 from PySide2 import QtWidgets
 from view_managers.profiles_helper_functions import get_supported_profiles
 from view_managers.dialog_configured_prams import RenderInternalPramsWidget
-import configurations.static_app_configurations as static_configurations
 from configurations.constants_types import AppSupportedOperations
 from views.custom_app_widgets import SaveCancelButtons, QLineEditWithSideLabel
 from apps.bit_profiles.models import BitProfile
 from view_managers.utils import display_error_message
 import django
+from configurations.settings import CURRENT_MACHINE
 
 
 
@@ -71,7 +71,7 @@ class AddEditDowelProfileDialog(QtWidgets.QDialog):
             self.__dowel_profile = models.DowelProfile(
                 profile_name=profile_name,
                 default_prams_json=new_configured_json,
-                machine= static_configurations.CURRENT_MACHINE,
+                machine= CURRENT_MACHINE,
                 bit_profile=self.bit_profile_objects[bit_profile_index]
             )
         else:

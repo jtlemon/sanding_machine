@@ -9,6 +9,10 @@ class AppSupportedOperations(Enum):
     restMachineOperation = 4
     settingParametersOperation = 5
     jointDowelBitProfilesOperation = 6
+    partProfileOperation = 7
+    sandingProgramsOperations = 8
+    individualSandPaperOperations = 9
+
 
 
 
@@ -25,3 +29,4 @@ class WidgetsType(Enum):
     textWidget = 2
     speedWidget = 3
     optionWidget = 4
+    optionalRangeWidget = 5
