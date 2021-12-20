@@ -11,8 +11,12 @@ except Exception as e:
 import configurations.settings
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
-from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager, PartProfileManager
+from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager, SandingPartProfilePageManager
+from view_managers.sanding_camera_page_manager import SandingCameraPageManager
+from view_managers.sanding_programs_operations.sanding_program_page import SandingProgramsPageManager
+from view_managers.door_styles import SandingDoorStylesManager
 from views import MachineInterfaceUi
+from view_managers.individual_sanderpaper_operations import IndividualSandpaperOperations
 from configurations import static_app_configurations, AppSupportedOperations
 import time
 from models.temperature_service import TemperatureService
@@ -49,13 +53,18 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__current_dowel_profile = None
         self.__current_bit_profile = None
         self.__current_joint_profile = None
-        for app_operation in static_app_configurations.SUPPORTED_OPERATIONS:
+
+        for app_operation in static_app_configurations.SUPPORTED_MACHINE_OPERATIONS:
             operation_page_widget = None
             if app_operation == static_app_configurations.AppSupportedOperations.dovetailCameraOperation:
                 operation_page_widget = DovetailCameraPageManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
                 self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
+            elif app_operation == AppSupportedOperations.sandingCameraOperations:
+                operation_page_widget = SandingCameraPageManager("Camera")
+                self.subscribe_to_image(0, operation_page_widget)
+                self.subscribe_to_image(1, operation_page_widget)
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
                 for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -70,7 +79,16 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = MachineSettingsManager()
                 operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
             elif app_operation == static_app_configurations.AppSupportedOperations.partProfileOperation:
-                operation_page_widget = PartProfileManager()
+                operation_page_widget = SandingPartProfilePageManager()
+            elif app_operation == static_app_configurations.AppSupportedOperations.sandingProgramsOperations:
+                operation_page_widget = SandingProgramsPageManager()
+            elif app_operation == static_app_configurations.AppSupportedOperations.individualSandPaperOperations:
+                operation_page_widget = IndividualSandpaperOperations()
+            elif app_operation == static_app_configurations.AppSupportedOperations.doorStylesOperation:
+                operation_page_widget = SandingDoorStylesManager()
+
+            elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
+                operation_page_widget = ResetPageManager()
             self.add_app_window_widget(operation_page_widget)
             self.__installed_operations[app_operation] = operation_page_widget
 
@@ -116,17 +134,17 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__camera_check_timer.start(int(1000 / static_app_configurations.FRAME_RATE))
 
         # initiate all signals
-        if AppSupportedOperations.jointDowelBitProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
+        if AppSupportedOperations.jointDowelBitProfilesOperation in static_app_configurations.SUPPORTED_MACHINE_OPERATIONS:
             available_profile_names = self.__installed_operations[
                 AppSupportedOperations.jointDowelBitProfilesOperation].get_loaded_profiles()
             self.handle_joint_dowel_profile_updates(available_profile_names)
 
-        if AppSupportedOperations.bitProfilesOperation in static_app_configurations.SUPPORTED_OPERATIONS:
+        if AppSupportedOperations.bitProfilesOperation in static_app_configurations.SUPPORTED_MACHINE_OPERATIONS:
             available_profile_names = self.__installed_operations[
                 AppSupportedOperations.bitProfilesOperation].get_loaded_profiles()
             self.handle_bit_profile_updates(available_profile_names)
 
-        if AppSupportedOperations.dovetailCameraOperation in static_app_configurations.SUPPORTED_OPERATIONS:
+        if AppSupportedOperations.dovetailCameraOperation in static_app_configurations.SUPPORTED_MACHINE_OPERATIONS:
             camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
             camera_widget_manager.sideBtnClicked.connect(self.handle_side_buttons_changed)
             camera_widget_manager.startBtnClicked.connect(self.handle_soft_start_cycle)
@@ -340,6 +358,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         for opt in self.__installed_operations:
             widget = self.__installed_operations[opt]
+            # check here ........................
             widget.change_measure_mode(new_unit)
 
     def handle_machine_setting_changed_slot(self):
@@ -363,8 +382,9 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     utils.load_app_fonts()
     app.setStyleSheet(utils.load_app_style())
-    start_dia = RetrieveMachinePramsDialog()
-    if start_dia.exec_():
+    #start_dia = RetrieveMachinePramsDialog()
+    #if start_dia.exec_():
+    if True:
         camera_process = CameraMangerProcess()
         camera_process.daemon = True
         camera_process.start()

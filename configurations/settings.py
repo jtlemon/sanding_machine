@@ -1,2 +1,2 @@
 from apps.commons import SupportedMachines
-CURRENT_MACHINE = SupportedMachines.dovetailMachine
+CURRENT_MACHINE = SupportedMachines.sandingMachine

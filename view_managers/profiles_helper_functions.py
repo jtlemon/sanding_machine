@@ -5,24 +5,20 @@ from configurations.settings import CURRENT_MACHINE
 
 
 def get_supported_profiles(profile_type):
-    if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
-        if profile_type == static_configurations.AppSupportedOperations.dowelsProfileOperation:
-              supported_dowels_profiles = static_configurations.DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION
-        elif profile_type == static_configurations.AppSupportedOperations.jointProfilesOperation:
-              supported_dowels_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
-        elif profile_type == static_configurations.AppSupportedOperations.bitProfilesOperation:
-            supported_dowels_profiles = static_configurations.DOVETAIL_BIT_PROFILES_CONFIGURATION
-        elif profile_type == static_configurations.AppSupportedOperations.settingParametersOperation:
-            supported_dowels_profiles = static_configurations.DOVETAIL_SETTING_CONFIGURATION
-        elif profile_type == static_configurations.AppSupportedOperations.partProfileOperation:
-            supported_dowels_profiles = static_configurations.SANDING_PART_PROFILE
-        elif profile_type == static_configurations.AppSupportedOperations.individualSandPaperOperations:
-            supported_dowels_profiles = static_configurations.SANDPAPER_PROFILE
-        else:
-            raise ValueError(f"not implemented operation {profile_type}")
-
+    if profile_type == static_configurations.AppSupportedOperations.dowelsProfileOperation:
+          supported_dowels_profiles = static_configurations.DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION
+    elif profile_type == static_configurations.AppSupportedOperations.jointProfilesOperation:
+          supported_dowels_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
+    elif profile_type == static_configurations.AppSupportedOperations.bitProfilesOperation:
+        supported_dowels_profiles = static_configurations.DOVETAIL_BIT_PROFILES_CONFIGURATION
+    elif profile_type == static_configurations.AppSupportedOperations.settingParametersOperation:
+        supported_dowels_profiles = static_configurations.MACHINE_SETTING_CONFIGURATIONS
+    elif profile_type == static_configurations.AppSupportedOperations.partProfileOperation:
+        supported_dowels_profiles = static_configurations.SANDING_PART_PROFILE
+    elif profile_type == static_configurations.AppSupportedOperations.individualSandPaperOperations:
+        supported_dowels_profiles = static_configurations.SANDPAPER_PROFILE
     else:
-        raise ValueError("not supported machine.......")
+        raise ValueError(f"not implemented operation {profile_type}")
 
     return supported_dowels_profiles
 

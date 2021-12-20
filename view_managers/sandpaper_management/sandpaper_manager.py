@@ -132,11 +132,11 @@ class SandpaperWidget(TableWithAddButtonWidgetView):
 
 
 
-class SandingProfileManager(QtWidgets.QWidget):
+class SandingProfilePageManager(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
     profilesChanged = QtCore.Signal(set)
     def __init__(self, footer_btn=""):
-        super(SandingProfileManager, self).__init__()
+        super(SandingProfilePageManager, self).__init__()
         self.__footer_btn_text = "Sanding" if len(footer_btn) == 0 else footer_btn
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         self.sandpaper_widget = SandpaperWidget()
@@ -168,7 +168,7 @@ class SandingProfileManager(QtWidgets.QWidget):
 if __name__ == "__main__":
     from views import utils
     app = QtWidgets.QApplication([])
-    w = SandingProfileManager()
+    w = SandingProfilePageManager()
     w.show()
     app.setStyleSheet(utils.load_app_style())
     app.exec_()

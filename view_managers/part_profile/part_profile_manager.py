@@ -16,11 +16,11 @@ from models.custom_app_types import MeasureUnitType
 from configurations.settings import CURRENT_MACHINE
 
 
-class PartProfileManager(QtWidgets.QWidget):
+class SandingPartProfilePageManager(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
     profilesChanged = QtCore.Signal(set)
     def __init__(self, footer_btn=""):
-        super(PartProfileManager, self).__init__()
+        super(SandingPartProfilePageManager, self).__init__()
         self.__footer_btn_text = "Part Profiles" if len(footer_btn) == 0 else footer_btn
         self.__current_part_profile = None
         self.__all_loaded_profiles = set()
@@ -159,7 +159,7 @@ class PartProfileManager(QtWidgets.QWidget):
 if __name__ == "__main__":
     from views import utils
     app = QtWidgets.QApplication([])
-    w = PartProfileManager()
+    w = SandingPartProfilePageManager()
     w.show()
     app.setStyleSheet(utils.load_app_style())
     app.exec_()

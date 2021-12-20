@@ -1,0 +1,16 @@
+{
+    "dovetail_fence_distance": 457.2,
+    "dovetail_setting_a_zero": 1,
+    "dovetail_setting_b_zero": 1,
+    "dovetail_setting_standard_width_1": 1,
+    "dovetail_setting_standard_width_2": 1,
+    "dovetail_setting_standard_width_3": 1,
+    "dovetail_setting_standard_width_4": 1,
+    "dovetail_setting_x_zero": 1,
+    "dovetail_setting_y_zero": 1,
+    "dovetail_setting_z_zero": -20,
+    "left_active": 0,
+    "loaded_bit_id": -1,
+    "right_active": 0,
+    "spindle_time_out": 2
+}

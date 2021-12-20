@@ -2,21 +2,35 @@ import logging
 import os
 from . import machine_ranges
 from .constants_types import AppSupportedOperations, AppSupportedSettingValues, WidgetsType
-
-
+from .settings import CURRENT_MACHINE
+from apps.commons import SupportedMachines
 from custom_widgets import SpinUnitMode
 
 TOTAL_NO_OF_SANDPAPERS = 6
 
-SUPPORTED_OPERATIONS = [
+SUPPORTED_DOVETAIL_OPERATIONS = [
     AppSupportedOperations.dovetailCameraOperation,
     AppSupportedOperations.jointDowelBitProfilesOperation,
     AppSupportedOperations.bitProfilesOperation,
     AppSupportedOperations.partProfileOperation,
     AppSupportedOperations.restMachineOperation,
     AppSupportedOperations.settingParametersOperation,
-
 ]
+
+SUPPORTED_SANDING_OPERATIONS = [
+    AppSupportedOperations.sandingCameraOperations,
+    AppSupportedOperations.doorStylesOperation,
+    AppSupportedOperations.sandingProgramsOperations,
+    AppSupportedOperations.individualSandPaperOperations,
+    AppSupportedOperations.restMachineOperation,
+    AppSupportedOperations.settingParametersOperation,
+]
+
+SUPPORTED_MACHINE_OPERATIONS = SUPPORTED_DOVETAIL_OPERATIONS
+if CURRENT_MACHINE == SupportedMachines.sandingMachine:
+    SUPPORTED_MACHINE_OPERATIONS = SUPPORTED_SANDING_OPERATIONS
+
+
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
     AppSupportedSettingValues.standardWidth2,
@@ -285,6 +299,115 @@ DOVETAIL_SETTING_CONFIGURATION = [
 
 ]
 
+DOVETAIL_SETTING_CONFIGURATION = [
+    {
+        "lbl": "Standard width 1",
+        "target_key": "dovetail_setting_standard_width_1",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_1
+    },
+    {
+        "lbl": "Standard width 2",
+        "target_key": "dovetail_setting_standard_width_2",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_2
+    },
+    {
+        "lbl": "Standard width 3",
+        "target_key": "dovetail_setting_standard_width_3",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_3
+    },
+    {
+        "lbl": "Standard width 4",
+        "target_key": "dovetail_setting_standard_width_4",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_standard_width_4
+    },
+    {
+        "lbl": "X zero",
+        "target_key": "dovetail_setting_x_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+    {
+        "lbl": "Y zero",
+        "target_key": "dovetail_setting_y_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_y_zero
+    },
+    {
+        "lbl": "Z zero",
+        "target_key": "dovetail_setting_z_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_z_zero
+    },
+    {
+        "lbl": "A zero",
+        "target_key": "dovetail_setting_a_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_a_zero
+    },
+    {
+        "lbl": "B zero",
+        "target_key": "dovetail_setting_b_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_b_zero
+    },
+    {
+        "lbl": "Distance between Fences",
+        "target_key": "dovetail_fence_distance",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_fence_distance
+    },
+    {
+        "lbl": "spindle time out",
+        "target_key": "spindle_time_out",
+        "field_type": WidgetsType.speedWidget,
+        "range": machine_ranges.spindle_time_out,
+        "unit": "sec"
+    },
+
+]
+
+
+SANDING_SETTING_CONFIGURATION = [
+    {
+        "lbl": "X zero",
+        "target_key": "dovetail_setting_x_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+    {
+        "lbl": "Y zero",
+        "target_key": "dovetail_setting_y_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_y_zero
+    },
+    {
+        "lbl": "Z zero",
+        "target_key": "dovetail_setting_z_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_z_zero
+    },
+    {
+        "lbl": "A zero",
+        "target_key": "dovetail_setting_a_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_a_zero
+    },
+    {
+        "lbl": "B zero",
+        "target_key": "dovetail_setting_b_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_b_zero
+    },
+
+
+]
+MACHINE_SETTING_CONFIGURATIONS = DOVETAIL_SETTING_CONFIGURATION
+if CURRENT_MACHINE == SupportedMachines.sandingMachine:
+    MACHINE_SETTING_CONFIGURATIONS = SANDING_SETTING_CONFIGURATION
 # ************************* reset page *******************
 DOVETAIL_RESET_PAGE_BUTTONS = \
     [

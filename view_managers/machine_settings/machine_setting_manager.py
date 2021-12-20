@@ -61,18 +61,15 @@ class MachineSettingsManager(QtWidgets.QWidget):
         self.left_setting_widget = None
         self.right_setting_widget = None
         self.all_widgets_ref = []
-        if len(supported_setting_options) > 5 :
-            mid_index = len(supported_setting_options)//2
-            left_list = supported_setting_options[:mid_index]
-            right_list = supported_setting_options[mid_index:]
-            self.left_setting_widget = RenderInternalPramsWidget(left_list)
-            self.right_setting_widget = RenderInternalPramsWidget(right_list)
-            self.all_widgets_ref = self.left_setting_widget.get_internal_widgets_ref()
-            self.all_widgets_ref.extend(self.right_setting_widget.get_internal_widgets_ref())
+        mid_index = len(supported_setting_options)//2
+        left_list = supported_setting_options[:mid_index]
+        right_list = supported_setting_options[mid_index:]
+        self.left_setting_widget = RenderInternalPramsWidget(left_list)
+        self.right_setting_widget = RenderInternalPramsWidget(right_list)
+        self.all_widgets_ref = self.left_setting_widget.get_internal_widgets_ref()
+        self.all_widgets_ref.extend(self.right_setting_widget.get_internal_widgets_ref())
 
-        else:
-            self.left_setting_widget = RenderInternalPramsWidget(supported_setting_options)
-            self.all_widgets_ref = self.left_setting_widget.get_internal_widgets_ref()
+
         self.mid_layout = QtWidgets.QHBoxLayout()
         self.mid_layout.addItem(QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed))
         self.mid_layout.addWidget(self.left_setting_widget)

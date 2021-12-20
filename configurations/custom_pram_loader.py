@@ -4,12 +4,14 @@ from configurations.settings import CURRENT_MACHINE
 
 if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
     file_name = "dovetail_configurations.json"
+elif CURRENT_MACHINE == SupportedMachines.sandingMachine:
+    file_name = "sanding_configurations.json"
 else:
     raise ValueError("we only support dovetail only at the moment")
 
 CONFIGURATION_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_configurations", file_name)
 if not os.path.isfile(CONFIGURATION_FILE_PATH):
-    raise AssertionError(f"can't load the configurations file not exist {CONFIGURATION_FILE_PATH}")
+    json.dump({} , open(CONFIGURATION_FILE_PATH, "w"))
 
 
 class CustomMachineParamManager:

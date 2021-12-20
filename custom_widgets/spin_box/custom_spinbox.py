@@ -135,6 +135,7 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
             ''' % (frame_radius, btn_radius, btn_radius)
         )
 
+
     def set_display_mode(self, mode=SpinUnitMode.MM_MODE):
         if self.__allow_mode_change:
             if mode == SpinUnitMode.MM_MODE or mode == SpinUnitMode.IN_MODE:

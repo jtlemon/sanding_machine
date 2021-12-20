@@ -12,7 +12,8 @@ class AppSupportedOperations(Enum):
     partProfileOperation = 7
     sandingProgramsOperations = 8
     individualSandPaperOperations = 9
-
+    sandingCameraOperations = 10
+    doorStylesOperation = 11
 
 
 
