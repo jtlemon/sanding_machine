@@ -221,9 +221,11 @@ SANDPAPER_PROFILE = [
         "target_key": "sanding_pressure",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sanding_pressure,
+        "precession": 0,
+        "unit":"psi"
     },
     {
-        "lbl": "Hold back from edges",  # this should be displaying with unit deg, not mm
+        "lbl": "HBFE",  # hold back from edge
         "target_key": "sanding_hold_back_from_edges",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sanding_hold_back_from_edges,
@@ -248,7 +250,7 @@ SANDPAPER_PROFILE = [
         "target_key": "sandpaper_speed",
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.sandpaper_speed,
-       "unit":"sec"
+        "unit":"sec"
     },
 
 ]

@@ -7,7 +7,6 @@ except Exception as e:
     print(e)
 
 from apps.sanding_machine import models
-from apps.sanding_machine import models
 from PySide2 import QtWidgets
 from view_managers.profiles_helper_functions import get_supported_profiles
 from view_managers.dialog_configured_prams import RenderInternalPramsWidget
@@ -53,12 +52,11 @@ class AddEditSandpaperProfileDialog(QtWidgets.QDialog):
         new_configured_json = self.internal_prams_widget.get_widget_payload()
         if self.__sandpaper_profile is None:
             # create a new dowel
-            self.__sandpaper_profile = models.PartProfile(
+            self.__sandpaper_profile = models.Sandpaper(
                 profile_name=profile_name,
                 json_payload=new_configured_json,
                 machine= CURRENT_MACHINE
             )
-            print(new_configured_json)
         else:
             current_payload = self.__sandpaper_profile.get_decoded_json()
             current_payload.update(new_configured_json)
@@ -68,7 +66,7 @@ class AddEditSandpaperProfileDialog(QtWidgets.QDialog):
             self.__sandpaper_profile.save()
             print("part saved .................")
         except django.db.IntegrityError:
-            display_error_message("dowel profile name must be unique")
+            display_error_message("sandpaper profile name must be unique")
             return
 
         self.accept()

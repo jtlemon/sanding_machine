@@ -60,3 +60,8 @@ dovetail_setting_z_zero = (-20, 10, 0.1)
 dovetail_setting_a_zero = (1, 100, 0.1)
 dovetail_setting_b_zero = (1, 100, 0.1)
 dovetail_fence_distance = (457.2, 609.6, 0.01)
+
+
+# Sander Range
+sander_x_length = (1, 610, 1)
+sander_y_length = (1, 610, 1)

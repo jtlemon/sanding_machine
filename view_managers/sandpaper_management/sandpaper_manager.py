@@ -85,20 +85,22 @@ class SandpaperWidget(TableWithAddButtonWidgetView):
         sandpaper_profile = models.Sandpaper.objects.get(pk=sandpaper_profile_id)
         row_index = self.get_row_id(sandpaper_profile_id)
         old_profile_name = sandpaper_profile.profile_name
-        dia = AddEditSandpaperProfileDialog(part_profile=sandpaper_profile, parent=self)
+        dia = AddEditSandpaperProfileDialog(sandpaper_profile=sandpaper_profile, parent=self)
         if dia.exec_():
             sandpaper_profile = dia.get_profile()
             new_profile_name = sandpaper_profile.profile_name
             self.append_profile_to_table(sandpaper_profile , row_index=row_index)
             if new_profile_name != old_profile_name:
-                self.__all_loaded_profiles.add(sandpaper_profile.new_profile_name)
+                self.__all_loaded_profiles.add(sandpaper_profile.profile_name)
                 self.__all_loaded_profiles.remove(old_profile_name)
                 self.profilesChanged.emit(self.__all_loaded_profiles)
 
     def reload_profiles_table(self):
         self.widget_table.setRowCount(0)
         self.__all_loaded_profiles = set()
+        print(CURRENT_MACHINE)
         for part_profile in models.Sandpaper.objects.filter(machine=CURRENT_MACHINE):
+            print(part_profile)
             self.append_profile_to_table(part_profile)
             self.__all_loaded_profiles.add(part_profile.profile_name)
         self.profilesChanged.emit(self.__all_loaded_profiles)
@@ -135,9 +137,9 @@ class SandpaperWidget(TableWithAddButtonWidgetView):
 class SandingProfilePageManager(QtWidgets.QWidget):
     profileClicked = QtCore.Signal(int)
     profilesChanged = QtCore.Signal(set)
-    def __init__(self, footer_btn=""):
+    def __init__(self, footer_btn="Sandpaper"):
         super(SandingProfilePageManager, self).__init__()
-        self.__footer_btn_text = "Sanding" if len(footer_btn) == 0 else footer_btn
+        self.__footer_btn_text = footer_btn
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         self.sandpaper_widget = SandpaperWidget()
         self.widget_layout.addWidget(self.sandpaper_widget)

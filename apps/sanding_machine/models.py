@@ -31,3 +31,20 @@ class Sandpaper(models.Model):
 
     def set_value(self, key, value):
         self.json_payload[key] = value
+
+    @staticmethod
+    def get_sandpaper_names():
+        return  [sandpaper.profile_name for sandpaper in Sandpaper.objects.all()]
+
+
+
+class Sander(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    x_length = models.FloatField(default=0)
+    y_length = models.FloatField(default=0)
+    is_square = models.BooleanField(default=False)
+    is_fine = models.BooleanField(default=False)
+    installed_sandpaper = models.ForeignKey(Sandpaper, on_delete=models.CASCADE, default=None, null=True)
+
+
+

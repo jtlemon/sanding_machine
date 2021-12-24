@@ -11,7 +11,8 @@ except Exception as e:
 import configurations.settings
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
-from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager, SandingPartProfilePageManager
+from view_managers import DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, \
+    MachineSettingsManager, ResetPageManager, SandingPartProfilePageManager
 from view_managers.sanding_camera_page_manager import SandingPageViewManager
 from view_managers.sanding_programs_operations.sanding_program_page import SandingProgramsPageManager
 from view_managers.door_styles import SandingDoorStylesManager
@@ -28,7 +29,6 @@ from custom_widgets.spin_box import CustomSpinBox, SpinUnitMode
 from models import MeasureUnitType
 from apps.joint_profiles.models import JoinProfile
 from apps.dowel_profiles.models import DowelProfile
-from apps.bit_profiles.models import BitProfile
 from models.estop_serial_parser import EStopSerialInterface, SignalToModule
 from configurations.system_configuration_loader import MainConfigurationLoader
 from views import AlarmViewerDialog
@@ -38,7 +38,7 @@ from view_managers import RetrieveMachinePramsDialog
 from models.db_utils import is_bit_loaded, get_loaded_bit_name
 from view_managers.utils import display_error_message
 from custom_widgets.countdown_timer import CountDownTimerManager
-from configurations.settings import  CURRENT_MACHINE, SupportedMachines
+from configurations.settings import CURRENT_MACHINE, SupportedMachines
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -119,10 +119,10 @@ class MachineGuiInterface(MachineInterfaceUi):
                 reset_widget.go_to_park_btn.clicked.connect(self.__grbl_interface.park)
                 reset_widget.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
                 reset_widget.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
-                                                                                     self.__grbl_interface.grbl_stream.send_direct_command(
-                                                                                         cmd,
-                                                                                         clr_buffer=True
-                                                                                     ))
+                                                                                self.__grbl_interface.grbl_stream.send_direct_command(
+                                                                                    cmd,
+                                                                                    clr_buffer=True
+                                                                                ))
             reset_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
             self.__response_checker = QtCore.QTimer()
             self.__response_checker.setSingleShot(False)
@@ -187,15 +187,12 @@ class MachineGuiInterface(MachineInterfaceUi):
     def bit_not_loaded(self):
         pass
 
-
     def handle_measure_tool_clicked(self):
         self.__grbl_interface.measure_tool()
 
-
-    def handle_new_error_decoded(self,category ,color, error_key, error_text):
+    def handle_new_error_decoded(self, category, color, error_key, error_text):
         self.latest_errors_container.append((error_key, error_text, color))
         self.header_error_lbl.set_error(category, preferred_color=color)
-
 
     def handle_display_all_errors(self, ev):
         if len(self.latest_errors_container):
@@ -208,7 +205,6 @@ class MachineGuiInterface(MachineInterfaceUi):
             else:
                 current_errors.extend(self.latest_errors_container)
                 self.latest_errors_container = current_errors
-
 
     def get_latest_responses(self):
         reset_widget = self.__installed_operations[AppSupportedOperations.restMachineOperation]
@@ -264,7 +260,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 target_profile = JoinProfile.objects.get(profile_name=profile_name)
                 joint_values = camera_widget_manager.get_joint_prams()
                 camera_widget_manager.prams_stored()
-                for index, config_dict in enumerate(static_app_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN):
+                for index, config_dict in enumerate(
+                        static_app_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN):
                     target_profile.set_value(config_dict["target_key"], joint_values[index])
                 target_profile.save()
                 CustomMachineParamManager.set_value("loaded_profile_type", "joint")
@@ -277,14 +274,15 @@ class MachineGuiInterface(MachineInterfaceUi):
             loaded_bit_profile_id = CustomMachineParamManager.get_value("loaded_bit_id", -1)
             if loaded_bit_profile_id != target_bit_profile_id:
                 camera_widget_manager.start_button.setChecked(False)
-                display_error_message(f"this profile requires {target_profile.bit_profile.profile_name} you have to load it first.")
+                display_error_message(
+                    f"this profile requires {target_profile.bit_profile.profile_name} you have to load it first.")
                 return
             camera_widget_manager.manage_start_cancel_active_state(True)
             if CountDownTimerManager.is_finished():
                 if self.__current_machine_cycle == 0:
                     self.__grbl_interface.cycle_start_1()
                     self.__current_machine_cycle = 1
-                    CountDownTimerManager.start(1) # 10 sec
+                    CountDownTimerManager.start(1)  # 10 sec
                 elif self.__current_machine_cycle == 1:
                     self.__grbl_interface.cycle_start_2()
                     self.__current_machine_cycle = 0
@@ -311,15 +309,14 @@ class MachineGuiInterface(MachineInterfaceUi):
     def change_machine_bit(self):
         self.__grbl_interface.park()
         dia = ChangeBitDialog()
-        dia.callMeasureToolSignal.connect(lambda :self.__grbl_interface.measure_tool())
-        self.__grbl_interface.newBitLengthCaptured.connect(lambda loaded_bit_length:dia.accept())
+        dia.callMeasureToolSignal.connect(lambda: self.__grbl_interface.measure_tool())
+        self.__grbl_interface.newBitLengthCaptured.connect(lambda loaded_bit_length: dia.accept())
         if dia.exec_():
             bit_profile = dia.get_selected_bit_profile()
             profile_name = bit_profile.profile_name
             CustomMachineParamManager.set_value("loaded_bit_id", bit_profile.pk, True)
             camera_widget_manager = self.__installed_operations[AppSupportedOperations.dovetailCameraOperation]
             camera_widget_manager.loaded_bit_lbl.setText(f"loaded bit name :{profile_name}")
-
 
     def check_available_images(self):
         for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -373,18 +370,26 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__estop_interface.requestInterruption()
 
 
-
-
-
+def create_default_records():
+    from apps.sanding_machine.models import Sander
+    available_sanders = Sander.objects.all()
+    if not available_sanders.exists():
+        Sander.objects.get_or_create(name="Sander1")
+        Sander.objects.get_or_create(name="Sander2")
+        Sander.objects.get_or_create(name="Sander3")
+        Sander.objects.get_or_create(name="Sander4")
 
 
 if __name__ == "__main__":
     from views import utils
+
     app = QtWidgets.QApplication(sys.argv)
     utils.load_app_fonts()
     app.setStyleSheet(utils.load_app_style())
-    #start_dia = RetrieveMachinePramsDialog()
-    #if start_dia.exec_():
+    # create default records
+    create_default_records()
+    # start_dia = RetrieveMachinePramsDialog()
+    # if start_dia.exec_():
     if True:
         camera_process = CameraMangerProcess()
         camera_process.daemon = True
