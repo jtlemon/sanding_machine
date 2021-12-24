@@ -12,11 +12,11 @@ import configurations.settings
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
 from view_managers import  DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, MachineSettingsManager, ResetPageManager, SandingPartProfilePageManager
-from view_managers.sanding_camera_page_manager import SandingCameraPageManager
+from view_managers.sanding_camera_page_manager import SandingPageViewManager
 from view_managers.sanding_programs_operations.sanding_program_page import SandingProgramsPageManager
 from view_managers.door_styles import SandingDoorStylesManager
 from views import MachineInterfaceUi
-from view_managers.individual_sanderpaper_operations import IndividualSandpaperOperations
+from view_managers.sandpaper_management import SandingProfilePageManager
 from configurations import static_app_configurations, AppSupportedOperations
 import time
 from models.temperature_service import TemperatureService
@@ -38,6 +38,7 @@ from view_managers import RetrieveMachinePramsDialog
 from models.db_utils import is_bit_loaded, get_loaded_bit_name
 from view_managers.utils import display_error_message
 from custom_widgets.countdown_timer import CountDownTimerManager
+from configurations.settings import  CURRENT_MACHINE, SupportedMachines
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -62,9 +63,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
-                operation_page_widget = SandingCameraPageManager("Camera")
+                operation_page_widget = SandingPageViewManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
-                self.subscribe_to_image(1, operation_page_widget)
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
                 for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -83,7 +83,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == static_app_configurations.AppSupportedOperations.sandingProgramsOperations:
                 operation_page_widget = SandingProgramsPageManager()
             elif app_operation == static_app_configurations.AppSupportedOperations.individualSandPaperOperations:
-                operation_page_widget = IndividualSandpaperOperations()
+                operation_page_widget = SandingProfilePageManager()
             elif app_operation == static_app_configurations.AppSupportedOperations.doorStylesOperation:
                 operation_page_widget = SandingDoorStylesManager()
 
@@ -115,13 +115,14 @@ class MachineGuiInterface(MachineInterfaceUi):
             # reset widgets signal
             reset_widget.reset_controller_btn.clicked.connect(self.__grbl_interface.reset_machine)
             reset_widget.home_btn.clicked.connect(self.__grbl_interface.reset_and_home)
-            reset_widget.go_to_park_btn.clicked.connect(self.__grbl_interface.park)
-            reset_widget.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
-            reset_widget.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
-                                                                                 self.__grbl_interface.grbl_stream.send_direct_command(
-                                                                                     cmd,
-                                                                                     clr_buffer=True
-                                                                                 ))
+            if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
+                reset_widget.go_to_park_btn.clicked.connect(self.__grbl_interface.park)
+                reset_widget.measure_tool_btn.clicked.connect(self.handle_measure_tool_clicked)
+                reset_widget.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
+                                                                                     self.__grbl_interface.grbl_stream.send_direct_command(
+                                                                                         cmd,
+                                                                                         clr_buffer=True
+                                                                                     ))
             reset_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
             self.__response_checker = QtCore.QTimer()
             self.__response_checker.setSingleShot(False)

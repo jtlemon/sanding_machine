@@ -23,9 +23,9 @@ class ResetPageView(QtWidgets.QWidget):
         # load the widgets
         # we will but for widgets in each row
         no_of_buttons_per_row = 4
-        buttons_counts = len(static_configurations.DOVETAIL_RESET_PAGE_BUTTONS)
+        buttons_counts = len(static_configurations.MACHINE_REST_PAGE_BUTTONS)
         for i in range(buttons_counts):
-            btn_config_dict = static_configurations.DOVETAIL_RESET_PAGE_BUTTONS[i]
+            btn_config_dict = static_configurations.MACHINE_REST_PAGE_BUTTONS[i]
             btn = QtWidgets.QPushButton(btn_config_dict.get("lbl"))
             btn.setFixedHeight(60)
             btn.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)

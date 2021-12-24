@@ -12,5 +12,22 @@
     "left_active": 0,
     "loaded_bit_id": -1,
     "right_active": 0,
-    "spindle_time_out": 2
+    "sander1_x": 1,
+    "sander1_x_value": 1,
+    "sander1_y": 1,
+    "sander1_y_value": 1,
+    "sander2_x": 1,
+    "sander2_x_value": 1,
+    "sander2_y": 1,
+    "sander2_y_value": 1,
+    "sander3_x": 1,
+    "sander3_x_value": 1,
+    "sander3_y": 1,
+    "sander3_y_value": 1,
+    "sander4_x": 1,
+    "sander4_x_value": 1,
+    "sander4_y": 1,
+    "sander4_y_value": 1,
+    "spindle_time_out": 2,
+    "workspace_points": []
 }

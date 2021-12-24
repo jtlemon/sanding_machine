@@ -1,2 +1,3 @@
 from .dovetail_camera_page import Ui_DovetailCameraPageUI
 from .reset_page import Ui_ResetPage
+from .sanding_program_dialog import Ui_SandingProgramCreationDialog

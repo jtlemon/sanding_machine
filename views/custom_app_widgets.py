@@ -1,4 +1,5 @@
 from PySide2 import QtWidgets, QtCore, QtGui
+from view_managers.utils import add_item_to_table
 
 
 class RecordTrackBtn(QtWidgets.QPushButton):
@@ -177,4 +178,94 @@ class TrackableQComboBox(QtWidgets.QComboBox):
 
     def value(self):
         return self.currentText()
+
+
+
+class ProfileAddEditWidget(QtWidgets.QWidget):
+    def __init__(self, profile_descriptor:dict, parent=None):
+        super(ProfileAddEditWidget, self).__init__(parent)
+        self.widget_layout = QtWidgets.QVBoxLayout(self)
+        # header
+        self.header_layout = QtWidgets.QHBoxLayout()
+        self.header_layout.addStretch(1)
+        self.add_profile_btn = QtWidgets.QPushButton("add new profile")
+        self.add_profile_btn.setMinimumSize(300, 60)
+        self.header_layout.addWidget(self.add_profile_btn)
+        self.header_layout.addStretch(1)
+        self.widget_layout.addLayout(self.header_layout)
+        # table
+        col_names = ["name"]
+        self.target_db_keys = list()
+        self.default_values = list()
+        for joint_config in profile_descriptor :
+            widget_range = profile_descriptor.get("range")
+            lbl_text = profile_descriptor.get("lbl")
+            target_key = profile_descriptor.get("target_key")
+            col_names.append(lbl_text)
+            self.target_db_keys.append(target_key)
+            self.default_values.append(widget_range[0])
+        col_names.extend(["Bit", "#", "#"])
+        self.widget_table = QtWidgets.QTableWidget()
+        self.widget_table.setColumnCount(len(col_names))
+        self.widget_table.setHorizontalHeaderLabels(col_names)
+        for i in range(self.widget_table.columnCount() - 2):
+            self.widget_table.horizontalHeader().setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+        self.widget_layout.addWidget(self.widget_table, stretch=1)
+        self.add_profile_btn.clicked.connect(self.handle_add_profile)
+        self.handle_reload_profiles()
+
+    def handle_reload_profiles(self):
+        pass
+
+    def handle_add_profile(self):
+        pass
+
+    def handle_edit_profile(self, profile_id:int):
+        pass
+
+    def handle_delete_profile(self, profile_id:int):
+        pass
+
+    def append_profile_to_table(self, target_profile, row_index=-1):
+        has_to_update_model = False
+        update_opt = True
+        if row_index == -1:
+            update_opt = False
+            row_index = self.widget_table.rowCount()
+            self.widget_table.insertRow(row_index)
+        add_item_to_table(self.widget_table, row_index, 0, target_profile.profile_name)
+        for col_index, key in enumerate(self.target_db_keys):
+            default_value = self.default_values[col_index]
+            value = target_profile.get_value(key)
+            if value is None:
+                has_to_update_model = True
+                value = default_value
+                target_profile.set_value(key, value)
+            add_item_to_table(self.widget_table, row_index, col_index+1, value)
+        col_index = col_index + 2
+        if hasattr(target_profile, "bit_profile"):
+            add_item_to_table(self.widget_table, row_index, col_index, target_profile.bit_profile.profile_name)
+            col_index += 1
+        if update_opt is False:
+            edit_btn = RecordTrackBtn(target_profile.pk, ":/icons/icons/icons8-edit-96.png")
+            del_btn = RecordTrackBtn(target_profile.pk, ":/icons/icons/icons8-delete-bin-96.png")
+            self.widget_table.setCellWidget(row_index, col_index, edit_btn)
+            self.widget_table.setCellWidget(row_index, col_index+1, del_btn)
+            edit_btn.customClickSignal.connect(self.handle_edit_profile)
+            del_btn.customClickSignal.connect(self.handle_delete_profile)
+            if has_to_update_model:
+                target_profile.save()
+
+    def get_row_id(self, item_pk):
+        row_id = -1
+        for row_index in range(self.widget_table.rowCount()):
+            lst_btn = self.widget_table.cellWidget(row_index, self.widget_table.columnCount() - 1)
+            if item_pk == lst_btn.get_id():
+                row_id = row_index
+        if row_id < 0:
+            raise ValueError(f"the id field should be > 0 order pk {item_pk}")
+        return row_id
+
+
+
 

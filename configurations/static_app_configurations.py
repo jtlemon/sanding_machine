@@ -30,7 +30,6 @@ SUPPORTED_MACHINE_OPERATIONS = SUPPORTED_DOVETAIL_OPERATIONS
 if CURRENT_MACHINE == SupportedMachines.sandingMachine:
     SUPPORTED_MACHINE_OPERATIONS = SUPPORTED_SANDING_OPERATIONS
 
-
 SUPPORTED_SETTING_VALUES = {
     AppSupportedSettingValues.standardWidth1,
     AppSupportedSettingValues.standardWidth2,
@@ -40,12 +39,12 @@ SUPPORTED_SETTING_VALUES = {
 # ******************************** dovetail Joint profiles configurations ***********************
 
 DOVETAIL_JOINT_PROFILE_CONFIGURATION_MAIN = [{"lbl": "Adjust Depth", "target_key": "joint_deep_adjustment",
-     "field_type": WidgetsType.rangeWidget,
-     "range": machine_ranges.joint_deep_adjustment},
-    {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",
-     "field_type": WidgetsType.rangeWidget,
-     "range": machine_ranges.joint_deep_adjustment}]
-DOVETAIL_JOINT_PROFILE_CONFIGURATION =[
+                                              "field_type": WidgetsType.rangeWidget,
+                                              "range": machine_ranges.joint_deep_adjustment},
+                                             {"lbl": "Adjust Tightness", "target_key": "joint_tightness_adjustment",
+                                              "field_type": WidgetsType.rangeWidget,
+                                              "range": machine_ranges.joint_deep_adjustment}]
+DOVETAIL_JOINT_PROFILE_CONFIGURATION = [
     {"lbl": "Pin spacing", "target_key": "joint_profile_pin_spacing",
      "range": machine_ranges.joint_profile_pin_spacing},
     {"lbl": "Bit height", "target_key": "joint_profile_bit_height", "range": machine_ranges.joint_profile_bit_height},
@@ -89,6 +88,40 @@ DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
         "range": machine_ranges.dowel_profile_edge_depth
     }
 ]
+
+
+SANDING_DOORS_STYLES_PROFILE = [
+    {
+        "lbl": "Spacing",
+        "target_key": "dowel_profile_spacing",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_spacing
+    },
+    {
+        "lbl": "Outside edge width",
+        "target_key": "outside_edge_width",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_dis_from_edge
+    },
+    {
+        "lbl": "Distance from face",
+        "target_key": "dowel_profile_dis_from_face",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_dis_from_face
+    },
+    {
+        "lbl": "Face depth",
+        "target_key": "dowel_profile_face_depth",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_face_depth
+    },
+    {
+        "lbl": "Edge depth",
+        "target_key": "dowel_profile_edge_depth",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dowel_profile_edge_depth
+    }
+]
 DOVETAIL_DOWEL_PROFILE_OPTIONS = [
     {"lbl": "Opt1", "target_key": "come_value_key",
      "field_type": WidgetsType.rangeWidget,
@@ -100,9 +133,6 @@ DOVETAIL_DOWEL_PROFILE_OPTIONS = [
      },
 ]
 
-
-
-
 DOVETAIL_BIT_PROFILES_CONFIGURATION = [
     {
         "lbl": "Bit #",  # this should be displaying as int, and with tag #, not mm
@@ -110,7 +140,7 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number,
         "unit": "#",
-        "precession":0
+        "precession": 0
     },
     {
         "lbl": "Bit Angle",  # this should be displaying with unit deg, not mm
@@ -137,7 +167,7 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.bit_profile_number_of_flutes,
         "unit": "#",
-        "precession":0
+        "precession": 0
     },
     {
         "lbl": "Feed speed",
@@ -157,9 +187,8 @@ DOVETAIL_BIT_PROFILES_CONFIGURATION = [
     },
 ]
 
-
 SANDING_PART_PROFILE = [
-   {
+    {
         "lbl": "Stile Width",  # this should be displaying with unit deg, not mm
         "target_key": "part_stile_width",
         "field_type": WidgetsType.rangeWidget,
@@ -180,50 +209,46 @@ SANDING_PART_PROFILE = [
 ]
 
 SANDPAPER_PROFILE = [
-   {
+    {
         "lbl": "GRIT",  # this should be displaying with unit deg, not mm
         "target_key": "sanding_grit",
-        "field_type": WidgetsType.optionWidget,
-        "options": ["Extra Course 20 - 36", "Course 40 - 50", "MEDIUM 80 - 120", "FINE 150 - 180", "VERY FINE 220 - 240"]
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sanding_grit_range,
+        "precession": 0
     },
     {
-        "lbl": "Feed speed",  # this should be displaying with unit deg, not mm
-        "target_key": "sanding_feed_speed",
-        "field_type": WidgetsType.speedWidget,
-        "range": machine_ranges.sanding_feed_speed,
-         "unit": "RPM"
+        "lbl": "Pressure",  # this should be displaying with unit deg, not mm
+        "target_key": "sanding_pressure",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sanding_pressure,
+    },
+    {
+        "lbl": "Hold back from edges",  # this should be displaying with unit deg, not mm
+        "target_key": "sanding_hold_back_from_edges",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sanding_hold_back_from_edges,
+        "precession": 1
+    },
+    {
+        "lbl": "overhang",  # this should be displaying with unit deg, not mm
+        "target_key": "sandpaper_overhang",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sandpaper_overhang,
+        "precession": 0
     },
     {
         "lbl": "Overlap",  # this should be displaying with unit deg, not mm
         "target_key": "sandpaper_overlap",
-        "field_type": WidgetsType.boolWidget,
-    },
-    {
-        "lbl": "Distance To Sandpaper Edge",
-        "target_key": "distance_to_sandpaper_edge",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.distance_to_edge_of_sandpaper
+        "range": machine_ranges.sandpaper_Overlap,
+        "precession": 0
     },
-    {
-        "lbl": "Distance To Profile Edge",
-        "target_key": "distance_to_profile_edge",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.sandpaper_distance_to_edge_of_profile
-    },
-{
-        "lbl": "Sanding Pressure",  # this should be displaying as in and with unit tag #, not mm
-        "target_key": "sanding_pressure",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.bit_profile_number_of_flutes,
-        "unit": "mpa",
-        "precession":3
-    },
-    {
-        "lbl": "Sanding Paper Type",  # this should be displaying as in and with unit tag #, not mm
-        "target_key": "sanding paper type",
-        "field_type": WidgetsType.optionWidget,
-        "options": ["type1", "type2", "type3"],
-
+   {
+        "lbl": "Speed",
+        "target_key": "sandpaper_speed",
+        "field_type": WidgetsType.speedWidget,
+        "range": machine_ranges.sandpaper_speed,
+       "unit":"sec"
     },
 
 ]
@@ -369,40 +394,60 @@ DOVETAIL_SETTING_CONFIGURATION = [
     },
 
 ]
-
 
 SANDING_SETTING_CONFIGURATION = [
     {
-        "lbl": "X zero",
-        "target_key": "dovetail_setting_x_zero",
+        "lbl": "S1 X",
+        "target_key": "sander1_x_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+
+    {
+        "lbl": "S2 X",
+        "target_key": "sander2_x_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+
+    {
+        "lbl": "S3 X",
+        "target_key": "sander3_x_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+
+    {
+        "lbl": "S4 X",
+        "target_key": "sander4_x_value",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_setting_x_zero
     },
     {
-        "lbl": "Y zero",
-        "target_key": "dovetail_setting_y_zero",
+        "lbl": "S1 Y",
+        "target_key": "sander1_y_value",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_setting_y_zero
     },
     {
-        "lbl": "Z zero",
-        "target_key": "dovetail_setting_z_zero",
+        "lbl": "S2 Y",
+        "target_key": "sander2_y_value",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dovetail_setting_z_zero
-    },
-    {
-        "lbl": "A zero",
-        "target_key": "dovetail_setting_a_zero",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dovetail_setting_a_zero
-    },
-    {
-        "lbl": "B zero",
-        "target_key": "dovetail_setting_b_zero",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dovetail_setting_b_zero
+        "range": machine_ranges.dovetail_setting_y_zero
     },
 
+    {
+        "lbl": "S3 Y",
+        "target_key": "sander3_y_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_y_zero
+    },
+    {
+        "lbl": "S4 Y",
+        "target_key": "sander4_y_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_y_zero
+    },
 
 ]
 MACHINE_SETTING_CONFIGURATIONS = DOVETAIL_SETTING_CONFIGURATION
@@ -429,6 +474,21 @@ DOVETAIL_RESET_PAGE_BUTTONS = \
         }
     ]
 
+SANDING_RESET_PAGE_BUTTONS = \
+    [
+        {
+            "lbl": "RESET CONTROLLER",
+            "target_key": "reset_controller_btn",
+        },
+        {
+            "lbl": "HOME",
+            "target_key": "home_btn",
+        }
+    ]
+MACHINE_REST_PAGE_BUTTONS = DOVETAIL_RESET_PAGE_BUTTONS
+if CURRENT_MACHINE == SupportedMachines.sandingMachine:
+    MACHINE_REST_PAGE_BUTTONS = SANDING_RESET_PAGE_BUTTONS
+
 # ************************* dovetail left/right active mapper *************
 DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]
 DOVETAIL_SUPPORTED_LEVELS = 5  # the first lvl off
@@ -447,8 +507,8 @@ LOGGER_NAME = "Dovetail"
 
 AVAILABLE_CAMERAS = 1
 FRAME_RATE = 5  # we will take image every 0.1 sec
-IMAGE_WIDTH = 640
-IMAGE_HEIGHT = 360
+IMAGE_WIDTH = 480
+IMAGE_HEIGHT = 640
 
 # TEMPERATURE
 TEMPERATURE_API_KEY = "bdde746d10436194809f0f822c5c1a2b"

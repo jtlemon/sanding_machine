@@ -1,5 +1,11 @@
 {
     "measure_unit": 1,
     "time_format": 12,
+    "workspace_points": [
+        21,
+        57,
+        573,
+        340
+    ],
     "zip_code": "84116"
 }

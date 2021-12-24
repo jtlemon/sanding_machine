@@ -131,6 +131,10 @@ QCheckBox::indicator {
      width: 40px;
      height: 40px;
 }
+QRadioButton::indicator {
+     width: 40px;
+     height: 40px;
+}
 TrackableCheckBox
 {
     height:40px;
@@ -175,4 +179,22 @@ QTabWidget::tab-bar
 #bit_dialog_footer_error_lbl
 {
    color:red;
+}
+
+
+QSlider {
+    min-height: 60px;
+}
+QSlider::groove:horizontal {
+    height: 40px;
+    margin: 0 12px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                    stop: 0 rgb(40,150,200), stop: 1 rgb(90,200,255));
+}
+        QSlider::handle:horizontal {
+    background: #FFFFFF;
+    border-radius:30px;
+    width: 30px;
+    height: 30px;
+    margin: -24px -12px;
 }
