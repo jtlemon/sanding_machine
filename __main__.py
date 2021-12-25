@@ -13,7 +13,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
 from view_managers import DovetailCameraPageManager, BitProfileManager, DowelJointProfileManager, \
     MachineSettingsManager, ResetPageManager, SandingPartProfilePageManager
-from view_managers.sanding_camera_page_manager import SandingPageViewManager
+from view_managers.sanding_camera_page_manager import ModifiedSandingPageManager
 from view_managers.sanding_programs_operations.sanding_program_page import SandingProgramsPageManager
 from view_managers.door_styles import SandingDoorStylesManager
 from views import MachineInterfaceUi
@@ -24,6 +24,7 @@ from models.temperature_service import TemperatureService
 from models.sensors_connector_hal import SensorConnector
 from models.grbl_hal import GrblControllerHal
 from configurations.custom_pram_loader import CustomMachineParamManager
+from view_managers.sander_management import SanderListingViewManagement
 from custom_widgets.countdown_timer import CountDownTimerManager
 from custom_widgets.spin_box import CustomSpinBox, SpinUnitMode
 from models import MeasureUnitType
@@ -63,7 +64,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__joint_dowel_profile_update_subscribers.add(operation_page_widget)
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
-                operation_page_widget = SandingPageViewManager("Camera")
+                operation_page_widget = ModifiedSandingPageManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
@@ -86,7 +87,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = SandingProfilePageManager()
             elif app_operation == static_app_configurations.AppSupportedOperations.doorStylesOperation:
                 operation_page_widget = SandingDoorStylesManager()
-
+            elif app_operation == AppSupportedOperations.sandersManagementOperations:
+                operation_page_widget = SanderListingViewManagement()
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
             self.add_app_window_widget(operation_page_widget)

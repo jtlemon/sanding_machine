@@ -12,9 +12,9 @@ from view_managers.utils import add_item_to_table
 from view_managers.sander_management.add_edit_sander_dialog import EditSanderDialog
 
 
-class SanderListingView(QtWidgets.QTableWidget):
+class SanderListingViewManagement(QtWidgets.QTableWidget):
     def __init__(self, footer_btn_text = "Sanders Management"):
-        super(SanderListingView, self).__init__()
+        super(SanderListingViewManagement, self).__init__()
         self.__footer_btn_text = footer_btn_text
         col_names = (["Name", "X length", "Y length", "Square", "Fine", "Sandpaper", "#"])
         self.setColumnCount(len(col_names))
@@ -39,7 +39,7 @@ class SanderListingView(QtWidgets.QTableWidget):
         if update is False:
             edit_btn = QtWidgets.QPushButton()
             edit_btn.setIcon(QtGui.QIcon(":/icons/icons/icons8-edit-96.png"))
-            edit_btn.setIconSize(QtCore.QSize(24, 40))
+            edit_btn.setIconSize(QtCore.QSize(24, 24))
             edit_btn.clicked.connect(self.edit_sander_id_factory(sander.pk, row_index))
             self.setCellWidget(row_index, 6, edit_btn)
 
@@ -86,7 +86,7 @@ class SanderListingView(QtWidgets.QTableWidget):
 if __name__ == "__main__":
     from views import utils
     app = QtWidgets.QApplication([])
-    w = SanderListingView()
+    w = SanderListingViewManagement()
     w.show()
     app.setStyleSheet(utils.load_app_style())
     app.exec_()

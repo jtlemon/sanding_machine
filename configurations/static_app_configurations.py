@@ -21,9 +21,11 @@ SUPPORTED_SANDING_OPERATIONS = [
     AppSupportedOperations.sandingCameraOperations,
     AppSupportedOperations.doorStylesOperation,
     AppSupportedOperations.sandingProgramsOperations,
+    AppSupportedOperations.sandersManagementOperations,
     AppSupportedOperations.individualSandPaperOperations,
     AppSupportedOperations.restMachineOperation,
     AppSupportedOperations.settingParametersOperation,
+
 ]
 
 SUPPORTED_MACHINE_OPERATIONS = SUPPORTED_DOVETAIL_OPERATIONS

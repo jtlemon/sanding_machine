@@ -257,7 +257,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.workspace_length_lin.setValidator(self.float_validator)
         self.center_footer_layout.addWidget(self.workspace_length_lin)
         self.center_side_cam_frame_layout.addLayout(self.center_footer_layout, stretch=0)
-
+        self.center_side_cam_frame.setFixedWidth(640)
         # right width
         self.right_side_cam_frame = QtWidgets.QFrame()
         self.right_side_cam_frame_layout = QtWidgets.QVBoxLayout(self.right_side_cam_frame)
@@ -272,32 +272,31 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.right_side_cam_frame_layout.addWidget(self.workspace_width)
         self.right_side_cam_frame_layout.addStretch(1)
         self.camera_frame_layout.addWidget(self.right_side_cam_frame, stretch=0)
-
-
-
+        self.localize_part_btn.setVisible(False)
+        self.localize_workplace_btn.setVisible(False)
         self.main_widget_frame_layout.addWidget(self.camera_frame)
 
         # connect all
         self.widget_layout.addStretch(1)
         self.widget_layout.addWidget(self.main_widget_frame)
         self.widget_layout.addStretch(1)
+        self.camera_widget.setFixedSize(640, 480)
+
 
 class ModifiedSandingPageManager(ModifiedSandingPageView):
-    def __init__(self, parent= None):
+    def __init__(self, footer_btn="Camera", parent= None):
         super(ModifiedSandingPageManager, self).__init__(parent=parent)
+        self.__footer_btn_text = footer_btn
         self.camera_widget.newAreaSelectedSignal.connect(self._handle_image_area_selected)
-        self.localize_part_btn.clicked.connect(lambda state: self.camera_widget.enable_annotation(state))
-        self.localize_workplace_btn.clicked.connect(lambda state: self.camera_widget.enable_annotation(state))
-
 
     def new_image_received(self, cam_index:int, pix_map:QtGui.QPixmap):
         if cam_index == 0:
-            rect = self.get_part_rect(pix_map.width(), pix_map.height())
+            rect = self.get_part_rect()
             if rect is not None:
                 self.camera_widget.draw_rectangles(pix_map, rect, QtCore.Qt.darkGreen)
             self.camera_widget.set_image(pix_map)
 
-    def get_part_rect(self, image_width:int, image_height:int):
+    def get_part_rect(self):
         part_width_str = self.part_width.text()
         part_length_str = self.part_length_lin.text()
         workspace_width_str = self.workspace_width.text()
@@ -331,6 +330,28 @@ class ModifiedSandingPageManager(ModifiedSandingPageView):
         self.localize_workplace_btn.setChecked(False)
         self.localize_part_btn.setChecked(False)
         self.camera_widget.enable_annotation(False)
+
+
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
+
+
+    def get_footer_btn_name(self) -> str:
+        return self.__footer_btn_text
+
+
+    def is_dirty(self) -> bool:
+        return False
+
+
+    def handle_joint_dowel_profile_updated(self, new_profiles):
+        pass
+
+    def handle_setting_changed(self):
+        pass
+
+    def change_measure_mode(self, unit: MeasureUnitType):
+        pass
 
 
 if __name__ == "__main__":
