@@ -17,6 +17,8 @@ def get_supported_profiles(profile_type):
         supported_dowels_profiles = static_configurations.SANDING_PART_PROFILE
     elif profile_type == static_configurations.AppSupportedOperations.individualSandPaperOperations:
         supported_dowels_profiles = static_configurations.SANDPAPER_PROFILE
+    elif profile_type == static_configurations.AppSupportedOperations.doorStylesOperation:
+        supported_dowels_profiles = static_configurations.SANDING_DOOR_STYLES_PROFILE
     else:
         raise ValueError(f"not implemented operation {profile_type}")
 

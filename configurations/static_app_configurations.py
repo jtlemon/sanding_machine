@@ -92,36 +92,36 @@ DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION = [
 ]
 
 
-SANDING_DOORS_STYLES_PROFILE = [
-    {
-        "lbl": "Spacing",
-        "target_key": "dowel_profile_spacing",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dowel_profile_spacing
-    },
+SANDING_DOOR_STYLES_PROFILE = [
     {
         "lbl": "Outside edge width",
         "target_key": "outside_edge_width",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dowel_profile_dis_from_edge
+        "range": machine_ranges.door_styles_outside_edge_width,
+        "tooltip":""
     },
     {
-        "lbl": "Distance from face",
-        "target_key": "dowel_profile_dis_from_face",
+        "lbl": "Inside Edge Width",
+        "target_key": "inside_edge_width",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dowel_profile_dis_from_face
+        "range": machine_ranges.door_styles_inside_edge_width
     },
     {
-        "lbl": "Face depth",
+        "lbl": "Frame Width",
+        "target_key": "frame_width",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.door_styles_frame_width
+    },
+    {
+        "lbl": "HBFIE",
         "target_key": "dowel_profile_face_depth",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dowel_profile_face_depth
+        "range": machine_ranges.door_styles_hold_back_from_edges
     },
     {
-        "lbl": "Edge depth",
-        "target_key": "dowel_profile_edge_depth",
-        "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dowel_profile_edge_depth
+        "lbl": "Total Profile Width",
+        "target_key": "total_profile_width",
+        "field_type": WidgetsType.calculatedValue,
     }
 ]
 DOVETAIL_DOWEL_PROFILE_OPTIONS = [

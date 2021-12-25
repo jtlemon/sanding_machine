@@ -47,4 +47,40 @@ class Sander(models.Model):
     installed_sandpaper = models.ForeignKey(Sandpaper, on_delete=models.CASCADE, default=None, null=True)
 
 
+class DoorStyle(models.Model):
+    profile_name = models.CharField(max_length=20, default="", unique=True)
+    json_payload = jsonfield.JSONField()
+    machine = models.IntegerField(choices=SupportedMachines.choices)
 
+    def get_value(self, target_key):
+        return self.json_payload.get(target_key, None)
+
+    def get_decoded_json(self):
+        return self.json_payload
+
+    def set_value(self, key, value):
+        self.json_payload[key] = value
+
+
+class SandingProgram(models.Model):
+    name = models.CharField(max_length=50, default="", unique=True)
+
+    def __str__(self):
+        pass
+
+
+class SandingProgramPass(models.Model):
+    sanding_program = models.ForeignKey(SandingProgram, on_delete=models.CASCADE, null=True, default=None)
+    sander = models.ForeignKey(Sander, on_delete=models.CASCADE, null=True)
+    contain_frames = models.BooleanField(default=False)
+    contain_panels = models.BooleanField(default=False)
+    is_entire_panel = models.BooleanField(null=True)
+    contain_slabs = models.BooleanField(default=False)
+    make_extra_pass_around_perimeter = models.BooleanField(default=False)
+    # values
+    overlap_value = models.IntegerField(null=True)
+    pressure_value = models.IntegerField(null=True)
+    speed_value = models.IntegerField(null=True)
+    hangover_value = models.IntegerField(null=True)
+
+    is_temp = models.BooleanField(default=True)

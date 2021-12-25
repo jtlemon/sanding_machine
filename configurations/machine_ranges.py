@@ -44,7 +44,7 @@ sandpaper_speed = (10, 100, 10)
 door_styles_outside_edge_width = (1, 610, 1)
 door_styles_inside_edge_width = (1, 610, 1)
 door_styles_frame_width = (1, 610, 1)
-
+door_styles_hold_back_from_edges = (0, 10, 0.5)
 
 
 

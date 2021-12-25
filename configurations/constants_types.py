@@ -32,3 +32,4 @@ class WidgetsType(Enum):
     speedWidget = 3
     optionWidget = 4
     optionalRangeWidget = 5
+    calculatedValue = 6

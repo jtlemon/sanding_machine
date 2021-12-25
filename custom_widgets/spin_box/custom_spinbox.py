@@ -157,6 +157,11 @@ class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame)
     def value(self):
         return self.__current_val_mm
 
+    def set_min_limit(self):
+        self.__original_val__mm = self.__min_val
+        self.__current_val_mm = self.__min_val
+        self._update_display()
+
     def store(self, auto_save=True):
         if self.is_changed():
             CustomMachineParamManager.set_value(self.__target_config_key, self.__current_val_mm, auto_save)

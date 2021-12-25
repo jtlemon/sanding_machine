@@ -146,10 +146,10 @@ class Ui_SandingProgramCreationDialog(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.checkBox = QCheckBox(self.frame)
-        self.checkBox.setObjectName(u"checkBox")
+        self.frames_checkbox = QCheckBox(self.frame)
+        self.frames_checkbox.setObjectName(u"frames_checkbox")
 
-        self.verticalLayout_2.addWidget(self.checkBox)
+        self.verticalLayout_2.addWidget(self.frames_checkbox)
 
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -165,15 +165,15 @@ class Ui_SandingProgramCreationDialog(object):
         self.gridLayout_2 = QGridLayout(self.panel_option_frame)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.radioButton_2 = QRadioButton(self.panel_option_frame)
-        self.radioButton_2.setObjectName(u"radioButton_2")
+        self.only_perimeter_radio = QRadioButton(self.panel_option_frame)
+        self.only_perimeter_radio.setObjectName(u"only_perimeter_radio")
 
-        self.gridLayout_2.addWidget(self.radioButton_2, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.only_perimeter_radio, 0, 1, 1, 1)
 
-        self.radioButton = QRadioButton(self.panel_option_frame)
-        self.radioButton.setObjectName(u"radioButton")
+        self.entrire_panel_radio = QRadioButton(self.panel_option_frame)
+        self.entrire_panel_radio.setObjectName(u"entrire_panel_radio")
 
-        self.gridLayout_2.addWidget(self.radioButton, 0, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.entrire_panel_radio, 0, 0, 1, 1)
 
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -262,10 +262,10 @@ class Ui_SandingProgramCreationDialog(object):
         self.program_name_lin.setPlaceholderText(QCoreApplication.translate("SandingProgramCreationDialog", u"program name ", None))
         self.label_2.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"Sander", None))
         self.label_3.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"grit", None))
-        self.checkBox.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"Frames", None))
+        self.frames_checkbox.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"Frames", None))
         self.panels_checkbox.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"panels", None))
-        self.radioButton_2.setText(QCoreApplication.translate("SandingProgramCreationDialog", u" only perimeter", None))
-        self.radioButton.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"entire panel ", None))
+        self.only_perimeter_radio.setText(QCoreApplication.translate("SandingProgramCreationDialog", u" only perimeter", None))
+        self.entrire_panel_radio.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"entire panel ", None))
         self.slabs_checkbox.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"slabs", None))
         self.extra_pass_around_perimeter_checkbox.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"Make extra pass around perimeter", None))
         self.label_4.setText(QCoreApplication.translate("SandingProgramCreationDialog", u"pressure", None))

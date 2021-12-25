@@ -89,30 +89,34 @@ def widget_create_from_dict(config_dict):
     elif field_type == WidgetsType.optionWidget:
         options = config_dict.get("options")
         control_widget = TrackableQComboBox(key_name=key, options=options)
-
+    elif field_type == WidgetsType.calculatedValue:
+        control_widget = None
     return name, key, control_widget
 
 
 def set_field_value(control_widget, value):
     if isinstance(control_widget, CustomSpinBox) or isinstance(control_widget, OptionalRangeWidget):
         control_widget.set_value_and_reset_state(value)
+    elif isinstance(control_widget, QtWidgets.QLabel):
+        control_widget.setText(value)
     else:
         control_widget.set_value(value)
 
 
 class RenderInternalPramsWidget(QtWidgets.QWidget):
-    def __init__(self, widgets_meta_list):  # this just list of prams to create the payload
+    def __init__(self, widgets_meta_list, ):  # this just list of prams to create the payload
         super(RenderInternalPramsWidget, self).__init__()
         self.grid_layout = QtWidgets.QGridLayout(self)
         self.internal_widgets = list()
         for index, joint_config in enumerate(widgets_meta_list):
             # these three prams are essential
             name, key, control_widget = widget_create_from_dict(joint_config)
-            lbl = QtWidgets.QLabel(name)
-            lbl.setWordWrap(True)
-            self.grid_layout.addWidget(lbl, index, 0, 1, 1)
-            self.grid_layout.addWidget(control_widget, index, 1, 1, 1)
-            self.internal_widgets.append(control_widget)
+            if control_widget is not None:
+                lbl = QtWidgets.QLabel(name)
+                lbl.setWordWrap(True)
+                self.grid_layout.addWidget(lbl, index, 0, 1, 1)
+                self.grid_layout.addWidget(control_widget, index, 1, 1, 1)
+                self.internal_widgets.append(control_widget)
 
     def get_internal_widgets_ref(self):
         return  self.internal_widgets
@@ -127,9 +131,10 @@ class RenderInternalPramsWidget(QtWidgets.QWidget):
     def get_widget_payload(self):
         payload = {}
         for control_widget in self.internal_widgets:
-            key = control_widget.get_key()
-            value = control_widget.value()
-            payload[key] = value
+            if not isinstance(control_widget, QtWidgets.QLabel):
+                key = control_widget.get_key()
+                value = control_widget.value()
+                payload[key] = value
         return payload
 
 

@@ -1,5 +1,4 @@
 from PySide2 import QtWidgets, QtCore, QtGui
-from view_managers.utils import add_item_to_table
 
 
 class RecordTrackBtn(QtWidgets.QPushButton):
@@ -134,6 +133,7 @@ class CenterPagePushButton(QtWidgets.QWidget):
         self.widget_layout.addItem(h_spacer_item_2)
         self.clicked = self.widget_btn.clicked
 
+
 class TrackableCheckBox(QtWidgets.QCheckBox):
     def __init__(self, *args, key_name, **kwargs):
         super(TrackableCheckBox, self).__init__(*args, **kwargs)
@@ -165,7 +165,7 @@ class TrackableLineEdit(QtWidgets.QLineEdit):
 
 
 class TrackableQComboBox(QtWidgets.QComboBox):
-    def __init__(self, *args, key_name, options = [], **kwargs):
+    def __init__(self, *args, key_name, options=[], **kwargs):
         super(TrackableQComboBox, self).__init__(*args, **kwargs)
         self.__key_name = key_name
         self.addItems(options)
@@ -180,10 +180,14 @@ class TrackableQComboBox(QtWidgets.QComboBox):
         return self.currentText()
 
 
-
 class ProfileAddEditWidget(QtWidgets.QWidget):
-    def __init__(self, profile_descriptor:dict, parent=None):
+    def __init__(self, profile_descriptors: list, add_edit_dialog_class, db_model, parent=None,
+                 append_bit_profile=False):
         super(ProfileAddEditWidget, self).__init__(parent)
+        self.add_edit_dialog_class = add_edit_dialog_class
+        self.profile_db_model = db_model
+        self.__sanding_door_styles = set()
+        self.append_bit_profile_option = append_bit_profile
         self.widget_layout = QtWidgets.QVBoxLayout(self)
         # header
         self.header_layout = QtWidgets.QHBoxLayout()
@@ -195,16 +199,22 @@ class ProfileAddEditWidget(QtWidgets.QWidget):
         self.widget_layout.addLayout(self.header_layout)
         # table
         col_names = ["name"]
-        self.target_db_keys = list()
-        self.default_values = list()
-        for joint_config in profile_descriptor :
-            widget_range = profile_descriptor.get("range")
+        self.target_db_keys_defaults = dict()
+        for profile_descriptor in profile_descriptors:
             lbl_text = profile_descriptor.get("lbl")
             target_key = profile_descriptor.get("target_key")
+            widget_range = profile_descriptor.get("range", None)
+            if widget_range is not None:
+                self.target_db_keys_defaults[target_key] = widget_range[0]
+            else:
+                self.target_db_keys_defaults[target_key] = None
+
             col_names.append(lbl_text)
-            self.target_db_keys.append(target_key)
-            self.default_values.append(widget_range[0])
-        col_names.extend(["Bit", "#", "#"])
+
+        if self.append_bit_profile_option:
+            col_names.extend(["Bit", "#", "#"])
+        else:
+            col_names.extend(["#", "#"])
         self.widget_table = QtWidgets.QTableWidget()
         self.widget_table.setColumnCount(len(col_names))
         self.widget_table.setHorizontalHeaderLabels(col_names)
@@ -215,46 +225,50 @@ class ProfileAddEditWidget(QtWidgets.QWidget):
         self.handle_reload_profiles()
 
     def handle_reload_profiles(self):
-        pass
+        for profile in self.profile_db_model.objects.all():
+            self.append_profile_to_table(profile, is_new=True)
+            self.__sanding_door_styles.add(profile.profile_name)
 
-    def handle_add_profile(self):
-        pass
-
-    def handle_edit_profile(self, profile_id:int):
-        pass
-
-    def handle_delete_profile(self, profile_id:int):
-        pass
-
-    def append_profile_to_table(self, target_profile, row_index=-1):
+    def append_profile_to_table(self, target_profile, is_new=False):
         has_to_update_model = False
-        update_opt = True
-        if row_index == -1:
-            update_opt = False
+        if is_new is True:
             row_index = self.widget_table.rowCount()
             self.widget_table.insertRow(row_index)
-        add_item_to_table(self.widget_table, row_index, 0, target_profile.profile_name)
-        for col_index, key in enumerate(self.target_db_keys):
-            default_value = self.default_values[col_index]
+        else:
+            row_index = self.get_row_id(target_profile.pk)
+        self.add_item_to_table(row_index, 0, target_profile.profile_name)
+        for col_index, key in enumerate(self.target_db_keys_defaults):
+            default_value = self.target_db_keys_defaults.get(key)
             value = target_profile.get_value(key)
-            if value is None:
+            if (value is None) and (default_value is not None):
                 has_to_update_model = True
                 value = default_value
                 target_profile.set_value(key, value)
-            add_item_to_table(self.widget_table, row_index, col_index+1, value)
+            self.add_item_to_table(row_index, col_index + 1, value)
         col_index = col_index + 2
-        if hasattr(target_profile, "bit_profile"):
-            add_item_to_table(self.widget_table, row_index, col_index, target_profile.bit_profile.profile_name)
+        if self.append_bit_profile_option is True:
+            self.add_item_to_table(row_index, col_index, target_profile.bit_profile.profile_name)
             col_index += 1
-        if update_opt is False:
+        if is_new is True:
             edit_btn = RecordTrackBtn(target_profile.pk, ":/icons/icons/icons8-edit-96.png")
             del_btn = RecordTrackBtn(target_profile.pk, ":/icons/icons/icons8-delete-bin-96.png")
             self.widget_table.setCellWidget(row_index, col_index, edit_btn)
-            self.widget_table.setCellWidget(row_index, col_index+1, del_btn)
+            self.widget_table.setCellWidget(row_index, col_index + 1, del_btn)
             edit_btn.customClickSignal.connect(self.handle_edit_profile)
             del_btn.customClickSignal.connect(self.handle_delete_profile)
             if has_to_update_model:
                 target_profile.save()
+
+    def add_item_to_table(self, row, col, value):
+        item = QtWidgets.QTableWidgetItem(str(value))
+        item.setTextAlignment(QtCore.Qt.AlignCenter)
+        item.setFlags(item.flags() ^ QtCore.Qt.ItemIsEditable)
+        item.setToolTip(f"<b>{str(value)}</b>")
+        self.widget_table.setItem(row, col, item)
+
+    def del_profile_by_object_id(self, object_id):
+        row_id = self.get_row_id(object_id)
+        self.widget_table.removeRow(row_id)
 
     def get_row_id(self, item_pk):
         row_id = -1
@@ -266,6 +280,32 @@ class ProfileAddEditWidget(QtWidgets.QWidget):
             raise ValueError(f"the id field should be > 0 order pk {item_pk}")
         return row_id
 
+    def handle_add_profile(self):
+        dia = self.add_edit_dialog_class(parent=self)
+        if dia.exec_():
+            new_profile = dia.get_profile()
+            self.append_profile_to_table(new_profile, is_new=True)
+            self.__sanding_door_styles.add(new_profile.profile_name)
+            self.profileChanged.emit(self.__sanding_door_styles)
 
+    def handle_edit_profile(self, profile_id: int):
+        target_profile = self.profile_db_model.objects.get(pk=profile_id)
+        old_profile_name = target_profile.profile_name
+        dia = self.add_edit_dialog_class(door_style_profile=target_profile, parent=self)
+        if dia.exec_():
+            new_profile = dia.get_profile()
+            self.append_profile_to_table(new_profile, is_new=False)
+            if old_profile_name != new_profile.profile_name:
+                self.__sanding_door_styles.remove(old_profile_name)
+                self.__sanding_door_styles.add(new_profile.profile_name)
+                self.profileChanged.emit(self.__sanding_door_styles)
 
+    def handle_delete_profile(self, profile_id: int):
+        profile = self.profile_db_model.objects.get(pk=profile_id)
+        self.__sanding_door_styles.remove(profile.profile_name)
+        profile.delete()
+        self.del_profile_by_object_id(profile_id)
+        self.profileChanged.emit(self.__sanding_door_styles)
 
+    def get_loaded_profiles(self):
+        return self.__sanding_door_styles

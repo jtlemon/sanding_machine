@@ -7,14 +7,15 @@ except Exception as e:
     print(e)
 from apps.joint_profiles import models
 from PySide2 import QtWidgets, QtCore, QtGui
-from view_managers.joint_profiles.add_edit_profile_dialog import  AddEditJoinProfile
-import configurations.static_app_configurations as static_configurations
+from views.custom_app_widgets import RecordTrackBtn
 from models.custom_app_types import MeasureUnitType
 from view_managers.utils import add_item_to_table
-from views.custom_app_widgets import RecordTrackBtn
+
 from apps.commons import SupportedMachines
 from configurations.settings import CURRENT_MACHINE
 
+from view_managers.joint_profiles.add_edit_profile_dialog import  AddEditJoinProfile
+import configurations.static_app_configurations as static_configurations
 
 
 
