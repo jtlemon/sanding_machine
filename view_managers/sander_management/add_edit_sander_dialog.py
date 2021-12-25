@@ -116,7 +116,7 @@ class EditSanderDialog(QtWidgets.QDialog):
         self.current_sander.save()
         self.accept()
 
-    def get_current_objects(self):
+    def get_current_object(self):
         return self.current_sander
 
 if __name__ == "__main__":
