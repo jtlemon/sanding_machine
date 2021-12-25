@@ -40,6 +40,8 @@ class SandingProgramsPageManager(QtWidgets.QWidget, AbstractOperationWidgetMange
         self.add_new_program_btn.clicked.connect(self.create_new_program)
         self.reload_all_programs()
 
+    def get_sanding_programs(self):
+        return  self.__all_added_programs
 
     def reload_all_programs(self):
         for sanding_program in models.SandingProgram.objects.all():

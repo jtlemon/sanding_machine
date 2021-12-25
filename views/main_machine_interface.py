@@ -11,7 +11,7 @@ import configurations.static_app_configurations as static_configurations
 
 class MachineInterfaceUi(QtWidgets.QWidget):
     measureUnitChangedSignal = QtCore.Signal(object)
-
+    pageSelectedSignal = QtCore.Signal(int)
     def __init__(self):
         super(MachineInterfaceUi, self).__init__()
         # create header widget
@@ -126,6 +126,7 @@ class MachineInterfaceUi(QtWidgets.QWidget):
             btn = self.__footer_buttons[i]
             btn.setChecked(i == page_index)
         self.__app_pages.setCurrentIndex(page_index)
+        self.pageSelectedSignal.emit(page_index)
 
     def get_current_active_widget(self):
         return self.__app_pages.currentWidget()

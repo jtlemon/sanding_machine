@@ -55,7 +55,6 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__current_dowel_profile = None
         self.__current_bit_profile = None
         self.__current_joint_profile = None
-
         for app_operation in static_app_configurations.SUPPORTED_MACHINE_OPERATIONS:
             operation_page_widget = None
             if app_operation == static_app_configurations.AppSupportedOperations.dovetailCameraOperation:
@@ -66,6 +65,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = ModifiedSandingPageManager("Camera")
                 self.subscribe_to_image(0, operation_page_widget)
+
             elif app_operation == static_app_configurations.AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager()
                 for cam_index in range(static_app_configurations.AVAILABLE_CAMERAS):
@@ -156,6 +156,10 @@ class MachineGuiInterface(MachineInterfaceUi):
             camera_widget_manager.change_bit_btn.clicked.connect(self.change_machine_bit)
             camera_widget_manager.selectedProfileChanged.connect(self.handle_selected_profile_changed)
 
+
+
+
+
         # start all threads
         self.__temperature_thread.start()
         self.__sensors_board_thread.start()
@@ -185,6 +189,23 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("left_active", 0)
         CustomMachineParamManager.set_value("right_active", 0)
         CustomMachineParamManager.store()
+        self.pageSelectedSignal.connect(self.handle_page_selected)
+        self.handle_page_selected(0)
+
+    def handle_page_selected(self, page_index):
+        if page_index == 0:
+            if CURRENT_MACHINE == SupportedMachines.sandingMachine:
+
+                camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+                door_styles = self.__installed_operations[AppSupportedOperations.doorStylesOperation].get_loaded_profiles()
+                sanding_programs = self.__installed_operations[AppSupportedOperations.sandingProgramsOperations].get_sanding_programs()
+                current_door_style = camera_widget_manager.door_styles_combo.currentText()
+                current_program = camera_widget_manager.sanding_programs_combo.currentText()
+                camera_widget_manager.door_styles_combo.addItems(door_styles)
+                camera_widget_manager.sanding_programs_combo.addItems(sanding_programs)
+                camera_widget_manager.door_styles_combo.setCurrentText(current_door_style)
+                camera_widget_manager.sanding_programs_combo.setCurrentText(current_program)
+
 
     def bit_not_loaded(self):
         pass
