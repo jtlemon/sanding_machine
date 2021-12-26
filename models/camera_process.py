@@ -2,7 +2,7 @@ from multiprocessing import Process, Event, Value, Lock, Queue
 import cv2
 import time
 import threading
-from configurations import static_app_configurations
+from configurations import common_configurations
 
 class CameraManger:
     def __init__(self, cam_index):
@@ -16,9 +16,9 @@ class CameraManger:
     def __main__loop(self):
         self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
         self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-        self.__cam.set(cv2.CAP_PROP_FPS, static_app_configurations.FRAME_RATE)
-        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, static_app_configurations.IMAGE_WIDTH)
-        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, static_app_configurations.IMAGE_HEIGHT)
+        self.__cam.set(cv2.CAP_PROP_FPS, common_configurations.FRAME_RATE)
+        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, common_configurations.IMAGE_WIDTH)
+        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, common_configurations.IMAGE_HEIGHT)
         self.__cam.set(cv2.CAP_PROP_BUFFERSIZE, 3)
         time.sleep(1)
         if self.__cam.isOpened():
@@ -76,9 +76,9 @@ class CameraOnly:
     def connect(self):
         self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
         self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-        self.__cam.set(cv2.CAP_PROP_FPS, static_app_configurations.FRAME_RATE)
-        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, static_app_configurations.IMAGE_WIDTH)
-        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, static_app_configurations.IMAGE_HEIGHT)
+        self.__cam.set(cv2.CAP_PROP_FPS, common_configurations.FRAME_RATE)
+        self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, common_configurations.IMAGE_WIDTH)
+        self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, common_configurations.IMAGE_HEIGHT)
         self.__cam.set(cv2.CAP_PROP_BUFFERSIZE, 3)
         if self.__cam.isOpened():
             self.__is_camera_running = True
@@ -88,8 +88,8 @@ class CameraOnly:
             is_valid, image = self.__cam.read()
             if is_valid:
                 self.frame_loss_counter = 0
-                image = cv2.resize(image, (static_app_configurations.IMAGE_HEIGHT,
-                                           static_app_configurations.IMAGE_WIDTH
+                image = cv2.resize(image, (common_configurations.IMAGE_HEIGHT,
+                                           common_configurations.IMAGE_WIDTH
                                     ))
                 image = cv2.rotate(image, cv2.ROTATE_180)
                 return  cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -109,14 +109,14 @@ class CameraOnly:
 
 class CameraMangerProcess(Process):
     process_close_event = Event()
-    images_queue = [Queue(maxsize=4) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
+    images_queue = [Queue(maxsize=4) for i in range(common_configurations.AVAILABLE_CAMERAS)]
     @staticmethod
     def run():
-        sys_cameras_list = [CameraOnly(i) for i in range(static_app_configurations.AVAILABLE_CAMERAS)]
+        sys_cameras_list = [CameraOnly(i) for i in range(common_configurations.AVAILABLE_CAMERAS)]
         for cam in sys_cameras_list:
             cam.connect()
         while not CameraMangerProcess.process_close_event.is_set():
-            time.sleep(1/static_app_configurations.FRAME_RATE)
+            time.sleep(1/common_configurations.FRAME_RATE)
             for index, cam in enumerate(sys_cameras_list):
                 image = cam.read_cycle()
                 if not (image is None):
@@ -131,7 +131,7 @@ class CameraMangerProcess(Process):
 
     @staticmethod
     def get_image(cam_index:int):
-        if cam_index < static_app_configurations.AVAILABLE_CAMERAS:
+        if cam_index < common_configurations.AVAILABLE_CAMERAS:
             queue_ref = CameraMangerProcess.images_queue[cam_index]
             if not queue_ref.empty():
                 return queue_ref.get()

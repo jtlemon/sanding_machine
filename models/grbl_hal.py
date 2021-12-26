@@ -9,12 +9,12 @@ from apps.maintenance_productivity.models import Dowels, Holes, Part, AxisMotion
 from configurations import MainConfigurationLoader
 from models.generateCode import GenerateCode
 from .grbl_serial_connector import SerialConnector
-import configurations.static_app_configurations as static_configurations
+from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
 import time
 from models import db_utils
 
-module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
+module_logger = logging.getLogger(common_configurations.LOGGER_NAME)
 
 
 class GrblControllerHal(QtCore.QObject):

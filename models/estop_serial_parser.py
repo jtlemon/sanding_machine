@@ -5,9 +5,9 @@ from enum import Enum
 import serial
 from PySide2 import QtCore
 
-import configurations.static_app_configurations as static_configurations
+from configurations import common_configurations
 
-module_logger = logging.getLogger(static_configurations.LOGGER_NAME)
+module_logger = logging.getLogger(common_configurations.LOGGER_NAME)
 
 
 class RecState(Enum):
@@ -52,7 +52,7 @@ class EStopSerialInterface(QtCore.QThread):
         self.__last_time_status_checked = time.time()
 
     def run(self):
-        if static_configurations.IS_ESTOP_MODULE_ENABLED is False:
+        if common_configurations.IS_ESTOP_MODULE_ENABLED is False:
             module_logger.info("the sensors are disabled by the configurations")
             return
         while not self.isInterruptionRequested():
@@ -97,7 +97,7 @@ class EStopSerialInterface(QtCore.QThread):
                     self.msleep(50)  # sleep 50 ms
                 current_time = time.time()
                 if (
-                        current_time - self.__last_time_status_checked) >= static_configurations.ESTOP_CHECK_STATUS_EVERY:
+                        current_time - self.__last_time_status_checked) >= common_configurations.ESTOP_CHECK_STATUS_EVERY:
                     self.get_module_status()
                     self.__last_time_status_checked = time.time()
             except OSError:
@@ -148,8 +148,8 @@ class EStopSerialInterface(QtCore.QThread):
                 pass
             self.__serial_dev = None
         try:
-            self.__serial_dev = serial.Serial(static_configurations.ESTOP_MODULE_COM_PORT,
-                                              static_configurations.ESTOP_MODULE_BAUD_RATE,
+            self.__serial_dev = serial.Serial(common_configurations.ESTOP_MODULE_COM_PORT,
+                                              common_configurations.ESTOP_MODULE_BAUD_RATE,
                                               timeout=0.5)
             if self.__serial_dev.isOpen():
                 self.__is_serial_dev_connected = True

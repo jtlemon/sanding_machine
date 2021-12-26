@@ -1,28 +1,33 @@
-import configurations.static_app_configurations as static_configurations
-from apps.commons import SupportedMachines
-from configurations.constants_types import WidgetsType
-from configurations.settings import CURRENT_MACHINE
+from configurations.constants_types import WidgetsType, AppSupportedOperations
+from configurations import dovetail_configurations
+from configurations import sanding_configuration
+from configurations import common_configurations
 
 
 def get_supported_profiles(profile_type):
-    if profile_type == static_configurations.AppSupportedOperations.dowelsProfileOperation:
-          supported_dowels_profiles = static_configurations.DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION
-    elif profile_type == static_configurations.AppSupportedOperations.jointProfilesOperation:
-          supported_dowels_profiles = static_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
-    elif profile_type == static_configurations.AppSupportedOperations.bitProfilesOperation:
-        supported_dowels_profiles = static_configurations.DOVETAIL_BIT_PROFILES_CONFIGURATION
-    elif profile_type == static_configurations.AppSupportedOperations.settingParametersOperation:
-        supported_dowels_profiles = static_configurations.MACHINE_SETTING_CONFIGURATIONS
-    elif profile_type == static_configurations.AppSupportedOperations.partProfileOperation:
-        supported_dowels_profiles = static_configurations.SANDING_PART_PROFILE
-    elif profile_type == static_configurations.AppSupportedOperations.individualSandPaperOperations:
-        supported_dowels_profiles = static_configurations.SANDPAPER_PROFILE
-    elif profile_type == static_configurations.AppSupportedOperations.doorStylesOperation:
-        supported_dowels_profiles = static_configurations.SANDING_DOOR_STYLES_PROFILE
+    if profile_type == AppSupportedOperations.dowelsProfileOperation:
+        ui_elements_descriptor = dovetail_configurations.DOVETAIL_DOWEL_JOINT_PROFILE_CONFIGURATION
+    elif profile_type == AppSupportedOperations.jointProfilesOperation:
+        ui_elements_descriptor = dovetail_configurations.DOVETAIL_JOINT_PROFILE_CONFIGURATION
+    elif profile_type == AppSupportedOperations.bitProfilesOperation:
+        ui_elements_descriptor = dovetail_configurations.DOVETAIL_BIT_PROFILES_CONFIGURATION
+    elif profile_type == AppSupportedOperations.settingParametersOperation:
+        if common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.dovetailMachine:
+            ui_elements_descriptor = dovetail_configurations.DOVETAIL_SETTING_CONFIGURATION
+        elif common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.sandingMachine:
+            ui_elements_descriptor = sanding_configuration.SANDING_SETTING_CONFIGURATION
+        else:
+            raise ValueError("not supported machine....")
+    elif profile_type == AppSupportedOperations.partProfileOperation:
+        ui_elements_descriptor = sanding_configuration.SANDING_PART_PROFILE
+    elif profile_type == AppSupportedOperations.individualSandPaperOperations:
+        ui_elements_descriptor = sanding_configuration.SANDPAPER_PROFILE
+    elif profile_type == AppSupportedOperations.doorStylesOperation:
+        ui_elements_descriptor = sanding_configuration.SANDING_DOOR_STYLES_PROFILE
     else:
         raise ValueError(f"not implemented operation {profile_type}")
 
-    return supported_dowels_profiles
+    return ui_elements_descriptor
 
 
 def get_supported_profiles_meta(profile_type):
@@ -34,7 +39,7 @@ def get_supported_profiles_meta(profile_type):
         display_names.append(profile.get("lbl"))
         target_keys.append(profile.get("target_key"))
         widget_type = profile.get("field_type", WidgetsType.rangeWidget)
-        if widget_type == WidgetsType.rangeWidget or widget_type == widget_type.speedWidget or widget_type== widget_type.optionalRangeWidget:
+        if widget_type == WidgetsType.rangeWidget or widget_type == widget_type.speedWidget or widget_type == widget_type.optionalRangeWidget:
             widget_range = profile.get("range")
             default_values.append(widget_range[0])
         elif widget_type == WidgetsType.boolWidget:
@@ -46,4 +51,4 @@ def get_supported_profiles_meta(profile_type):
             default_values.append(options[0])
         else:
             raise ValueError("not supported widget type (range/bool)")
-    return  display_names, target_keys, default_values
+    return display_names, target_keys, default_values

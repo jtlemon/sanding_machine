@@ -11,7 +11,7 @@ from view_managers.utils import add_item_to_table
 CONFIGURATION_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "configurations",
                                        "machine_prams.json")
 
-import configurations.static_app_configurations as static_configurations
+from configurations import common_configurations
 
 NAMES_MAPPER = \
     {
@@ -68,12 +68,12 @@ class ScanningThread(QtCore.QThread):
         time.sleep(1)
         serial_dev = None
         available_ports = [port.device for port in serial.tools.list_ports.comports()]
-        if static_configurations.GRBL_MODULE_COM_PORT not in available_ports:
+        if common_configurations.GRBL_MODULE_COM_PORT not in available_ports:
             self.__last_error = "Board Not Connected."
             print("thread end.........")
             return
         try:
-            serial_dev = serial.Serial(static_configurations.GRBL_MODULE_COM_PORT,
+            serial_dev = serial.Serial(common_configurations.GRBL_MODULE_COM_PORT,
             115200, timeout=4)
             while not serial_dev.isOpen():
                 time.sleep(0.1)

@@ -4,8 +4,7 @@ import logging
 import time
 import os
 import math
-import configurations.static_app_configurations as static_configuration
-import json
+from configurations import common_configurations
 module_logger = logging.getLogger("drill-dowel-grbl")
 module_logger.setLevel(logging.DEBUG)
 LOG_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)),"..","logs", 'serial_logs.log')
@@ -27,8 +26,8 @@ class SerialConnector(Process):
         self.__last_responses_queue = last_responses_queue
         self.__is_serial_connected = False
         self.__serial_dev = None
-        self.__serial_port_path = static_configuration.GRBL_MODULE_COM_PORT
-        self.__is_simulation_enabled = not static_configuration.IS_GRBL_MODULE_ENABLED
+        self.__serial_port_path = common_configurations.GRBL_MODULE_COM_PORT
+        self.__is_simulation_enabled = not common_configurations.IS_GRBL_MODULE_ENABLED
         self.__close_event = Event()
         self.__logging_header = "Simulation" if self.__is_simulation_enabled else "Active"
         self.axis_current_pos_info = {"x": 0, "y": 0, "z": 0, "a": 0}

@@ -1,8 +1,3 @@
-
-from .dovetail_camera_page_manager import DovetailCameraPageManager
-from .bit_profiles.bit_profiles_manager import BitProfileManager
 from .machine_settings.machine_setting_manager import MachineSettingsManager
 from .machine_reset.machine_reset_manager import ResetPageManager
-from .retrive_machine_prams import RetrieveMachinePramsDialog
-from .part_profile.part_profile_manager import SandingPartProfilePageManager
-from .joint_dowel_profile_manager.joint_dowel_profile_manager import DowelJointProfileManager
+

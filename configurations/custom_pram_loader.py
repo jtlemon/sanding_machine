@@ -1,6 +1,6 @@
 import os, json, inspect
 from apps.commons import SupportedMachines
-from configurations.settings import CURRENT_MACHINE
+from configurations.common_configurations import CURRENT_MACHINE
 
 if CURRENT_MACHINE == SupportedMachines.dovetailMachine:
     file_name = "dovetail_configurations.json"
@@ -11,7 +11,7 @@ else:
 
 CONFIGURATION_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "custom_configurations", file_name)
 if not os.path.isfile(CONFIGURATION_FILE_PATH):
-    json.dump({} , open(CONFIGURATION_FILE_PATH, "w"))
+    json.dump({}, open(CONFIGURATION_FILE_PATH, "w"))
 
 
 class CustomMachineParamManager:

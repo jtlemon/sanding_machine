@@ -3,7 +3,7 @@ import requests
 import time
 from logzero import logger
 from configurations import MainConfigurationLoader
-from configurations import static_app_configurations
+from configurations import common_configurations
 
 
 
@@ -19,9 +19,9 @@ class TemperatureService(QtCore.QThread):
     def run(self):
         while not self.isInterruptionRequested():
             zip_code = MainConfigurationLoader.get_value("zip_code", "84116")
-            if (time.time() - self.__last_time_measured) > static_app_configurations.MEASURE_TEMPERATURE_EVERY or self.__measure_now:
+            if (time.time() - self.__last_time_measured) > common_configurations.MEASURE_TEMPERATURE_EVERY or self.__measure_now:
                 try:
-                    api_address = f'http://api.openweathermap.org/data/2.5/weather?zip={zip_code},us&appid={static_app_configurations.TEMPERATURE_API_KEY}&units=imperial'
+                    api_address = f'http://api.openweathermap.org/data/2.5/weather?zip={zip_code},us&appid={common_configurations.TEMPERATURE_API_KEY}&units=imperial'
                     response = requests.get(api_address)
                     json_data = response.json()
                     if "main" in json_data:

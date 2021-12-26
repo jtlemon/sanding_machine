@@ -6,7 +6,7 @@ from models import MeasureUnitType
 from custom_widgets.calculator import Calculator
 from custom_widgets.countdown_timer import CountDownTimerManager
 from custom_widgets.error_widget import ErrorWidgetLabel
-import configurations.static_app_configurations as static_configurations
+
 
 
 class MachineInterfaceUi(QtWidgets.QWidget):

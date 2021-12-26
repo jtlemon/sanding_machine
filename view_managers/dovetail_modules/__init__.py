@@ -1,0 +1,3 @@
+from .bit_profiles.bit_profiles_manager import BitProfileManager
+from .joint_dowel_profile_manager.joint_dowel_profile_manager import DowelJointProfileManager
+from .dovetail_camera_page_manager import DovetailCameraPageManager

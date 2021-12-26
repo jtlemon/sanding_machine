@@ -1,22 +1,13 @@
-from enum import Enum
-
 from PySide2 import QtWidgets, QtCore
 
 from configurations.custom_pram_loader import CustomMachineParamManager
 from custom_widgets.numpad_widget import NumpadWidget
 from . import custom_spinbox_gen as main_view
 from . import two_button_combo_view as buttons_view
+from .custom_types import SpinType, SpinUnitMode
 
 
-class SpinType(Enum):
-    addSubType = 0
-    leftRightType = 1
-    upDownType = 2
 
-
-class SpinUnitMode(Enum):
-    MM_MODE = 0
-    IN_MODE = 1
 
 
 class CustomSpinBox(QtWidgets.QFrame, main_view.Ui_Frame, buttons_view.Ui_Frame):

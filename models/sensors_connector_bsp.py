@@ -5,14 +5,14 @@ import time
 import serial
 from PySide2 import QtCore
 
-import configurations.static_app_configurations as app_config
+from configurations import common_configurations
 
-LOG_FILE_PATH = os.path.join(app_config.LOGGER_BASE, app_config.SENSOR_LOGGER_FILE)
-sensors_serial_logger = logging.getLogger(app_config.LOGGER_NAME)
-sensors_serial_logger.setLevel(app_config.SENSOR_LOGGING_LVL)
+LOG_FILE_PATH = os.path.join(common_configurations.LOGGER_BASE, common_configurations.SENSOR_LOGGER_FILE)
+sensors_serial_logger = logging.getLogger(common_configurations.LOGGER_NAME)
+sensors_serial_logger.setLevel(common_configurations.SENSOR_LOGGING_LVL)
 fh = logging.FileHandler(LOG_FILE_PATH)
-fh.setLevel(app_config.SENSOR_LOGGING_LVL)
-formatter = logging.Formatter(app_config.SENSOR_LOGGING_FORMAT)
+fh.setLevel(common_configurations.SENSOR_LOGGING_LVL)
+formatter = logging.Formatter(common_configurations.SENSOR_LOGGING_FORMAT)
 fh.setFormatter(formatter)
 sensors_serial_logger.addHandler(fh)
 
@@ -35,7 +35,7 @@ class SensorsSerialConnector(QtCore.QThread):
                 self.__is_serial_dev_connected = False
 
     def run(self):
-        if not app_config.IS_SENSOR_MODULE_ENABLED:
+        if not common_configurations.IS_SENSOR_MODULE_ENABLED:
             sensors_serial_logger.info("the sensors are disabled by the configurations")
             return
         while not self.isInterruptionRequested():
@@ -94,7 +94,8 @@ class SensorsSerialConnector(QtCore.QThread):
                 pass
             self.__serial_dev = None
         try:
-            self.__serial_dev = serial.Serial(app_config.SENSOR_MODULE_COM_PORT, app_config.SENSOR_MODULE_BAUD_RATE,
+            self.__serial_dev = serial.Serial(common_configurations.SENSOR_MODULE_COM_PORT,
+                                              common_configurations.SENSOR_MODULE_BAUD_RATE,
                                               timeout=0.5)
             if self.__serial_dev.isOpen():
                 self.__is_serial_dev_connected = True

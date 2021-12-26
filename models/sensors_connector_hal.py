@@ -1,9 +1,9 @@
 import logging
 from PySide2 import QtCore
 from .sensors_connector_bsp import SensorsSerialConnector
-import configurations.static_app_configurations as app_config
+from configurations import common_configurations
 
-module_logger  = logging.getLogger(app_config.LOGGER_NAME)
+module_logger  = logging.getLogger(common_configurations.LOGGER_NAME)
 
 class SensorConnector(QtCore.QObject):
     weightChangedSignal = QtCore.Signal(float)
@@ -86,10 +86,10 @@ class SensorConnector(QtCore.QObject):
                 if array_of_sensor[i] == 1:
                     last_one = i
             if active_dir == "right":
-                self.auto_right_width = app_config.SENSOR_MAP[last_one]
+                self.auto_right_width = common_configurations.SENSOR_MAP[last_one]
             else:
-                self.auto_left_width = app_config.SENSOR_MAP[last_one]
-            return app_config.SENSOR_MAP[last_one], active_dir
+                self.auto_left_width = common_configurations.SENSOR_MAP[last_one]
+            return common_configurations.SENSOR_MAP[last_one], active_dir
 
     def close_service(self):
         self.__serial_interface_thread.requestInterruption()
