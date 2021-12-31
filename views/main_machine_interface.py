@@ -6,6 +6,7 @@ from models import MeasureUnitType
 from custom_widgets.calculator import Calculator
 from custom_widgets.countdown_timer import CountDownTimerManager
 from custom_widgets.error_widget import ErrorWidgetLabel
+from view_managers.utils import display_question_dialog
 
 
 
@@ -122,11 +123,17 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.__app_pages.addWidget(ref_widget)
 
     def switch_to_another_page(self, page_index: int):
+        if  self.__app_pages.currentWidget().is_dirty():
+            allow_leave =  self.__app_pages.currentWidget().display_store_changes()
+            if allow_leave is False:
+                return
         for i in range(len(self.__footer_buttons)):
             btn = self.__footer_buttons[i]
             btn.setChecked(i == page_index)
         self.__app_pages.setCurrentIndex(page_index)
         self.pageSelectedSignal.emit(page_index)
+
+
 
     def get_current_active_widget(self):
         return self.__app_pages.currentWidget()

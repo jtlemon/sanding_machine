@@ -23,26 +23,25 @@ from view_managers.dovetail_modules import (
     DowelJointProfileManager,
     DovetailCameraPageManager
 )
+from models import (
+MeasureUnitType,
+CameraMangerProcess,
+TemperatureService,
+SensorConnector,
+SandingGRBLHalController,
+DovetailGRBLHalController
+)
+
 from view_managers import MachineSettingsManager, ResetPageManager
 from views import MachineInterfaceUi
-from view_managers.sanding_modules.sandpaper_management import SandingProfilePageManager
 from configurations import AppSupportedOperations
 import time
-from models.temperature_service import TemperatureService
-from models.sensors_connector_hal import SensorConnector
-from models.grbl_hal import GrblControllerHal
-from configurations.custom_pram_loader import CustomMachineParamManager
-from view_managers.sanding_modules.sander_management import SanderListingViewManagement
+
 from custom_widgets.spin_box import CustomSpinBox, SpinUnitMode
-from models import MeasureUnitType
-from apps.joint_profiles.models import JoinProfile
-from apps.dowel_profiles.models import DowelProfile
 from models.estop_serial_parser import EStopSerialInterface
 from configurations.system_configuration_loader import MainConfigurationLoader
 from views import AlarmViewerDialog
 
-from models.db_utils import is_bit_loaded, get_loaded_bit_name
-from view_managers.utils import display_error_message
 
 from configurations import common_configurations
 
@@ -64,7 +63,13 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__temperature_thread = TemperatureService()
         # display sensor values also and weight auto width, height in certain dovetail widget if it's existed
         self.__sensors_board_thread = SensorConnector()
-        self.__grbl_interface = GrblControllerHal()
+        self.__grbl_interface = None
+        if common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.sandingMachine:
+            self.__grbl_interface = SandingGRBLHalController()
+        elif common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.dovetailMachine:
+            self.__grbl_interface = DovetailGRBLHalController()
+        else:
+            raise ValueError("not supported machine.")
         self.__estop_interface = EStopSerialInterface()
 
         # create dynamic pages........
@@ -156,6 +161,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                     AppSupportedOperations.sandingProgramsOperations].get_sanding_programs()
                 current_door_style = camera_widget_manager.door_styles_combo.currentText()
                 current_program = camera_widget_manager.sanding_programs_combo.currentText()
+                camera_widget_manager.door_styles_combo.clear()
+                camera_widget_manager.sanding_programs_combo.clear()
                 camera_widget_manager.door_styles_combo.addItems(door_styles)
                 camera_widget_manager.sanding_programs_combo.addItems(sanding_programs)
                 camera_widget_manager.door_styles_combo.setCurrentText(current_door_style)
