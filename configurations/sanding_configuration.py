@@ -81,7 +81,7 @@ SANDPAPER_PROFILE = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sanding_pressure,
         "precession": 0,
-        "unit": "%"
+        "unit": " "
     },
     {
         "lbl": "HBFE",  # hold back from edge
@@ -183,16 +183,16 @@ SANDING_SETTING_CONFIGURATION = [
 
 ]
 SANDING_RESET_PAGE_BUTTONS = [
-   {
-      "lbl":"RESET CONTROLLER",
-      "target_key":"reset_controller_btn"
-   },
-   {
-      "lbl":"HOME",
-      "target_key":"home_btn"
-   },
-   {
-      "lbl":"GO TO PARK",
-      "target_key":"go_to_park_btn"
-   },
+    {
+        "lbl": "RESET CONTROLLER",
+        "target_key": "reset_controller_btn"
+    },
+    {
+        "lbl": "HOME",
+        "target_key": "home_btn"
+    },
+    {
+        "lbl": "GO TO PARK",
+        "target_key": "go_to_park_btn"
+    },
 ]
