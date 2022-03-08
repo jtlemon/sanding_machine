@@ -27,6 +27,9 @@ from models import db_utils
 need to get all of the parameters from the current program
 
 """
+
+
+
 feed_speed_max = 15000  # we probably want to move this to a static config file
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
                          "x": 125, "y": 125},
@@ -68,7 +71,7 @@ class SandingGenerate:
     def __init__(self):
         self.g_code = []
         self.active_tool = int(pass_one_dropdown.get())  #active tool will come from sanding program
-        self.stile_width = float(stile_width_entry.get()) # stile width will come from currently selected door style, will be inside, outside and frame width added together
+        self.stile_width = float(50)  # todo stile width will come from active program
         self.sander_selection = Sander() # i don't think this will need changed
 
     def start(self, part_type):
@@ -88,15 +91,15 @@ class SandingGenerate:
 
     def slab(self):
 
-        overhang_mm_x = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['x']
+        overhang_mm_x = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['x']  # todo get overhang from active sandpaper
         print(f'overhang x :{overhang_mm_x}')
-        overhang_mm_y = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['y']
+        overhang_mm_y = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['y']  # todo get overhang from active sandpaper
         offset_x = sander_dictionary[self.active_tool]['x'] / 2 - overhang_mm_x
         offset_y = sander_dictionary[self.active_tool]['y'] / 2 - overhang_mm_y
         step_over_x = float(length_entry.get()) / (round(
-            float(length_entry.get()) / (sander_dictionary[self.active_tool]['x'] * float(overlap_slider.get() / 100))))
+            float(length_entry.get()) / (sander_dictionary[self.active_tool]['x'] * float(overlap_slider.get() / 100))))  # todo get overlap from active sandpaper
         step_over_y = float(width_entry.get()) / (round(
-            float(width_entry.get()) / (sander_dictionary[self.active_tool]['y'] * float(overlap_slider.get() / 100))))
+            float(width_entry.get()) / (sander_dictionary[self.active_tool]['y'] * float(overlap_slider.get() / 100))))  # todo get overlap from active sandpaper
         # print(offset_x)
         starting_position = offset_x, offset_y
         # print('you selected slab')
@@ -152,7 +155,7 @@ class SandingGenerate:
         return self.g_code
 
     def panel(self):
-        stile = float(stile_width_entry.get())
+        stile = self.stile_width
         width = float(width_entry.get())
         length = float(length_entry.get())
         overlap = float(overlap_slider.get())
@@ -171,8 +174,8 @@ class SandingGenerate:
         elif sander_dictionary[self.active_tool]['x'] >= panel_size[0]:
             print('sander too long')
         print('you selected panel')
-        panel_start = float(stile_width_entry.get()) + (float(sander_dictionary[self.active_tool]['x']) / 2) + \  #  stile, width
-                      hold_back_slider.get(), float(stile_width_entry.get()) + \
+        panel_start = self.stile_width + (float(sander_dictionary[self.active_tool]['x']) / 2) + \
+                      hold_back_slider.get(), self.stile_width + \
                       (float(sander_dictionary[self.active_tool]['y']) / 2) + hold_back_slider.get()  # todo hold back will be coming from sanding program
         passes = int(((panel_size[1] - hold_back) / step_over[1]) / 2)
         print(f'panel start {panel_start}, passes: {passes}')
@@ -419,4 +422,4 @@ def main_mo():
 """
 
 if __name__ == "__main__":
-    main_mo()
+    generate()
