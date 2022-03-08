@@ -28,8 +28,6 @@ need to get all of the parameters from the current program
 
 """
 
-
-
 feed_speed_max = 15000  # we probably want to move this to a static config file
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
                          "x": 125, "y": 125},
