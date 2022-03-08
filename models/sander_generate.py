@@ -29,6 +29,11 @@ need to get all of the parameters from the current program
 """
 
 feed_speed_max = 15000  # we probably want to move this to a static config file
+x_max_length = 1778
+y_max_width = 660.4
+sander_on_delay = .5  # we probably want to move this to a static config file
+sander_off_delay = .5  # we probably want to move this to a static config file
+
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
                          "x": 125, "y": 125},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56',
@@ -39,8 +44,6 @@ sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 
                          "x": 125, "y": 125}
                      }
 
-sander_on_delay = .5  # we probably want to move this to a static config file
-sander_off_delay = .5  # we probably want to move this to a static config file
 
 
 class Sander:
@@ -198,7 +201,43 @@ class SandingGenerate:
         return self.g_code
 
 
-def generate():
+def generate(zone, length, width):
+    # determine left or right zone
+    # determine which vacuum pods to turn on based on part width and length
+    # for each pass, generate g-code
+    if zone == 'left':
+        if length >= 700:
+             print('turn on vacuum pod 4')
+        elif length >= 300:
+            print('turn on vacuum pod 3')
+        else:
+            print('part is too short for work holding on x')
+        if width >= 360:
+            print('turn on vacuum pod 1')
+        elif width >= 135:
+            print('turn on vacuum pod 2')
+        else:
+            print('part is too short for work holding on x')
+    if zone == 'right':
+        if length >= 700:
+             print('turn on vacuum pod 5')
+        elif length >= 300:
+            print('turn on vacuum pod 6')
+        else:
+            print('part is too short for work holding on x')
+        if width >= 360:
+            print('turn on vacuum pod 8')
+        elif width >= 135:
+            print('turn on vacuum pod 7')
+        else:
+            print('part is too short for work holding on x')
+
+    for each pass: # todo, add for statement to generate a pass for sanding.
+        """
+        generate_code = SandingGenerate()
+        generate_code.start()
+        """
+
     if int(pass_one_dropdown.get()) == 0:  # may not need this to validate...? we will be getting the pass from the sanding program
         print('no tool selected')
         return
@@ -207,6 +246,7 @@ def generate():
     f.write('\n'.join(map(str, generate_code.start(style.get()))))  # this is passing style, which will come from main page toggle
     f.close()
     print(*generate_code.g_code, sep="\n")
+
 
 
 
@@ -411,12 +451,6 @@ class GenerateCode:
             self.g_code.append('m71')
 
 
-def main_mo():
-    generate = GenerateCode()  # class instantiated
-    f = open('test_g_code.nc', 'w')
-    f.write('\n'.join(map(str, generate.calculate())))
-    f.close()
-    print(*generate.g_code, sep="\n")
 """
 
 if __name__ == "__main__":
