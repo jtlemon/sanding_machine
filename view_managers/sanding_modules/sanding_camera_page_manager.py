@@ -179,7 +179,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.localize_workplace_btn.setFixedHeight(60)
         self.localize_workplace_btn.setCheckable(True)
         self.right_side_cam_frame_layout.addWidget(self.localize_workplace_btn)
-        self.start_right_button = QtWidgets.QPushButton("Start Left")
+        self.start_right_button = QtWidgets.QPushButton("Start Right")
         self.start_right_button.setMinimumSize(200, 60)
         self.right_slap_option = QtWidgets.QCheckBox("slab/5 piece")
         self.right_side_cam_frame_layout.addWidget(self.start_right_button)

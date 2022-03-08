@@ -84,7 +84,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
                 operation_page_widget.start_left_button.clicked.connect(self.handle_left_start)
-                operation_page_widget.start_left_button.clicked.connect(self.handle_right_start)
+                operation_page_widget.start_right_button.clicked.connect(self.handle_right_start)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface)
@@ -258,12 +258,31 @@ class MachineGuiInterface(MachineInterfaceUi):
         left_slap_selected = widget.left_slap_option.isChecked()
         right_slap_selected = widget.right_slap_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
-        door_style = self.door_styles_combo.currentText()
+        door_style = widget.door_styles_combo.currentText()
+        part_width = self.__get_float(widget.part_width.text())
+        part_length = self.__get_float(widget.part_length_lin.text())
+        workspace_width = self.__get_float(widget.workspace_width.text())
+        workspace_length= self.__get_float(widget.workspace_length_lin.text())
+
         CustomMachineParamManager.set_value("left_slap_selected", left_slap_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slap_selected", right_slap_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
+        # len
+        CustomMachineParamManager.set_value("part_width", part_width, auto_store=False)
+        CustomMachineParamManager.set_value("part_length", part_length, auto_store=False)
+        CustomMachineParamManager.set_value("workspace_width", workspace_width, auto_store=False)
+        CustomMachineParamManager.set_value("workspace_length", workspace_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
+        print("kfjwjofjwojowf")
+
+    def __get_float(self, val_str):
+        result = 0
+        try:
+            result = float(val_str)
+        except:
+            pass
+        return result
 
 
 def create_default_records():

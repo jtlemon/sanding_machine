@@ -1,4 +1,5 @@
 {
+    "door_style": "style1",
     "dovetail_fence_distance": 457.2,
     "dovetail_setting_a_zero": 1,
     "dovetail_setting_b_zero": 1,
@@ -10,10 +11,15 @@
     "dovetail_setting_y_zero": 1,
     "dovetail_setting_z_zero": -20,
     "left_active": 0,
+    "left_slap_selected": false,
     "loaded_bit_id": -1,
     "machine_x_zero": 0,
     "machine_y_zero": 0,
+    "part_length": 0,
+    "part_width": 0,
+    "program_name": "program1",
     "right_active": 0,
+    "right_slap_selected": false,
     "sander1_x": 1,
     "sander1_x_value": 0.0,
     "sander1_y": 1,
@@ -30,6 +36,9 @@
     "sander4_x_value": 150.0,
     "sander4_y": 1,
     "sander4_y_value": 150.0,
+    "side": "right",
     "spindle_time_out": 2,
-    "workspace_points": []
+    "workspace_length": 0,
+    "workspace_points": [],
+    "workspace_width": 0
 }

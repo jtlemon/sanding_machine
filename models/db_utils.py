@@ -3,6 +3,26 @@ from apps.bit_profiles.models import BitProfile
 from apps.joint_profiles.models import JoinProfile
 from apps.dowel_profiles.models import DowelProfile
 from view_managers.utils import display_error_message
+from apps.sanding_machine import models as sandig_models
+
+def get_current_program():
+    program_name = CustomMachineParamManager.get_value("program_name", "")
+    sanding_program = None
+    try:
+         sanding_program = sandig_models.SandingProgramPass.objects.get(sanding_program__name=program_name)
+    except sandig_models.SandingProgramPass.DoesNotExist:
+        pass
+    return sanding_program
+
+
+def get_current_door_style():
+    door_style_name = CustomMachineParamManager.get_value("door_style", "")
+    door_style = None
+    try:
+        door_style = sandig_models.DoorStyle.objects.get(profile_name=door_style_name)
+    except sandig_models.DoorStyle.DoesNotExist:
+        pass
+    return door_style
 
 
 def get_loaded_bit_profile():
