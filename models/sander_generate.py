@@ -27,7 +27,7 @@ from models import db_utils
 need to get all of the parameters from the current program
 
 """
-feed_speed_max = 15000
+feed_speed_max = 15000  # we probably want to move this to a static config file
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
                          "x": 125, "y": 125},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56',
@@ -38,8 +38,8 @@ sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 
                          "x": 125, "y": 125}
                      }
 
-sander_on_delay = .5
-sander_off_delay = .5
+sander_on_delay = .5  # we probably want to move this to a static config file
+sander_off_delay = .5  # we probably want to move this to a static config file
 
 
 class Sander:
@@ -73,6 +73,9 @@ class SandingGenerate:
 
     def start(self, part_type):
         # print(f'size {width_entry.get()} x {length_entry.get()}, {stile_width_entry.get()}')
+
+        # todo this function will need to change to get the part type from the combination of main toggle/and sanding program definition
+
         if part_type == 1:
             self.slab()
         elif part_type == 2:
@@ -170,11 +173,11 @@ class SandingGenerate:
         print('you selected panel')
         panel_start = float(stile_width_entry.get()) + (float(sander_dictionary[self.active_tool]['x']) / 2) + \  #  stile, width
                       hold_back_slider.get(), float(stile_width_entry.get()) + \
-                      (float(sander_dictionary[self.active_tool]['y']) / 2) + hold_back_slider.get()  # hold back will be coming from sanding program
+                      (float(sander_dictionary[self.active_tool]['y']) / 2) + hold_back_slider.get()  # todo hold back will be coming from sanding program
         passes = int(((panel_size[1] - hold_back) / step_over[1]) / 2)
         print(f'panel start {panel_start}, passes: {passes}')
         self.g_code.append(sander_dictionary[self.active_tool]['offset'])
-        self.g_code.append(f'f{round(feed_speed_max * int(speed_slider.get()) / 10, 1)}')  # speed will be coming from sanding program
+        self.g_code.append(f'f{round(feed_speed_max * int(speed_slider.get()) / 10, 1)}')  # todo speed will be coming from sanding program
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{panel_start[0]}z-{panel_start[1]}(starting)')
         self.g_code.append(self.sander_selection.on(self.active_tool))
