@@ -44,6 +44,7 @@ from views import AlarmViewerDialog
 
 
 from configurations import common_configurations
+from configurations.custom_pram_loader import CustomMachineParamManager
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -82,6 +83,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
+                operation_page_widget.start_left_button.clicked.connect(self.handle_left_start)
+                operation_page_widget.start_left_button.clicked.connect(self.handle_right_start)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface)
@@ -243,6 +246,24 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__sensors_board_thread.close_service()
         self.__grbl_interface.release_resources()
         self.__estop_interface.requestInterruption()
+
+    def handle_left_start(self):
+        self.common_sanding_start('left')
+
+    def handle_right_start(self):
+        self.common_sanding_start('right')
+
+    def common_sanding_start(self, side="left"):
+        widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+        left_slap_selected = widget.left_slap_option.isChecked()
+        right_slap_selected = widget.right_slap_option.isChecked()
+        program_name = widget.sanding_programs_combo.currentText()
+        door_style = self.door_styles_combo.currentText()
+        CustomMachineParamManager.set_value("left_slap_selected", left_slap_selected, auto_store=False)
+        CustomMachineParamManager.set_value("right_slap_selected", right_slap_selected, auto_store=False)
+        CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
+        CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
+        CustomMachineParamManager.set_value("side", side, auto_store=True)
 
 
 def create_default_records():

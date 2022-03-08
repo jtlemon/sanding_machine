@@ -16,6 +16,7 @@ class SandingCameraWidget(QtWidgets.QLabel):
         self.part_area = None
         self.is_annotation_enabled = True
         #self.setScaledContents(True)
+        self.setFixedSize(1300, 650)
 
     def set_work_place_area(self, area:QtCore.QRect):
         self.workplace_area = area
@@ -111,6 +112,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(ModifiedSandingPageView, self).__init__(parent)
         self.widget_layout = QtWidgets.QHBoxLayout(self)
+        self.widget_layout.setContentsMargins(15, 15, 15, 15)
         self.main_widget_frame = QtWidgets.QFrame()
         self.main_widget_frame_layout = QtWidgets.QVBoxLayout(self.main_widget_frame)
         self.top_h_layout = QtWidgets.QHBoxLayout()
@@ -137,7 +139,13 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
 
         self.left_side_cam_frame =  QtWidgets.QFrame()
         self.left_side_cam_frame_layout = QtWidgets.QVBoxLayout(self.left_side_cam_frame)
+        self.left_side_cam_frame_layout.setSpacing(15)
         self.left_side_cam_frame_layout.addWidget(self.localize_part_btn)
+        self.start_left_button = QtWidgets.QPushButton("Start Left")
+        self.start_left_button.setMinimumSize(200, 60)
+        self.left_slap_option = QtWidgets.QCheckBox("slab/5 piece")
+        self.left_side_cam_frame_layout.addWidget(self.start_left_button)
+        self.left_side_cam_frame_layout.addWidget(self.left_slap_option)
         self.left_side_cam_frame_layout.addStretch(1)
         self.left_side_cam_frame_layout.addWidget(QtWidgets.QLabel("Width(mm)"))
         self.part_width = QtWidgets.QLineEdit()
@@ -162,14 +170,21 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.workspace_length_lin.setValidator(self.float_validator)
         self.center_footer_layout.addWidget(self.workspace_length_lin)
         self.center_side_cam_frame_layout.addLayout(self.center_footer_layout, stretch=0)
-        self.center_side_cam_frame.setFixedWidth(640)
+
         # right width
         self.right_side_cam_frame = QtWidgets.QFrame()
         self.right_side_cam_frame_layout = QtWidgets.QVBoxLayout(self.right_side_cam_frame)
+        self.right_side_cam_frame_layout.setSpacing(15)
         self.localize_workplace_btn = QtWidgets.QPushButton("  Workplace  ")
         self.localize_workplace_btn.setFixedHeight(60)
         self.localize_workplace_btn.setCheckable(True)
         self.right_side_cam_frame_layout.addWidget(self.localize_workplace_btn)
+        self.start_right_button = QtWidgets.QPushButton("Start Left")
+        self.start_right_button.setMinimumSize(200, 60)
+        self.right_slap_option = QtWidgets.QCheckBox("slab/5 piece")
+        self.right_side_cam_frame_layout.addWidget(self.start_right_button)
+        self.right_side_cam_frame_layout.addWidget(self.right_slap_option)
+
         self.right_side_cam_frame_layout.addStretch(1)
         self.right_side_cam_frame_layout.addWidget(QtWidgets.QLabel("Width(mm)"))
         self.workspace_width = QtWidgets.QLineEdit()
@@ -182,10 +197,10 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.main_widget_frame_layout.addWidget(self.camera_frame)
 
         # connect all
-        self.widget_layout.addStretch(1)
+        #self.widget_layout.addStretch(1)
         self.widget_layout.addWidget(self.main_widget_frame)
-        self.widget_layout.addStretch(1)
-        self.camera_widget.setFixedSize(640, 480)
+        #self.widget_layout.addStretch(1)
+        #self.camera_widget.setMinimumSize(2000, 600)
 
 
 class SandingCameraPageManager(ModifiedSandingPageView):
@@ -197,6 +212,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
     def new_image_received(self, cam_index:int, pix_map:QtGui.QPixmap):
         if cam_index == 0:
             rect = self.get_part_rect()
+            pix_map = pix_map.scaled(self.camera_widget.size())
             if rect is not None:
                 self.camera_widget.draw_rectangles(pix_map, rect, QtCore.Qt.darkGreen)
             self.camera_widget.set_image(pix_map)
@@ -235,7 +251,6 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         self.localize_workplace_btn.setChecked(False)
         self.localize_part_btn.setChecked(False)
         self.camera_widget.enable_annotation(False)
-
 
     def change_measure_mode(self, unit: MeasureUnitType):
         pass
