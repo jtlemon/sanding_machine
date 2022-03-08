@@ -72,7 +72,8 @@ SANDPAPER_PROFILE = [
         "target_key": "sanding_grit",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sanding_grit_range,
-        "precession": 0
+        "precession": 0,
+        "unit": "#"
     },
     {
         "lbl": "Pressure",  # this should be displaying with unit deg, not mm
@@ -80,7 +81,7 @@ SANDPAPER_PROFILE = [
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sanding_pressure,
         "precession": 0,
-        "unit": "psi"
+        "unit": " "
     },
     {
         "lbl": "HBFE",  # hold back from edge
@@ -94,25 +95,33 @@ SANDPAPER_PROFILE = [
         "target_key": "sandpaper_overhang",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sandpaper_overhang,
-        "precession": 0
+        "precession": 0,
+        "unit": "%"
     },
     {
         "lbl": "Overlap",  # this should be displaying with unit deg, not mm
         "target_key": "sandpaper_overlap",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.sandpaper_Overlap,
-        "precession": 0
+        "precession": 0,
+        "unit": "%"
     },
     {
         "lbl": "Speed",
         "target_key": "sandpaper_speed",
         "field_type": WidgetsType.speedWidget,
         "range": machine_ranges.sandpaper_speed,
-        "unit": "sec"
+        "unit": "%"
     },
 
 ]
 SANDING_SETTING_CONFIGURATION = [
+    {
+        "lbl": "X zero",
+        "target_key": "machine_x_zero",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sander_x_zero
+    },
     {
         "lbl": "S1 X",
         "target_key": "sander1_x_value",
@@ -137,6 +146,12 @@ SANDING_SETTING_CONFIGURATION = [
     {
         "lbl": "S4 X",
         "target_key": "sander4_x_value",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.dovetail_setting_x_zero
+    },
+    {
+        "lbl": "Y zero",
+        "target_key": "machine_y_zero",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_setting_x_zero
     },
@@ -168,20 +183,16 @@ SANDING_SETTING_CONFIGURATION = [
 
 ]
 SANDING_RESET_PAGE_BUTTONS = [
-   {
-      "lbl":"RESET CONTROLLER",
-      "target_key":"reset_controller_btn"
-   },
-   {
-      "lbl":"HOME",
-      "target_key":"home_btn"
-   },
-   {
-      "lbl":"GO TO PARK",
-      "target_key":"go_to_park_btn"
-   },
-   {
-      "lbl":"Measure Tool",
-      "target_key":"measure_tool_btn"
-   }
+    {
+        "lbl": "RESET CONTROLLER",
+        "target_key": "reset_controller_btn"
+    },
+    {
+        "lbl": "HOME",
+        "target_key": "home_btn"
+    },
+    {
+        "lbl": "GO TO PARK",
+        "target_key": "go_to_park_btn"
+    },
 ]

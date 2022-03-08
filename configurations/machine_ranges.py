@@ -30,8 +30,8 @@ part_profile_width = (2, 20, 0.1)
 part_profile_panel_width = (2, 24, 0.1)
 
 # sanding paper
-sanding_grit_range =(36, 400, 1)
-sanding_feed_speed = (1, 24000, 1) # this is only allowing 944.882 rpm
+sanding_grit_range = (36, 400, 1)
+sanding_feed_speed = (1, 24000, 1)  # this is only allowing 944.882 rpm
 distance_to_edge_of_sandpaper = (2, 24, 0.1)
 sandpaper_distance_to_edge_of_profile = (2, 24, 0.1)
 sanding_pressure = (0, 10, 1)
@@ -41,12 +41,10 @@ sandpaper_Overlap = (0, 100, 10)
 sandpaper_speed = (10, 100, 10)
 
 # door styles
-door_styles_outside_edge_width = (1, 610, 1)
-door_styles_inside_edge_width = (1, 610, 1)
+door_styles_outside_edge_width = (0, 610, 1)
+door_styles_inside_edge_width = (0, 610, 1)
 door_styles_frame_width = (1, 610, 1)
 door_styles_hold_back_from_edges = (0, 10, 0.5)
-
-
 
 # dovetail setting ranges
 dovetail_setting_standard_width_1 = (1, 610, 1)
@@ -54,14 +52,14 @@ dovetail_setting_standard_width_2 = (1, 610, 1)
 dovetail_setting_standard_width_3 = (1, 610, 1)
 dovetail_setting_standard_width_4 = (1, 610, 1)
 
-dovetail_setting_x_zero = (1, 100, 0.1)
-dovetail_setting_y_zero = (1, 100, 0.1)
+dovetail_setting_x_zero = (0, 200, 0.1)
+dovetail_setting_y_zero = (0, 200, 0.1)
 dovetail_setting_z_zero = (-20, 10, 0.1)
 dovetail_setting_a_zero = (1, 100, 0.1)
 dovetail_setting_b_zero = (1, 100, 0.1)
 dovetail_fence_distance = (457.2, 609.6, 0.01)
 
-
 # Sander Range
 sander_x_length = (1, 610, 1)
 sander_y_length = (1, 610, 1)
+sander_x_zero = (0, 800, 0.1)
