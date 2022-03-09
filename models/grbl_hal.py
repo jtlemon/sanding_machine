@@ -23,6 +23,7 @@ class GrblControllerHal(QtCore.QObject):
     machineStateChangedSignal = QtCore.Signal(str)
     newBitLengthCaptured = QtCore.Signal(float)
     bitNotLoadedSignal = QtCore.Signal()
+
     def __init__(self, serial_port=None):
         super(GrblControllerHal, self).__init__()
         self.__measure_prob_counter = 0
@@ -256,7 +257,7 @@ class GrblControllerHal(QtCore.QObject):
         """
         self.grbl_stream.send_direct_command("g90", clr_buffer=True)
         self.grbl_stream.send_direct_command("g0y0", clr_buffer=True)
-        time.sleep(1) # i couldn't get it to work without a pause,  can you add a real qt timer here?
+        time.sleep(1)  # i couldn't get it to work without a pause,  can you add a real qt timer here?
         self.grbl_stream.add_new_command('g90')
         self.grbl_stream.add_new_command('g0y0')
         self.grbl_stream.add_new_command('g0z0')
@@ -266,7 +267,6 @@ class GrblControllerHal(QtCore.QObject):
         self.release_clamp_left_vertical()
         self.release_clamp_right_horizontal()
         self.release_clamp_left_horizontal()
-
 
     def reset_machine(self):
         module_logger.debug("reset the machine")
@@ -287,19 +287,15 @@ class GrblControllerHal(QtCore.QObject):
         module_logger.debug("turn off the machine")
         self.servoStartSignal.emit(False)
 
-    def move_to_home(self):
-        self.deactivate_solenoids()
-        self.spindle_off()
-        self.grbl_stream.send_direct_command("$H", clr_buffer=True)
-        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0", notify_message='Homing Complete-Ready')
-
     def reset_and_home(self):
         self.grbl_stream.add_new_command('$slp')
         self.grbl_stream.add_new_command(chr(0x18), wait_after=2, notify_message="Homing")
         self.grbl_stream.add_new_command(chr(0x18), wait_after=2, notify_message="Homing")
         self.grbl_stream.add_new_command("")
         self.grbl_stream.add_new_command("$H")
-        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0", notify_message='Homing Complete-Ready')
+        self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0",
+                                         notify_message='Homing Complete-Ready')  # todo, make it set the x,y zero from settings
+        # todo, set up the offsets from settings. we also need to apply these at machine startup, and when the settings are saved
 
     def measure_tool(self):
         self.__measure_prob_counter = 0
@@ -320,7 +316,7 @@ class GrblControllerHal(QtCore.QObject):
         probe()  # repeat for consistent results
         probe()  # repeat again
         self.grbl_stream.add_new_command('g90')  # switch back to absolute units
-        self.grbl_stream.add_new_command('g0z0',  notify_message='Measuring complete')  # retract z back to 0
+        self.grbl_stream.add_new_command('g0z0', notify_message='Measuring complete')  # retract z back to 0
         self.spindle_off()  # turn spindle back off
 
     def change_machine_bit(self):
@@ -474,7 +470,7 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('m68')
 
     def release_clamp_left_horizontal(self):
-            self.grbl_stream.add_new_command('m69')
+        self.grbl_stream.add_new_command('m69')
 
     def update_machine_profiles(self, joint_profile, bit_profile, dowel_profile):
         self.__current_dowel_profile = dowel_profile
@@ -486,5 +482,3 @@ class GrblControllerHal(QtCore.QObject):
         self.spindle_off()
         self.turn_off_machine()
         self.grbl_stream.close_service()
-
-

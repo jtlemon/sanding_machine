@@ -47,28 +47,14 @@ class SensorsSerialConnector(QtCore.QThread):
             while self.__serial_dev.inWaiting() > 0:
                 try:
                     rec_bytes = self.__serial_dev.read_until()
-                    if len(rec_bytes) == 7:
-                        header = str(rec_bytes[0:3], "utf-8")
-                        if header == "val":
-                            rec_bytes = rec_bytes[3:-2]
-                            val = int.from_bytes(rec_bytes, "big")
-                            bits = []
-                            for i in range(16):
-                                bit_val = val & 1
-                                val = val >> 1
-                                bits.append(bit_val)
-                            self.newReading.emit(bits)
-                    elif len(rec_bytes) > 6:
-                        header = str(rec_bytes[0:6], "utf-8")
-                        if header == "weight":
-                            try:
-                                val = float(rec_bytes[6:-2])
-                                self.weightChanged.emit(val)
-                            except:
-                                pass
-
+                    rec_str = str(rec_bytes, "utf-8").rstrip("\n")
                 except OSError:
                     self.__is_serial_dev_connected = False
+                else:
+                    if rec_str.startswith("$") and rec_str.endswith("*"):
+                        print(rec_str)
+                    else:
+                        print(f"failed to decode {rec_str}")
             else:
                 time.sleep(0.05)
         # save close the port
@@ -78,6 +64,8 @@ class SensorsSerialConnector(QtCore.QThread):
             except:
                 pass
         sensors_serial_logger.info("service close after the thread finished")
+
+
 
     def turn_on_servo(self):
         self.send_message(b"OO")
