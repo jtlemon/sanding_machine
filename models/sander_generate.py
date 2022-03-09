@@ -124,7 +124,7 @@ class SandingGenerate:
         starting_position = offset_x, offset_y
         # print('you selected slab')
         self.g_code.append(self.sander_selection.get_offset())
-        self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 10, 1)}')
+        self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}')  # start pattern
         self.g_code.append(self.sander_selection.on())  # updated to new
