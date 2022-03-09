@@ -295,7 +295,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         print(f'you pressed the {side} button')
         print(f'right dims: {workspace_length}, {workspace_width}')
         print(f'style {left_slab_selected}')
-        g_commands = generate(sensors_board_ref= self.__sensors_board_thread)
+        g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
         for command in g_commands:
             self.__grbl_interface.grbl_stream.add_new_command(command)
         for i in range(10):

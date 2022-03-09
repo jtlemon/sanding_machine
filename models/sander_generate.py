@@ -309,6 +309,7 @@ def generate(sensors_board_ref=None):
                 all_g_codes.extend(generate_code.slab())
                 print('slabs')
     print(*all_g_codes, sep="\n")
+    return all_g_codes
 
 
 if __name__ == "__main__":
