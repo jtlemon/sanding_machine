@@ -153,7 +153,7 @@ SANDING_SETTING_CONFIGURATION = [
         "lbl": "Y zero",
         "target_key": "machine_y_zero",
         "field_type": WidgetsType.rangeWidget,
-        "range": machine_ranges.dovetail_setting_x_zero
+        "range": machine_ranges.sander_x_zero
     },
     {
         "lbl": "S1 Y",
