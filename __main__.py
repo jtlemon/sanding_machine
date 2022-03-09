@@ -274,7 +274,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("workspace_width", workspace_width, auto_store=False)
         CustomMachineParamManager.set_value("workspace_length", workspace_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
-        print("kfjwjofjwojowf")
+
 
     def __get_float(self, val_str):
         result = 0

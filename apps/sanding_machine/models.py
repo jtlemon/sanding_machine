@@ -82,5 +82,4 @@ class SandingProgramPass(models.Model):
     pressure_value = models.IntegerField(null=True)
     speed_value = models.IntegerField(null=True)
     hangover_value = models.IntegerField(null=True)
-
     is_temp = models.BooleanField(default=True)

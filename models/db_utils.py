@@ -7,12 +7,8 @@ from apps.sanding_machine import models as sandig_models
 
 def get_current_program():
     program_name = CustomMachineParamManager.get_value("program_name", "")
-    sanding_program = None
-    try:
-         sanding_program = sandig_models.SandingProgramPass.objects.get(sanding_program__name=program_name)
-    except sandig_models.SandingProgramPass.DoesNotExist:
-        pass
-    return sanding_program
+    sanding_paths = sandig_models.SandingProgramPass.objects.filter(sanding_program__name=program_name)
+    return sanding_paths
 
 
 def get_current_door_style():
