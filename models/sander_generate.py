@@ -158,7 +158,7 @@ class SandingGenerate:
             offset_x = float(self.sander_selection.get_x_value() / 2 - overhang_mm_x)
             offset_y = float(self.sander_selection.get_y_value() / 2 - overhang_mm_y)
             self.g_code.append(self.sander_selection.get_offset())
-            self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 10, 1)}')
+            self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
             self.g_code.append('g17 g21')
             self.g_code.append(f'g0x-{start_position}z{start_position}')
             self.g_code.append(self.sander_selection.on())
