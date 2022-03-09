@@ -34,7 +34,7 @@ SANDING_DOOR_STYLES_PROFILE = [
     },
     {
         "lbl": "HBFIE",
-        "target_key": "dowel_profile_face_depth",
+        "target_key": "hold_back_inside_edge",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.door_styles_hold_back_from_edges
     },

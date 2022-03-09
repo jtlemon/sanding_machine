@@ -1,7 +1,7 @@
 import os
 import sys
 
-import models.sander_generate
+# import models.sander_generate
 
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
@@ -12,6 +12,7 @@ except Exception as e:
     print(e)
 from PySide2 import QtWidgets, QtGui, QtCore
 from models import CameraMangerProcess
+from models.sander_generate import generate
 from view_managers.sanding_modules import (
     SandingDoorStylesManager,
     SandingProgramsPageManager,
@@ -26,12 +27,12 @@ from view_managers.dovetail_modules import (
     DovetailCameraPageManager
 )
 from models import (
-MeasureUnitType,
-CameraMangerProcess,
-TemperatureService,
-SensorConnector,
-SandingGRBLHalController,
-DovetailGRBLHalController
+    MeasureUnitType,
+    CameraMangerProcess,
+    TemperatureService,
+    SensorConnector,
+    SandingGRBLHalController,
+    DovetailGRBLHalController
 )
 
 from view_managers import MachineSettingsManager, ResetPageManager
@@ -43,7 +44,6 @@ from custom_widgets.spin_box import CustomSpinBox, SpinUnitMode
 from models.estop_serial_parser import EStopSerialInterface
 from configurations.system_configuration_loader import MainConfigurationLoader
 from views import AlarmViewerDialog
-
 
 from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
@@ -257,8 +257,8 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def common_sanding_start(self, side="left"):
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-        left_slap_selected = widget.left_slap_option.isChecked()
-        right_slap_selected = widget.right_slap_option.isChecked()
+        left_slab_selected = widget.left_slap_option.isChecked()
+        right_slab_selected = widget.right_slap_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
         part_width = self.__get_float(widget.part_width.text())
@@ -266,8 +266,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         workspace_width = self.__get_float(widget.workspace_width.text())
         workspace_length = self.__get_float(widget.workspace_length_lin.text())
 
-        CustomMachineParamManager.set_value("left_slap_selected", left_slap_selected, auto_store=False)
-        CustomMachineParamManager.set_value("right_slap_selected", right_slap_selected, auto_store=False)
+        CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
+        CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
         # len
@@ -277,7 +277,12 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("workspace_length", workspace_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
         # todo call the sanding generate
-
+        print(f'you pressed the {side} button')
+        print(f'right dims: {workspace_length}, {workspace_width}')
+        print(f'style {left_slab_selected}')
+        g_commands = generate()
+        for command in g_commands:
+            self.__grbl_interface.grbl_stream.add_new_command(command)
 
     def __get_float(self, val_str):
         result = 0

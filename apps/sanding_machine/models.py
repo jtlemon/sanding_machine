@@ -45,6 +45,9 @@ class Sander(models.Model):
     is_fine = models.BooleanField(default=False)
     installed_sandpaper = models.ForeignKey(Sandpaper, on_delete=models.CASCADE, default=None, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class DoorStyle(models.Model):
     profile_name = models.CharField(max_length=20, default="", unique=True)

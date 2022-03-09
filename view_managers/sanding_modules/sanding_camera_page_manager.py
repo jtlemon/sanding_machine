@@ -143,7 +143,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.left_side_cam_frame_layout.addWidget(self.localize_part_btn)
         self.start_left_button = QtWidgets.QPushButton("Start Left")
         self.start_left_button.setMinimumSize(200, 60)
-        self.left_slap_option = QtWidgets.QCheckBox("slab/5 piece")
+        self.left_slap_option = QtWidgets.QCheckBox("5 piece")
         self.left_side_cam_frame_layout.addWidget(self.start_left_button)
         self.left_side_cam_frame_layout.addWidget(self.left_slap_option)
         self.left_side_cam_frame_layout.addStretch(1)
@@ -181,7 +181,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.right_side_cam_frame_layout.addWidget(self.localize_workplace_btn)
         self.start_right_button = QtWidgets.QPushButton("Start Right")
         self.start_right_button.setMinimumSize(200, 60)
-        self.right_slap_option = QtWidgets.QCheckBox("slab/5 piece")
+        self.right_slap_option = QtWidgets.QCheckBox("5 piece")
         self.right_side_cam_frame_layout.addWidget(self.start_right_button)
         self.right_side_cam_frame_layout.addWidget(self.right_slap_option)
 

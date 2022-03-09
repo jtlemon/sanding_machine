@@ -19,7 +19,7 @@ except Exception as e:
 
 from configurations.custom_pram_loader import CustomMachineParamManager
 from models import db_utils
-
+from apps.sanding_machine import models
 """
 need to get all of the parameters from the current program
 
@@ -42,43 +42,56 @@ sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 
                      }
 
 
-class Sander:
-    def __init__(self):
-        pass
+class SanderControl:
+    def __init__(self, sander_db_obj:models.Sander):
+        self._active_sander_id = sander_db_obj.pk
+        self._sander_db_obj = sander_db_obj
 
-    def on(self, active_sander):
-        if not active_sander:
-            raise Exception('Sander ID is required')
-        if active_sander not in sander_dictionary:
+    def on(self):
+        if self._active_sander_id not in sander_dictionary:
+            raise Exception("Sander ID is invalid")
+        # put the logic
+
+        x_sander = self._sander_db_obj.x_length
+
+
+        return f'{sander_dictionary[self._active_sander_id]["extend"]}' "\n" f'g4p{sander_on_delay}' "\n" f'{sander_dictionary[self._active_sander_id]["on"]}'
+
+    def off(self):
+        if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
 
-        return f'{sander_dictionary[active_sander]["extend"]}' "\n" f'g4p{sander_on_delay}' "\n" f'{sander_dictionary[active_sander]["on"]}'
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}' "\n" f'g4p{sander_off_delay}' \
+               "\n" f'{sander_dictionary[self._active_sander_id]["off"]}'
 
-    def off(self, active_sander):
-        if not active_sander:
-            raise Exception('Sander ID is required')
-        if active_sander not in sander_dictionary:
-            raise Exception("Sander ID is invalid")
+    def get_x_value(self):
+        return sander_dictionary[self._active_sander_id]['x']
 
-        return f'{sander_dictionary[active_sander]["retract"]}' "\n" f'g4p{sander_off_delay}' \
-               "\n" f'{sander_dictionary[active_sander]["off"]}'
-
+    def get_y_value(self):
+        return sander_dictionary[self._active_sander_id]['y']
 
 class SandingGenerate:
-    def __init__(self):
-        self.g_code = []
-        self.active_tool = int(pass_one_dropdown.get())  # active tool will come from sanding program
-        self.stile_width = float(50)  # todo stile width will come from active program
-        self.sander_selection = Sander()  # i don't think this will need changed
+    def __init__(self, part_type, pass_:models.SandingProgramPass, door_style:models.DoorStyle):
 
-    def start(self, part_type):
-        # print(f'size {width_entry.get()} x {length_entry.get()}, {stile_width_entry.get()}')
+        self.g_code = []
+        self.__current_pass = pass_
+        self.sander_selection = SanderControl(pass_.sander)  # i don't think this will need changed
+        self.part_type = part_type
+        self.part_length = CustomMachineParamManager.get_value("part_length")
+        self.part_width = CustomMachineParamManager.get_value("part_width")
+        self.frame_width = door_style.get_value("outside_edge_width") + \
+                           door_style.get_value("inside_edge_width") +\
+                           door_style.get_value("frame_width")
+        print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
+              f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
+              f' {self.__current_pass.speed_value}, {door_style.get_value("hold_back_inside_edge")}')
+
+    def start(self):
 
         # todo this function will need to change to get the part type from the combination of main toggle/and sanding program definition
-
-        if part_type == 1:
+        if not self.part_type:
             self.slab()
-        elif part_type == 2:
+        elif self.part_type:
             self.frame()
             self.panel()
         else:
@@ -88,37 +101,37 @@ class SandingGenerate:
 
     def slab(self):
 
-        overhang_mm_x = overhang_slider.get() / 100 * sander_dictionary[self.active_tool][
+        overhang_mm_x = self.__current_pass.hangover_value / 100 * sander_dictionary[self.active_tool][
             'x']  # todo get overhang from active sandpaper
         print(f'overhang x :{overhang_mm_x}')
-        overhang_mm_y = overhang_slider.get() / 100 * sander_dictionary[self.active_tool][
+        overhang_mm_y = self.__current_pass.hangover_value / 100 * sander_dictionary[self.active_tool][
             'y']  # todo get overhang from active sandpaper
         offset_x = sander_dictionary[self.active_tool]['x'] / 2 - overhang_mm_x
         offset_y = sander_dictionary[self.active_tool]['y'] / 2 - overhang_mm_y
-        step_over_x = float(length_entry.get()) / (round(
-            float(length_entry.get()) / (sander_dictionary[self.active_tool]['x'] * float(
-                overlap_slider.get() / 100))))  # todo get overlap from active sandpaper
-        step_over_y = float(width_entry.get()) / (round(
-            float(width_entry.get()) / (sander_dictionary[self.active_tool]['y'] * float(
-                overlap_slider.get() / 100))))  # todo get overlap from active sandpaper
+        step_over_x = float(self.part_length) / (round(
+            float(self.part_length) / (self.sander_selection.get_x_value() * float(
+                self.overlap / 100))))  # todo get overlap from active sandpaper
+        step_over_y = float(self.part_width) / (round(
+            float(self.part_width) / (sander_dictionary[self.active_tool]['y'] * float(
+                self.overlap / 100))))  # todo get overlap from active sandpaper
         # print(offset_x)
         starting_position = offset_x, offset_y
         # print('you selected slab')
         self.g_code.append(sander_dictionary[self.active_tool]['offset'])
-        self.g_code.append(f'f{round(feed_speed_max * int(speed_slider.get()) / 10, 1)}')
+        self.g_code.append(f'f{round(feed_speed_max * int(self.speed) / 10, 1)}')
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}')  # start pattern
         self.g_code.append(self.sander_selection.on(self.active_tool))
-        self.g_code.append(f'g1z{round(float(width_entry.get()) - offset_y, 1)}')
-        self.g_code.append(f'g1x-{round(float(length_entry.get()) - offset_x, 1)}')
+        self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}')
+        self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}')
         self.g_code.append(f'g1z{round(starting_position[1], 1)}')
         self.g_code.append(f'g1x-{round(starting_position[0] + step_over_x, 1)}')
-        passes = int(int(float(width_entry.get()) / step_over_y) / 2)
+        passes = int(int(float(self.part_width) / step_over_y) / 2)
         # print(f'passes: {passes}')
         for i in range(passes):
-            self.g_code.append(f'g1z{round(float(width_entry.get()) - offset_y - (step_over_y * (i + 1)), 1)}')
+            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}')
             self.g_code.append(
-                f'g1x-{round(float(length_entry.get()) - (starting_position[0] + (step_over_x * (i + 1))), 1)}')
+                f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}')
             if i == passes - 1:
                 break
             self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}')
@@ -129,22 +142,22 @@ class SandingGenerate:
 
     def frame(self):
         effective_sander_width = sander_dictionary[self.active_tool]['y'] - (
-                (sander_dictionary[self.active_tool]['y'] * (overhang_slider.get() / 100)) * 2)
+                (sander_dictionary[self.active_tool]['y'] * (self.overhang / 100)) * 2)
         print(f'effective width: {effective_sander_width}')
-        if self.stile_width <= effective_sander_width:
+        if self.frame_width <= effective_sander_width:
             print('sand in one pass')
-            start_position = self.stile_width / 2
-            overhang_mm_x = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['x']
-            overhang_mm_y = overhang_slider.get() / 100 * sander_dictionary[self.active_tool]['y']
+            start_position = self.frame_width / 2
+            overhang_mm_x = self.overhang / 100 * sander_dictionary[self.active_tool]['x']
+            overhang_mm_y = self.overhang / 100 * sander_dictionary[self.active_tool]['y']
             offset_x = float(sander_dictionary[self.active_tool]['x'] / 2 - overhang_mm_x)
             offset_y = float(sander_dictionary[self.active_tool]['y'] / 2 - overhang_mm_y)
             self.g_code.append(sander_dictionary[self.active_tool]['offset'])
-            self.g_code.append(f'f{round(feed_speed_max * int(speed_slider.get()) / 10, 1)}')
+            self.g_code.append(f'f{round(feed_speed_max * int(self.speed) / 10, 1)}')
             self.g_code.append('g17 g21')
             self.g_code.append(f'g0x-{start_position}z{start_position}')
             self.g_code.append(self.sander_selection.on(self.active_tool))
-            self.g_code.append(f'g1x-{float(length_entry.get()) - offset_x}')
-            self.g_code.append(f'g1z{float(width_entry.get()) - offset_y}')
+            self.g_code.append(f'g1x-{float(self.part_length) - offset_x}')
+            self.g_code.append(f'g1z{float(self.part_width) - offset_y}')
             self.g_code.append(f'g1x-{start_position}')
             self.g_code.append(f'g1z{start_position}')
             self.g_code.append(self.sander_selection.off(self.active_tool))
@@ -157,9 +170,9 @@ class SandingGenerate:
 
     def panel(self):
         stile = self.stile_width
-        width = float(width_entry.get())
-        length = float(length_entry.get())
-        overlap = float(overlap_slider.get())
+        width = float(self.part_width)
+        length = float(self.part_length)
+        overlap = float(self.overlap)
         hold_back = float(hold_back_slider.get())
         panel_size = length - (stile / 2), width - (stile / 2)
         panel_corners = (stile, stile), (stile, width - stile), (length - stile, width - stile), (length - stile, stile)
@@ -193,7 +206,7 @@ class SandingGenerate:
         for i in range(passes):
             self.g_code.append(f'g1z-{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1)')
             self.g_code.append(
-                f'g1x-{round(float(length_entry.get()) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2)')  # length entry will be coming from main page length
+                f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2)')  # length entry will be coming from main page length
             if i == passes - 1:
                 break
             self.g_code.append(f'g1z-{round(panel_corners[2][1] + (step_over[1] + offset_y * (i + 1)), 1)}(3)')
@@ -206,11 +219,12 @@ class SandingGenerate:
 def generate():
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
-    frame_width = door_style.get_value("frame_width")
+    frame_width = door_style.get_value("frame_width") # this needs to get calculated
     # determine left or right zone
     part_length = CustomMachineParamManager.get_value("part_length")
     part_width = CustomMachineParamManager.get_value("part_width")
     part_type = CustomMachineParamManager.get_value('left_slap_selected')
+    holdback = door_style.get_value("hold_back_inside_edge")
     zone = CustomMachineParamManager.get_value('side')
     print(f'part width: {part_width}, {frame_width}')
 
@@ -252,12 +266,11 @@ def generate():
         # todo need a strategy to apply a compensation for right,
         # 1: change x0 to left end of piece, then send the same program we send for left zone
         # 2:
+    all_g_codes = []
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
-        overlap = pass_.overlap_value
-        print(f'overlap {overlap}')
-        # generate_code = SandingGenerate()
-        # generate_code.start()
+        generate_code = SandingGenerate(part_type,  pass_, door_style)
+        all_g_codes.extend(generate_code.start())
 
     """  
     
