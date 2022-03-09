@@ -14,7 +14,7 @@
     "left_slab_selected": false,
     "left_slap_selected": true,
     "loaded_bit_id": -1,
-    "machine_x_zero": 0,
+    "machine_x_zero": 125.0,
     "machine_y_zero": 0,
     "part_length": 1500.0,
     "part_width": 150.0,
