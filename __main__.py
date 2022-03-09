@@ -281,8 +281,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         print(f'right dims: {workspace_length}, {workspace_width}')
         print(f'style {left_slab_selected}')
         g_commands = generate()
-        for command in g_commands:
-            self.__grbl_interface.grbl_stream.add_new_command(command)
+        # for command in g_commands:
+        #     self.__grbl_interface.grbl_stream.add_new_command(command)
 
     def __get_float(self, val_str):
         result = 0
