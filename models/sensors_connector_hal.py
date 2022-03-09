@@ -13,6 +13,7 @@ class SensorConnector(QtCore.QObject):
     physicalErrorSignal = QtCore.Signal(str)
     def __init__(self):
         super(SensorConnector, self).__init__()
+        self.__current_vaccum_state = [0 for i in range(10)]
         self.sensor_vals = {
             0: {"state": False, "msg": "start2"},
             1: {"state": False, "msg": "y-axis error"},
@@ -26,9 +27,9 @@ class SensorConnector(QtCore.QObject):
         self.__width_sensor_readings = list()
         self.__current_measured_weight = 0.0
         self.__serial_interface_thread = SensorsSerialConnector()
-        self.__serial_interface_thread.weightChanged.connect(self.handle_weight_changed)
-        self.__serial_interface_thread.newReading.connect(self.handle_new_sensor_readings_received)
-        self.__current_vaccum_state = [0 for i in range(10)]
+        self.__serial_interface_thread.start_left_signal.connect(lambda :self.physicalStartSignal.emit("left"))
+        self.__serial_interface_thread.start_right_signal.connect(lambda: self.physicalStartSignal.emit("right"))
+
 
     def start(self):
         self.__serial_interface_thread.start()
@@ -102,10 +103,12 @@ class SensorConnector(QtCore.QObject):
             self.__serial_interface_thread.turn_off_servo()
 
     def send_vacuum_value(self, mode:int, param:int):
-        values_as_str = ",".join([str(val) for val in self.__current_vaccum_stat])
-        cmd_str = f'$,{mode},{param},{values_as_str}*\n'
+        print(self.__current_vaccum_state)
+        values_as_str = ",".join([str(val) for val in self.__current_vaccum_state])
+        cmd_str = f'${mode},{param},{values_as_str}*\n'
         cmd_bytes = bytes(cmd_str, "utf-8")
-        self.__serial_interface_threa.send_message(cmd_bytes)
+        print(cmd_bytes)
+        self.__serial_interface_thread.send_message(cmd_bytes)
 
     def turn_vacuum_on(self, vac_no):
         self.__current_vaccum_state[vac_no-1] = 1

@@ -240,8 +240,8 @@ def turn_vacuum_off(sensors_board_ref, ch):
     else:
         print(f"debug mode turn off vacuum {ch}")
 
+
 def generate(sensors_board_ref=None):
-    vacuum = [0 for i in range(10)]
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
     part_length = CustomMachineParamManager.get_value("part_length")
@@ -253,7 +253,6 @@ def generate(sensors_board_ref=None):
     # sensors_board_ref.send_vacuum_value(mode, param)
     if zone == 'left':
         if part_length >= 1488:
-            vacuum[5] = 1
             turn_vacuum_on(sensors_board_ref, 6)
             print('turn on vacuum pod 6')
         elif part_length >= 950:
@@ -266,8 +265,10 @@ def generate(sensors_board_ref=None):
             print('part is too short for work holding on x')
 
         if part_width >= 360:
+            turn_vacuum_on(sensors_board_ref, 1)
             print('turn on vacuum pod 1')
         elif part_width >= 135:
+            turn_vacuum_on(sensors_board_ref, 2)
             print('turn on vacuum pod 2')
         else:
             print('part is too short for work holding on x')
@@ -289,7 +290,7 @@ def generate(sensors_board_ref=None):
         # 1: change x0 to left end of piece, then send the same program we send for left zone
         # 2: change x0 to right corner of machine, invert x axis
     if sensors_board_ref is not None:
-        sensors_board_ref.send_vacuum_value(0, 30)
+        sensors_board_ref.send_vacuum_value(1, 30)
 
     all_g_codes = []
     for index, pass_ in enumerate(passes):

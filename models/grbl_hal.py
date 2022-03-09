@@ -287,6 +287,22 @@ class GrblControllerHal(QtCore.QObject):
         module_logger.debug("turn off the machine")
         self.servoStartSignal.emit(False)
 
+    def set_wco(self):
+        x_zero = CustomMachineParamManager.get_value("machine_x_zero")
+        y_zero = CustomMachineParamManager.get_value('machine_y_zero')
+        s1_x = CustomMachineParamManager.get_value("sander1_x_value")
+        s1_y = CustomMachineParamManager.get_value("sander1_y_value")
+        s2_x = CustomMachineParamManager.get_value("sander2_x_value")
+        s2_y = CustomMachineParamManager.get_value("sander2_y_value")
+        s3_x = CustomMachineParamManager.get_value("sander3_x_value")
+        s3_y = CustomMachineParamManager.get_value("sander3_y_value")
+        s4_x = CustomMachineParamManager.get_value("sander4_x_value")
+        s4_y = CustomMachineParamManager.get_value("sander4_y_value")
+        self.grbl_stream.add_new_command(f'g10 p1 l20 x{x_zero - s1_x}y0z{y_zero - s1_y}')
+        self.grbl_stream.add_new_command(f'g10 p2 l20 x{x_zero - s2_x}y0z{y_zero - s2_y}')
+        self.grbl_stream.add_new_command(f'g10 p3 l20 x{x_zero - s3_x}y0z{y_zero - s3_y}')
+        self.grbl_stream.add_new_command(f'g10 p4 l20 x{x_zero - s4_x}y0z{y_zero - s4_y}')
+
     def reset_and_home(self):
         self.grbl_stream.add_new_command('$slp')
         self.grbl_stream.add_new_command(chr(0x18), wait_after=2, notify_message="Homing")
@@ -294,7 +310,10 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command("")
         self.grbl_stream.add_new_command("$H")
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0",
-                                         notify_message='Homing Complete-Ready')  # todo, make it set the x,y zero from settings
+                                         notify_message='Homing Complete-Ready')
+        self.set_wco()
+
+        # todo, make it set the x,y zero from settings
         # todo, set up the offsets from settings. we also need to apply these at machine startup, and when the settings are saved
 
     def measure_tool(self):

@@ -20,11 +20,15 @@ sensors_serial_logger.addHandler(fh)
 class SensorsSerialConnector(QtCore.QThread):
     newReading = QtCore.Signal(list)
     weightChanged = QtCore.Signal(float)
+    start_left_signal = QtCore.Signal()
+    start_right_signal = QtCore.Signal()
 
     def __init__(self):
         super(SensorsSerialConnector, self).__init__()
         self.__is_serial_dev_connected = False
         self.__serial_dev = None
+        self.is_left_pressed = False
+        self.is_right_pressed = False
 
     def send_message(self, msg_to_send):
         if self.__is_serial_dev_connected:
@@ -47,12 +51,24 @@ class SensorsSerialConnector(QtCore.QThread):
             while self.__serial_dev.inWaiting() > 0:
                 try:
                     rec_bytes = self.__serial_dev.read_until()
-                    rec_str = str(rec_bytes, "utf-8").rstrip("\n")
+                    rec_str = str(rec_bytes, "utf-8").rstrip("\r\n")
                 except OSError:
                     self.__is_serial_dev_connected = False
                 else:
+                    # $0,0*
                     if rec_str.startswith("$") and rec_str.endswith("*"):
-                        print(rec_str)
+                        control_signals = [int(val) for val in rec_str[1:-1].split(",")]
+                        if len(control_signals) == 2:
+                            if control_signals[0] == 1 and not self.is_left_pressed:
+                                self.start_left_signal.emit()
+                                self.is_left_pressed = True
+                            else:
+                                self.is_left_pressed = False
+                            if control_signals[1] == 1 and not self.is_right_pressed:
+                                self.start_right_signal.emit()
+                                self.is_right_pressed = True
+                            else:
+                                self.is_right_pressed = False
                     else:
                         print(f"failed to decode {rec_str}")
             else:

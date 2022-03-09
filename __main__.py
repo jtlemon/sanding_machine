@@ -66,6 +66,9 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__temperature_thread = TemperatureService()
         # display sensor values also and weight auto width, height in certain dovetail widget if it's existed
         self.__sensors_board_thread = SensorConnector()
+        self.__sensors_board_thread.physicalStartSignal.connect(self.common_sanding_start)
+        self.__is_left_sanding_running = False
+        self.__is_right_sanding_running = False
         self.__grbl_interface = None
         if common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.sandingMachine:
             self.__grbl_interface = SandingGRBLHalController()
@@ -256,6 +259,18 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.common_sanding_start('right')
 
     def common_sanding_start(self, side="left"):
+        """
+        if self.__is_left_sanding_running and side is "left":
+            print("left sanding is running....")
+            return
+        else:
+            self.__is_left_sanding_running = True
+        if self.__is_right_sanding_running and side is "right":
+            print("right sanding is running....")
+            return
+        else:
+            self.__is_right_sanding_running = True
+            """
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
         left_slab_selected = widget.left_slap_option.isChecked()
         right_slab_selected = widget.right_slap_option.isChecked()
@@ -283,6 +298,9 @@ class MachineGuiInterface(MachineInterfaceUi):
         g_commands = generate(sensors_board_ref= self.__sensors_board_thread)
         # for command in g_commands:
         #     self.__grbl_interface.grbl_stream.add_new_command(command)
+        for i in range(10):
+            self.__sensors_board_thread.turn_vacuum_off(i)
+        self.__sensors_board_thread.send_vacuum_value(0, 30)
 
     def __get_float(self, val_str):
         result = 0
