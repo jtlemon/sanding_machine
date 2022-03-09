@@ -1,6 +1,8 @@
 import os
 import sys
 
+import models.sander_generate
+
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     from django.core.wsgi import get_wsgi_application
@@ -262,7 +264,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         part_width = self.__get_float(widget.part_width.text())
         part_length = self.__get_float(widget.part_length_lin.text())
         workspace_width = self.__get_float(widget.workspace_width.text())
-        workspace_length= self.__get_float(widget.workspace_length_lin.text())
+        workspace_length = self.__get_float(widget.workspace_length_lin.text())
 
         CustomMachineParamManager.set_value("left_slap_selected", left_slap_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slap_selected", right_slap_selected, auto_store=False)
@@ -274,6 +276,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         CustomMachineParamManager.set_value("workspace_width", workspace_width, auto_store=False)
         CustomMachineParamManager.set_value("workspace_length", workspace_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
+        # todo call the sanding generate
 
 
     def __get_float(self, val_str):

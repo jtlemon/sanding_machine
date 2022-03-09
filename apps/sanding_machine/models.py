@@ -37,7 +37,6 @@ class Sandpaper(models.Model):
         return  [sandpaper.profile_name for sandpaper in Sandpaper.objects.all()]
 
 
-
 class Sander(models.Model):
     name = models.CharField(max_length=50, unique=True)
     x_length = models.FloatField(default=0)
