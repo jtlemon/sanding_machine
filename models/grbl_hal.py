@@ -278,6 +278,7 @@ class GrblControllerHal(QtCore.QObject):
         self.turn_on_machine()
         self.grbl_stream.add_new_command("$H")
         self.grbl_stream.add_new_command("g10 p0 l20 x0 y0 z0", notify_message='Homing Complete-Ready')
+        self.set_wco()
 
     def turn_on_machine(self):
         module_logger.debug("turn on the machine")
