@@ -92,7 +92,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget.start_right_button.clicked.connect(self.handle_right_start)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
-                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface)
+                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface, sensors_board_ref=self.__sensors_board_thread)
                 for cam_index in range(common_configurations.AVAILABLE_CAMERAS):
                     self.subscribe_to_image(cam_index, operation_page_widget)
                 operation_page_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
@@ -300,7 +300,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             self.__grbl_interface.grbl_stream.add_new_command(command)
         for i in range(10):
             self.__sensors_board_thread.turn_vacuum_off(i)
-        self.__sensors_board_thread.send_vacuum_value(0, 30)
+        # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
     def __get_float(self, val_str):
         result = 0

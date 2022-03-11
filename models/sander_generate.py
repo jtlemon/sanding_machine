@@ -48,7 +48,7 @@ class SanderControl:
         self._active_sander_id = sander_db_obj.pk
         self._sander_db_obj = sander_db_obj
 
-    def on(self):
+    def on(self, pressure):
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
         # put the logic
@@ -56,13 +56,13 @@ class SanderControl:
         x_sander = self._sander_db_obj.x_length
 
         return f'{sander_dictionary[self._active_sander_id]["extend"]}' "\n" f'g4p{sander_on_delay}' "\n" \
-               f'{sander_dictionary[self._active_sander_id]["on"]}'
+               f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}'
 
     def off(self):
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
 
-        return f'{sander_dictionary[self._active_sander_id]["retract"]}' "\n" f'g4p{sander_off_delay}' \
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}m5' "\n" f'g4p{sander_off_delay}' \
                "\n" f'{sander_dictionary[self._active_sander_id]["off"]}'
 
     def get_x_value(self):
@@ -73,6 +73,15 @@ class SanderControl:
 
     def get_offset(self):
         return sander_dictionary[self._active_sander_id]['offset']
+
+    def map_pressure(self, x):
+        in_min = 0
+        in_max = 100
+        out_min = CustomMachineParamManager.get_value("min_pressure")
+        out_max = CustomMachineParamManager.get_value("max_pressure")
+        shifted = int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+        shifted2 = int((shifted - 0) * (100 - 0) / (30 - 0) + 0)
+        return shifted2
 
 
 class SandingGenerate:
@@ -89,37 +98,25 @@ class SandingGenerate:
                            door_style.get_value("inside_edge_width") + \
                            door_style.get_value("frame_width")
         self.hold_back = door_style.get_value("hold_back_inside_edge")
-        #print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
+        self.pressure = 10 *(self.sander_selection.map_pressure(self.__current_pass.pressure_value))
+        print(f'pressure {self.pressure}')
+        # print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
         #      f' {self.__current_pass.speed_value}, {self.hold_back}')
-    """
-    def start(self):
 
-        # todo this function will need to change to get the part type from the combination of main toggle/and sanding program definition
-        if not self.part_type:
-            self.slab()
-        elif self.part_type:
-            self.frame()
-            self.panel()
-        else:
-            print('no style selected')
-        return self.g_code
-        # print('generate code')
-
-    """
     def slab(self):
 
-        overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()  # todo get overhang from active sandpaper
+        overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
         print(f'overhang x :{overhang_mm_x}')
-        overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()  # todo get overhang from active sandpaper
+        overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
         offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
         step_over_x = float(self.part_length) / (round(
             float(self.part_length) / (self.sander_selection.get_x_value() * float(
-                self.__current_pass.overlap_value / 100))))  # todo get overlap from active sandpaper
+                self.__current_pass.overlap_value / 100))))
         step_over_y = float(self.part_width) / (round(
             float(self.part_width) / (self.sander_selection.get_y_value() * float(
-                self.__current_pass.overlap_value / 100))))  # todo get overlap from active sandpaper
+                self.__current_pass.overlap_value / 100))))
         # print(offset_x)
         starting_position = offset_x, offset_y
         # print('you selected slab')
@@ -127,7 +124,7 @@ class SandingGenerate:
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}')  # start pattern
-        self.g_code.append(self.sander_selection.on())  # updated to new
+        self.g_code.append(self.sander_selection.on(self.pressure))  # updated to new
         self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}')
         self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}')
         self.g_code.append(f'g1z{round(starting_position[1], 1)}')
@@ -161,7 +158,7 @@ class SandingGenerate:
             self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
             self.g_code.append('g17 g21')
             self.g_code.append(f'g0x-{start_position}z{start_position}')
-            self.g_code.append(self.sander_selection.on())
+            self.g_code.append(self.sander_selection.on(self.pressure))
             self.g_code.append(f'g1x-{float(self.part_length) - offset_x}')
             self.g_code.append(f'g1z{float(self.part_width) - offset_y}')
             self.g_code.append(f'g1x-{start_position}')
@@ -197,14 +194,15 @@ class SandingGenerate:
         panel_start = self.frame_width + (float(self.sander_selection.get_x_value()) / 2) + \
                       hold_back, self.frame_width + \
                       (float(self.sander_selection.get_y_value()) / 2) + hold_back
-        passes = int((((panel_size[1] - hold_back) / step_over[1]) / 2)/2) # i don't think i am calculating passes correctly
+        passes = int(
+            (((panel_size[1] - hold_back) / step_over[1]) / 2) / 2)  # i don't think i am calculating passes correctly
         print(f'panel start {panel_start}, passes: {passes}')
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(
             f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 10, 1)}')
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{panel_start[0]}z-{panel_start[1]}(starting)')
-        self.g_code.append(self.sander_selection.on())
+        self.g_code.append(self.sander_selection.on(self.pressure))
         self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}')
         self.g_code.append(f'g1z-{round(panel_corners[2][1] - offset_y, 1)}')
         self.g_code.append(f'g1x-{round(panel_start[0] + step_over[0], 1)}')
@@ -217,7 +215,8 @@ class SandingGenerate:
             #                 f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}')
             if i == passes - 1:
                 break
-            self.g_code.append(f'g1z-{round(panel_corners[2][1] - ((step_over[1] + offset_y) * (i + 1)), 1)}(3)') # not calculating correct the second time through?
+            self.g_code.append(
+                f'g1z-{round(panel_corners[2][1] - ((step_over[1] + offset_y) * (i + 1)), 1)}(3)')  # not calculating correct the second time through?
             # self.g_code.append(f'g1z-{round(panel_corners[2][1] + (step_over[1] + offset_y * (i + 1)), 1)}(3)')
             # self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}')
             self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4)')
@@ -254,43 +253,40 @@ def generate(sensors_board_ref=None):
     if zone == 'left':
         if part_length >= 1488:
             turn_vacuum_on(sensors_board_ref, 6)
-            print('turn on vacuum pod 6')
         elif part_length >= 950:
-            print('turn on vacuum pod 5')
+            turn_vacuum_on(sensors_board_ref, 5)
         elif part_length >= 700:
-            print('turn on vacuum pod 4')
+            turn_vacuum_on(sensors_board_ref, 4)
         elif part_length >= 300:
-            print('turn on vacuum pod 3')
+            turn_vacuum_on(sensors_board_ref, 3)
         else:
             print('part is too short for work holding on x')
 
         if part_width >= 360:
             turn_vacuum_on(sensors_board_ref, 1)
-            print('turn on vacuum pod 1')
         elif part_width >= 135:
             turn_vacuum_on(sensors_board_ref, 2)
-            print('turn on vacuum pod 2')
         else:
             print('part is too short for work holding on x')
     if zone == 'right':
         if part_length >= 700:
-            print('turn on vacuum pod 5')
+            turn_vacuum_on(sensors_board_ref, 5)
         elif part_length >= 300:
-            print('turn on vacuum pod 6')
+            turn_vacuum_on(sensors_board_ref, 6)
         else:
             print('part is too short for work holding on x')
 
         if part_width >= 360:
-            print('turn on vacuum pod 8')
+            turn_vacuum_on(sensors_board_ref, 8)
         elif part_width >= 135:
-            print('turn on vacuum pod 7')
+            turn_vacuum_on(sensors_board_ref, 7)
         else:
             print('part is too short for work holding on x')
         # todo need a strategy to apply a compensation for right,
         # 1: change x0 to left end of piece, then send the same program we send for left zone
         # 2: change x0 to right corner of machine, invert x axis
     if sensors_board_ref is not None:
-        sensors_board_ref.send_vacuum_value(1, 30)
+        sensors_board_ref.send_vacuum_value(1, 30)  # activating pressure at full pressure. not sure if this is needed.
 
     all_g_codes = []
     for index, pass_ in enumerate(passes):
