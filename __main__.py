@@ -300,7 +300,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             self.__grbl_interface.grbl_stream.add_new_command(command)
         for i in range(10):
             self.__sensors_board_thread.turn_vacuum_off(i)
-        self.__sensors_board_thread.send_vacuum_value(0, 30)
+        # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
     def __get_float(self, val_str):
         result = 0
