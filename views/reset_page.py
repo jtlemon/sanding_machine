@@ -37,7 +37,7 @@ class SanderConfigurationWidget(QtWidgets.QFrame):
         #self.store_state("active", state)
 
     def __handle_extend_toggled(self):
-        state = self.activate_checkbox.isChecked()
+        state = self.extend_checkbox.isChecked()
         self.stateChangedSignal.emit(self.__sander_number, "extend", state)
         #self.store_state("extend", state)
 
