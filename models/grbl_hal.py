@@ -299,10 +299,10 @@ class GrblControllerHal(QtCore.QObject):
         s3_y = CustomMachineParamManager.get_value("sander3_y_value")
         s4_x = CustomMachineParamManager.get_value("sander4_x_value")
         s4_y = CustomMachineParamManager.get_value("sander4_y_value")
-        self.grbl_stream.add_new_command(f'g10 p1 l20 x{x_zero - s1_x}y0z{y_zero - s1_y}')
-        self.grbl_stream.add_new_command(f'g10 p2 l20 x{x_zero - s2_x}y0z{y_zero - s2_y}')
-        self.grbl_stream.add_new_command(f'g10 p3 l20 x{x_zero - s3_x}y0z{y_zero - s3_y}')
-        self.grbl_stream.add_new_command(f'g10 p4 l20 x{x_zero - s4_x}y0z{y_zero - s4_y}')
+        self.grbl_stream.add_new_command(f'g10 p2 l20 x{x_zero - s1_x}y0z{y_zero - s1_y}')
+        self.grbl_stream.add_new_command(f'g10 p3 l20 x{x_zero - s2_x}y0z{y_zero - s2_y}')
+        self.grbl_stream.add_new_command(f'g10 p4 l20 x{x_zero - s3_x}y0z{y_zero - s3_y}')
+        self.grbl_stream.add_new_command(f'g10 p5 l20 x{x_zero - s4_x}y0z{y_zero - s4_y}')
 
     def reset_and_home(self):
         self.grbl_stream.add_new_command('$slp')

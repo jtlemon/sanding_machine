@@ -6,13 +6,13 @@ from models.sander_generate import sander_dictionary
 
 
 class ResetPageManager(ResetPageView):
-    def __init__(self, grbl_interface_ref, sensors_board_ref:SensorConnector):
+    def __init__(self, grbl_interface_ref, sensors_board_ref: SensorConnector):
         super(ResetPageManager, self).__init__()
         self.__footer_btn_text = "Reset"
         self.__grbl_interface_ref = grbl_interface_ref
         self.__sensors_board_ref = sensors_board_ref
         self.reset_controller_btn.clicked.connect(grbl_interface_ref.reset_machine)
-        #self.home_btn.clicked.connect(grbl_interface_ref.reset_and_home)
+        # self.home_btn.clicked.connect(grbl_interface_ref.reset_and_home)
         self.go_to_park_btn.clicked.connect(grbl_interface_ref.park)
         self.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
                                                                 grbl_interface_ref.grbl_stream.send_direct_command(
@@ -28,7 +28,7 @@ class ResetPageManager(ResetPageView):
         self.__response_checker.timeout.connect(self.get_latest_responses)
         self.__response_checker.start(200)
 
-    def handle_sander_checkbox_changed(self, sander_no:int, key:str, state:bool):
+    def handle_sander_checkbox_changed(self, sander_no: int, key: str, state: bool):
         if key == "active":
             state_str = "on" if state else "off"
         else:
@@ -38,11 +38,11 @@ class ResetPageManager(ResetPageView):
             cmd,
             clr_buffer=True
         )
+        print(f'cmd: {cmd}')
 
     def __handle_pressure_changed(self, new_pressure):
         new_pressure = int(new_pressure)
         self.__sensors_board_ref.send_pressure_value(new_pressure)
-
 
     def get_footer_btn_name(self) -> str:
         return self.__footer_btn_text
@@ -56,4 +56,3 @@ class ResetPageManager(ResetPageView):
     def get_latest_responses(self):
         responses = self.__grbl_interface_ref.get_latest_responses()
         self.serial_monitor_widget.response_received(responses)
-
