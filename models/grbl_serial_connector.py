@@ -38,7 +38,18 @@ class SerialConnector(Process):
         #print(f'sent {str(msg_to_send, "utf-8")}')
         if self.__is_serial_connected:
             try:
-                self.__serial_dev.write(msg_to_send)
+                msg_to_send_str =  msg_to_send.decode()
+                if  msg_to_send_str.startswith("hello"):
+                    parts = msg_to_send_str.replace("hello", "").split("\r\n")
+                    print(parts)
+                    for part in parts:
+                        if len(part) > 3:
+                            msg = part + "\n"
+                            self.__serial_dev.write(msg.encode())
+                    return
+
+                sent_bytes = self.__serial_dev.write(msg_to_send)
+                print(f"{sent_bytes}    sent....")
             except OSError:
                 self.__is_serial_connected = False
 

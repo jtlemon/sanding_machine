@@ -30,8 +30,8 @@ class CameraManger:
             is_valid, image = self.__cam.read()
             if is_valid:
                 frame_loss_counter = 0
-                image = cv2.rotate(image, cv2.ROTATE_180)
-                self.__latest_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                #image = cv2.rotate(image, cv2.ROTATE_180)
+                self.__latest_image = image
             else:
                 frame_loss_counter += 1
                 if frame_loss_counter > 20:
@@ -91,7 +91,7 @@ class CameraOnly:
                 image = cv2.resize(image, (common_configurations.IMAGE_HEIGHT,
                                            common_configurations.IMAGE_WIDTH
                                     ))
-                image = cv2.rotate(image, cv2.ROTATE_180)
+                #image = cv2.rotate(image, cv2.ROTATE_180)
                 return  cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             else:
                 self.frame_loss_counter += 1
