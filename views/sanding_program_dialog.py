@@ -20,7 +20,7 @@ class SandingProgramCreationDialog(QtWidgets.QDialog, Ui_SandingProgramCreationD
                                              )
         self.custom_prams_grid.addWidget(self.overlap_spinbox, 0, 1, 1, 1)
 
-        self.pressure_spinbox = CustomSpinBox(0, 10, 1, 0,
+        self.pressure_spinbox = CustomSpinBox(0, 100, 1, 0,
                                               extra="",
                                               allow_mode_change=False,
                                               numpad_title="pressure",

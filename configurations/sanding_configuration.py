@@ -150,6 +150,13 @@ SANDING_SETTING_CONFIGURATION = [
         "range": machine_ranges.dovetail_setting_x_zero
     },
     {
+        "lbl": "Min Pressure",
+        "target_key": "min_pressure",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sander_pressure,
+        "unit": "psi"
+    },
+    {
         "lbl": "Y zero",
         "target_key": "machine_y_zero",
         "field_type": WidgetsType.rangeWidget,
@@ -179,6 +186,13 @@ SANDING_SETTING_CONFIGURATION = [
         "target_key": "sander4_y_value",
         "field_type": WidgetsType.rangeWidget,
         "range": machine_ranges.dovetail_setting_y_zero
+    },
+    {
+        "lbl": "Max Pressure",
+        "target_key": "max_pressure",
+        "field_type": WidgetsType.rangeWidget,
+        "range": machine_ranges.sander_pressure,
+        "unit": "psi"
     },
 
 ]
