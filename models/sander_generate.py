@@ -124,13 +124,14 @@ class SandingGenerate:
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
         self.g_code.append('g17 g21')
         self.g_code.append(f'g0x-{round(starting_position[0] + step_over_x, 1)}z{round(starting_position[1], 1)}(ramp in)')
+        self.g_code.append(self.sander_selection.on(self.pressure))
         self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')  # start pattern
-        self.g_code.append(self.sander_selection.on(self.pressure))  # updated to new
+          # updated to new
         self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
         self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
         self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
         if perimeter:
-            self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')
+            self.g_code.append(f'g1x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')
             self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
             self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
             self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
