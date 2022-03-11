@@ -104,7 +104,7 @@ class SandingGenerate:
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
         #      f' {self.__current_pass.speed_value}, {self.hold_back}')
 
-    def slab(self):
+    def slab(self, perimeter):
 
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
         print(f'overhang x :{overhang_mm_x}')
@@ -123,22 +123,32 @@ class SandingGenerate:
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
         self.g_code.append('g17 g21')
-        self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}')  # start pattern
+        self.g_code.append(f'g0x-{round(starting_position[0] + step_over_x, 1)}z{round(starting_position[1], 1)}(ramp in)')
+        self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')  # start pattern
         self.g_code.append(self.sander_selection.on(self.pressure))  # updated to new
-        self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}')
-        self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}')
-        self.g_code.append(f'g1z{round(starting_position[1], 1)}')
-        self.g_code.append(f'g1x-{round(starting_position[0] + step_over_x, 1)}')
-        passes = int(int(float(self.part_width) / step_over_y) / 2)
+        self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
+        self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
+        self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
+        if perimeter:
+            self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')
+            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
+            self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
+            self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
+            print('make extra pass')
+            pass  # go around outside twice
+        self.g_code.append(f'g1x-{round(starting_position[0] + step_over_x, 1)}(4)')
+        passes = int(int(float(self.part_width) / step_over_y) / 2) - 1
         # print(f'passes: {passes}')
         for i in range(passes):
-            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}')
+            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i+1})')
             self.g_code.append(
-                f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}')
+                f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}(2-{i+1})')
+            if i == passes - 1 and (passes % 2) == 0:
+                break
+            self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i+1})')
+            self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}(4-{i+1})')
             if i == passes - 1:
                 break
-            self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}')
-            self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}')
         self.g_code.append(self.sander_selection.off())
         self.g_code.append('g53g0x0z0')
         return self.g_code
@@ -300,7 +310,7 @@ def generate(sensors_board_ref=None):
                 print('panels')
         else:  # the part is a slab
             if pass_.contain_slabs:
-                all_g_codes.extend(generate_code.slab())
+                all_g_codes.extend(generate_code.slab(pass_.make_extra_pass_around_perimeter))
                 print('slabs')
     print(*all_g_codes, sep="\n")
     return all_g_codes
