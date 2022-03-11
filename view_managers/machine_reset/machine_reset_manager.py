@@ -29,13 +29,13 @@ class ResetPageManager(ResetPageView):
         self.__response_checker.start(200)
 
     def handle_sander_checkbox_changed(self, sander_no:int, key:str, state:bool):
-        if key == "activate":
+        if key == "active":
             state_str = "on" if state else "off"
         else:
             state_str = "extend" if state else "retract"
         cmd = sander_dictionary[sander_no][state_str]
         self.__grbl_interface_ref.grbl_stream.send_direct_command(
-            cmd.encode(),
+            cmd,
             clr_buffer=True
         )
 
