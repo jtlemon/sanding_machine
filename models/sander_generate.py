@@ -177,7 +177,7 @@ class SandingGenerate:
         length = float(self.part_length)
         overlap = float(self.__current_pass.overlap_value)
         hold_back = float(self.hold_back)
-        panel_size = length - (stile / 2), width - (stile / 2)
+        panel_size = length - (stile * 2), width - (stile * 2)
         panel_corners = (stile, stile), (stile, width - stile), (length - stile, width - stile), (length - stile, stile)
         print(panel_corners)
         step_over = length / (round(length / (self.sander_selection.get_x_value() * overlap / 100))), \
@@ -195,7 +195,7 @@ class SandingGenerate:
                       hold_back, self.frame_width + \
                       (float(self.sander_selection.get_y_value()) / 2) + hold_back
         passes = int(
-            (((panel_size[1] - hold_back) / step_over[1]) / 2) / 2)  # i don't think i am calculating passes correctly
+            ((panel_size[1] - hold_back) / step_over[1]) / 2) - 1  # i don't think i am calculating passes correctly
         print(f'panel start {panel_start}, passes: {passes}')
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(
@@ -207,20 +207,18 @@ class SandingGenerate:
         self.g_code.append(f'g1z-{round(panel_corners[2][1] - offset_y, 1)}')
         self.g_code.append(f'g1x-{round(panel_start[0] + step_over[0], 1)}')
         for i in range(passes):
-            self.g_code.append(f'g1z-{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1)')
-            # self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}')
+            self.g_code.append(f'g1z-{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i+1})')
             self.g_code.append(
-                f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2)')
-            # self.g_code.append(
-            #                 f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}')
-            if i == passes - 1:
+                f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2-{i+1})')
+            if i == passes - 1 and (passes % 2) == 0: # break here if the number of passes was even
                 break
             self.g_code.append(
-                f'g1z-{round(panel_corners[2][1] - ((step_over[1] + offset_y) * (i + 1)), 1)}(3)')  # not calculating correct the second time through?
-            # self.g_code.append(f'g1z-{round(panel_corners[2][1] + (step_over[1] + offset_y * (i + 1)), 1)}(3)')
-            # self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}')
-            self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4)')
-            # self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}')
+                f'g1z-{round(panel_corners[2][1] - ((step_over[1]) * (i + 1 ) + offset_y), 1)}(3-{i+1})')
+            self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4-{i+1})')
+            if i == passes - 1:
+                break
+            # todo break here if the number of passes was odd
+
         self.g_code.append(self.sander_selection.off())
 
         return self.g_code
