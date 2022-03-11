@@ -188,10 +188,6 @@ SANDING_RESET_PAGE_BUTTONS = [
         "target_key": "reset_controller_btn"
     },
     {
-        "lbl": "HOME",
-        "target_key": "home_btn"
-    },
-    {
         "lbl": "GO TO PARK",
         "target_key": "go_to_park_btn"
     },
