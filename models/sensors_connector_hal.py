@@ -103,12 +103,10 @@ class SensorConnector(QtCore.QObject):
             self.__serial_interface_thread.turn_off_servo()
 
     def send_vacuum_value(self, mode:int, param:int):
-        print(self.__current_vaccum_state)
         values_as_str = ",".join([str(val) for val in self.__current_vaccum_state])
         cmd_str = f'${mode},{param},{values_as_str}*\n'
-        cmd_bytes = bytes(cmd_str, "utf-8")
-        print(cmd_bytes)
-        self.__serial_interface_thread.send_message(cmd_bytes)
+        self.__serial_interface_thread.send_message(cmd_str.encode())
+
 
     def turn_vacuum_on(self, vac_no):
         self.__current_vaccum_state[vac_no-1] = 1
@@ -116,3 +114,9 @@ class SensorConnector(QtCore.QObject):
 
     def turn_vacuum_off(self, vac_no):
         self.__current_vaccum_state[vac_no-1] = 0
+
+    def send_pressure_value(self, value):
+        cmd = f"$1,{value}*"
+        print(cmd)
+        self.__serial_interface_thread.send_message(cmd.encode())
+
