@@ -35,7 +35,7 @@ class ResetPageManager(ResetPageView):
             state_str = "extend" if state else "retract"
         cmd = sander_dictionary[sander_no][state_str]
         self.__grbl_interface_ref.grbl_stream.send_direct_command(
-            cmd.encode(),
+            cmd,
             clr_buffer=True
         )
 
