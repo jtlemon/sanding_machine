@@ -29,7 +29,7 @@ need to get all of the parameters from the current program
 feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = 1778
 y_max_width = 660.4
-sander_on_delay = .5  # we probably want to move this to a static config file
+sander_on_delay = .75  # we probably want to move this to a static config file
 sander_off_delay = .5  # we probably want to move this to a static config file
 
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
@@ -99,7 +99,7 @@ class SandingGenerate:
                            door_style.get_value("frame_width")
         self.hold_back = door_style.get_value("hold_back_inside_edge")
         self.pressure = 10 *(self.sander_selection.map_pressure(self.__current_pass.pressure_value))
-        print(f'pressure {self.pressure}')
+        # print(f'pressure {self.pressure}')
         # print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
         #      f' {self.__current_pass.speed_value}, {self.hold_back}')
@@ -107,7 +107,7 @@ class SandingGenerate:
     def slab(self, perimeter):
 
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
-        print(f'overhang x :{overhang_mm_x}')
+        # print(f'overhang x :{overhang_mm_x}')
         overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
         offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
@@ -122,33 +122,37 @@ class SandingGenerate:
         # print('you selected slab')
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
-        self.g_code.append('g17 g21')
-        self.g_code.append(f'g0x-{round(starting_position[0] + step_over_x, 1)}z{round(starting_position[1], 1)}(ramp in)')
+        self.g_code.append('g18 g21')
+        self.g_code.append(f'g0x-{round(starting_position[0] + (step_over_x * 2), 1)}z{round(starting_position[1] + (step_over_y / 2), 1)}(ramp in)')
         self.g_code.append(self.sander_selection.on(self.pressure))
-        self.g_code.append(f'g0x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')  # start pattern
+        self.g_code.append(f'g2x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}r{step_over_x * 2}(start)')  # start pattern
           # updated to new
         self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
         self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
         self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
         if perimeter:
-            self.g_code.append(f'g1x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}(start)')
-            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
-            self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
-            self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
-            print('make extra pass')
+            self.g_code.append(f'g1x-{round(starting_position[0] + overhang_mm_x, 1)}z{round(starting_position[1], 1)}(start)')
+            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - overhang_mm_x, 1)}(1)')
+            self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x - overhang_mm_x, 1)}(2)')
+            self.g_code.append(f'g1z{round(starting_position[1] + overhang_mm_y, 1)}(3)')
+            # print('make extra pass')
             pass  # go around outside twice
         self.g_code.append(f'g1x-{round(starting_position[0] + step_over_x, 1)}(4)')
-        passes = int(int(float(self.part_width) / step_over_y) / 2) - 1
+        passes = int(int(float(self.part_width) / step_over_y) / 2)
         # print(f'passes: {passes}')
         for i in range(passes):
             self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i+1})')
             self.g_code.append(
                 f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}(2-{i+1})')
-            if i == passes - 1 and (passes % 2) == 0:
+            if (starting_position[1] + (step_over_y * (i + 1))) >= (self.part_width / 2):
+            # print(f'test{test}')
+            # if i == passes - 1 and (passes % 2) == 0:
+                print('end')
                 break
             self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i+1})')
             self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}(4-{i+1})')
-            if i == passes - 1:
+            # if i == passes - 1:
+            if self.part_width - offset_y - (step_over_y * i) >= (self.part_width):
                 break
         self.g_code.append(self.sander_selection.off())
         self.g_code.append('g53g0x0z0')
@@ -239,14 +243,16 @@ def turn_vacuum_on(sensors_board_ref, ch):
     if sensors_board_ref is not None:
         sensors_board_ref.turn_vacuum_on(ch)
     else:
-        print(f"debug mode turn on vacuum {ch}")
+        pass
+        # print(f"debug mode turn on vacuum {ch}")
 
 
 def turn_vacuum_off(sensors_board_ref, ch):
     if sensors_board_ref is not None:
         sensors_board_ref.turn_vacuum_off(ch)
     else:
-        print(f"debug mode turn off vacuum {ch}")
+        # print(f"debug mode turn off vacuum {ch}")
+        pass
 
 
 def generate(sensors_board_ref=None):
@@ -255,7 +261,7 @@ def generate(sensors_board_ref=None):
     part_length = CustomMachineParamManager.get_value("part_length")
     part_width = CustomMachineParamManager.get_value("part_width")
     part_type = CustomMachineParamManager.get_value('left_slab_selected')
-    print(f'part type: {part_type}')
+    # print(f'part type: {part_type}')
     zone = CustomMachineParamManager.get_value('side')
     # sensors_board_ref.turn_vacuum_on()
     # sensors_board_ref.send_vacuum_value(mode, param)
@@ -299,20 +305,16 @@ def generate(sensors_board_ref=None):
 
     all_g_codes = []
     for index, pass_ in enumerate(passes):
-        print(f"pass no {index}")
+        # print(f"pass no {index}")
         generate_code = SandingGenerate(part_type, pass_, door_style)
         if part_type:  # if the part is a 5-piece
-            print('5-piece')
             if pass_.contain_frames:
-                print('frames')
                 all_g_codes.extend(generate_code.frame())
             if pass_.contain_panels:
                 all_g_codes.extend(generate_code.panel())
-                print('panels')
         else:  # the part is a slab
             if pass_.contain_slabs:
                 all_g_codes.extend(generate_code.slab(pass_.make_extra_pass_around_perimeter))
-                print('slabs')
     print(*all_g_codes, sep="\n")
     return all_g_codes
 
