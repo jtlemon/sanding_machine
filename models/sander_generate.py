@@ -55,8 +55,11 @@ class SanderControl:
 
         x_sander = self._sander_db_obj.x_length
 
-        return f'{sander_dictionary[self._active_sander_id]["extend"]}' "\n" f'g4p{sander_on_delay}' "\n" \
-               f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}'
+        return f'{sander_dictionary[self._active_sander_id]["extend"]}(extend)' "\n" \
+               f'g4p{sander_on_delay}(delay for sander to extend)' "\n" \
+               f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}(turn on sander and set pressure)' "\n"\
+               f'g4p{sander_on_delay}(delay for sander to start)' "\n" \
+
 
     def off(self):
         if self._active_sander_id not in sander_dictionary:
@@ -73,6 +76,9 @@ class SanderControl:
 
     def get_offset(self):
         return sander_dictionary[self._active_sander_id]['offset']
+
+    def get_work_plane(self):
+        return 'g18 g21 (workplane selection)'
 
     def map_pressure(self, x):
         in_min = 0
@@ -157,29 +163,55 @@ class SandingGenerate:
     def frame(self):
         effective_sander_width = self.sander_selection.get_y_value() - (
                 (self.sander_selection.get_y_value() * (self.__current_pass.hangover_value / 100)) * 2)
-        print(f'effective width: {effective_sander_width}')
         if self.frame_width <= effective_sander_width:
-            print('sand in one pass')
-            start_position = self.frame_width / 2
-            overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
-            overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
-            offset_x = float(self.sander_selection.get_x_value() / 2 - overhang_mm_x)
-            offset_y = float(self.sander_selection.get_y_value() / 2 - overhang_mm_y)
+            center_positions = (self.frame_width / 2, self.frame_width / 2),\
+                               (self.frame_width / 2, self.part_width - (self.frame_width / 2)),\
+                               (self.part_length - (self.frame_width / 2), self.part_width - (self.frame_width / 2)),\
+                               (self.part_length - (self.frame_width / 2), self.frame_width / 2)
+            print(f'center: {center_positions}')
             self.g_code.append(self.sander_selection.get_offset())
             self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
-            self.g_code.append('g17 g21')
-            self.g_code.append(f'g0x-{start_position}z{start_position}')
+            self.g_code.append(self.sander_selection.get_work_plane())
+            self.g_code.append(f'g0x-{center_positions[0][0]}z{center_positions[0][0]}')
             self.g_code.append(self.sander_selection.on(self.pressure))
-            self.g_code.append(f'g1x-{float(self.part_length) - offset_x}')
-            self.g_code.append(f'g1z{float(self.part_width) - offset_y}')
-            self.g_code.append(f'g1x-{start_position}')
-            self.g_code.append(f'g1z{start_position}')
+            self.g_code.append(f'g1z{center_positions[1][1]}')
+            self.g_code.append(f'g1x-{center_positions[2][0]}')
+            self.g_code.append(f'g1z{center_positions[3][1]}')
+            self.g_code.append(f'g1x-{center_positions[0][0]}')
             self.g_code.append(self.sander_selection.off())
             self.g_code.append('g53g0x0z0')
         else:
+            start_positions = (0, 0), (0, self.part_width), (self.part_length, self.part_width), (self.part_length, 0)
+            inside_edge = (self.frame_width, self.frame_width),\
+                          (self.frame_width, self.part_width - self.frame_width),\
+                          (self.part_length - self.frame_width, self.part_width - self.frame_width),\
+                          (self.part_length - self.frame_width, self.frame_width)
+            overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
+            # print(f'overhang x :{overhang_mm_x}')
+            overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
+            offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
+            offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
             print('sand in two passes')
+            print(f'starting: {start_positions}')
+            print(f'inside: {inside_edge}')
+            print(f'offsets: {offset_x}, {offset_y}')
+            self.g_code.append(self.sander_selection.get_offset())
+            self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
+            self.g_code.append(self.sander_selection.get_work_plane())
+            self.g_code.append(f'g0x-{start_positions[0][0] + offset_x}z{start_positions[0][1] + offset_y}')
+            self.g_code.append(self.sander_selection.on(self.pressure))
+            self.g_code.append(f'g1z{start_positions[1][1] - offset_y}')
+            self.g_code.append(f'g1x-{start_positions[2][0] - offset_x}')
+            self.g_code.append(f'g1z{start_positions[3][1] + offset_y}')
+            self.g_code.append(f'g1x-{start_positions[0][0] + offset_x}')
+            self.g_code.append(f'g1x-{inside_edge[0][0] - offset_x}z{inside_edge[0][1] - offset_y}')
+            self.g_code.append(f'g1z{inside_edge[1][1]+ offset_y}')
+            self.g_code.append(f'g1x-{inside_edge[2][0]+ offset_x}')
+            self.g_code.append(f'g1z{inside_edge[3][1]- offset_y}')
+            self.g_code.append(f'g1x-{inside_edge[0][0] - offset_x}')
+            self.g_code.append(self.sander_selection.off())
+            self.g_code.append('g53g0x0z0')
 
-        print('you selected frame')
         return self.g_code
 
     def panel(self, perimeter, entire_panel):
@@ -190,7 +222,7 @@ class SandingGenerate:
         hold_back = float(self.hold_back)
         panel_size = length - (stile * 2), width - (stile * 2)
         panel_corners = (stile, stile), (stile, width - stile), (length - stile, width - stile), (length - stile, stile)
-        print(panel_corners)
+        print(f'panel corners: {panel_corners}')
         step_over = length / (round(length / (self.sander_selection.get_x_value() * (1 - overlap / 100)))), \
                     width / (round(width / (self.sander_selection.get_y_value() * (1 - overlap / 100))))
         print(f'step over x : {step_over[0]} y: {step_over[1]}')
@@ -206,25 +238,27 @@ class SandingGenerate:
                       hold_back, self.frame_width + \
                       (float(self.sander_selection.get_y_value()) / 2) + hold_back
         passes = int(
-            ((panel_size[1] - hold_back) / step_over[1]) / 2) - 1  # i don't think i am calculating passes correctly
+            ((panel_size[1] - hold_back) / step_over[1]) / 2) - 1
         print(f'panel start {panel_start}, passes: {passes}')
-        self.g_code.append(self.sander_selection.get_offset())
+        self.g_code.append(self.sander_selection.get_offset() + " (set wco for sander)")
         self.g_code.append(
-            f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
-        self.g_code.append('g18 g21')
-        self.g_code.append(f'g0x-{panel_start[0] + (offset_x / 2)}z{panel_start[1] + (2 * offset_y)}(ramp in)')
+            f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}(set feed speed)')
+        self.g_code.append('g18 g21(work-plane xz and mm)')
+        self.g_code.append(f'g0x-{panel_start[0] + hold_back}z{panel_start[1] + hold_back}(ramp in)')
         self.g_code.append(self.sander_selection.on(self.pressure))
-        self.g_code.append(f'g3x-{panel_start[0]}z{panel_start[1]}r{4 * offset_y}(starting)')
+        self.g_code.append(f'g3x-{panel_start[0]}z{panel_start[1]}r{hold_back}(starting)')
         self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
         self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
         self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
         if entire_panel:
             if perimeter:
-                self.g_code.append(f'g1z{panel_start[1]}')
+                self.g_code.append(f'g1z{panel_start[1]}(1)')
                 self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
                 self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
                 self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
-            print('entire panel')
+            if passes == 0:
+                self.g_code.append(f'g1z{((((panel_corners[2][1] - offset_y) - panel_start[1])/2) + panel_start[1])}')
+                self.g_code.append(f'g1x-{round(float(length) - (panel_start[0] + step_over[0]), 1)}')
             for i in range(passes):
                 self.g_code.append(f'g1z{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i+1})')
                 self.g_code.append(
@@ -244,7 +278,7 @@ class SandingGenerate:
                 self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
                 self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
             self.g_code.append(f'g1z{panel_start[1]}')
-            self.g_code.append(f'g3x-{panel_start[0] + (2 * offset_x)}z{panel_start[1] + (offset_y / 2)}r{3 * offset_x}(ramp out)')
+            self.g_code.append(f'g3x-{panel_start[0] + hold_back}z{panel_start[1] + hold_back}r{hold_back}(ramp out)')
 
         self.g_code.append(self.sander_selection.off())
 
