@@ -27,8 +27,8 @@ need to get all of the parameters from the current program
 """
 
 feed_speed_max = 15000  # we probably want to move this to a static config file
-x_max_length = 1778
-y_max_width = 660.4
+x_max_length = CustomMachineParamManager.get_value("x_max_length", 1778)
+y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
 sander_on_delay = .75  # we probably want to move this to a static config file
 sander_off_delay = .5  # we probably want to move this to a static config file
 

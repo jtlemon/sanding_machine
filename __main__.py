@@ -282,8 +282,22 @@ class MachineGuiInterface(MachineInterfaceUi):
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
         part_width , part_length, workspace_width, workspace_length = widget.get_part_diminutions()
-        if part_width == 0 or part_length == 0 or workspace_width == 0 or  workspace_length == 0:
-            print("you have to set the part and workspace diminutions first")
+        x_max_length = CustomMachineParamManager.get_value("x_max_length", 1778)
+        y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
+        width, length = 0, 0
+        if side == "left":
+            if part_width == 0 or part_length == 0 :
+                print("you have to set the left part  diminutions first")
+                return
+            width, length = part_width, part_length
+        else:
+            if workspace_width == 0 or workspace_length == 0:
+                print("you have to set the right part  diminutions first")
+                return
+            width, length = workspace_width, workspace_length
+
+        if width > y_max_width or length > x_max_length:
+            print("part is too large")
             return
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
