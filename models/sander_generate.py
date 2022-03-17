@@ -69,10 +69,10 @@ class SanderControl:
                "\n" f'{sander_dictionary[self._active_sander_id]["off"]}'
 
     def get_x_value(self):
-        return sander_dictionary[self._active_sander_id]['x']
+        return self._sander_db_obj.x_length
 
     def get_y_value(self):
-        return sander_dictionary[self._active_sander_id]['y']
+        return self._sander_db_obj.y_length
 
     def get_offset(self):
         return sander_dictionary[self._active_sander_id]['offset']
