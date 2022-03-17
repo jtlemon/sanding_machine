@@ -281,10 +281,11 @@ class MachineGuiInterface(MachineInterfaceUi):
         right_slab_selected = widget.right_slap_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
-        part_width , part_length, workspace_width, workspace_length = widget.get_part_diminutions()
-        if part_width == 0 or part_length == 0 or workspace_width == 0 or  workspace_length == 0:
-            print("you have to set the part and workspace diminutions first")
+        part_width, part_length, workspace_width, workspace_length = widget.get_part_dimensions()
+        if part_width == 0 or part_length == 0:
+            print("you have to set the part and workspace dimensions first")
             return
+        # todo need to validate left and right seperately.  also need to validate max length and width.
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)

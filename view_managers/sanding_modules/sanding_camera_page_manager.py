@@ -272,7 +272,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
             value = round(value, 2)
             widget.setText(str(value))
 
-    def get_part_diminutions(self):
+    def get_part_dimensions(self):
         """this will return the dim in mm """
         values = self.__get_measured_values()
         if self.current_unit == MeasureUnitType.IN_UNIT:

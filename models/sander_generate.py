@@ -157,7 +157,6 @@ class SandingGenerate:
             if self.part_width - offset_y - (step_over_y * (i + 1)) <= center_line:
                 break
         self.g_code.append(self.sander_selection.off())
-        self.g_code.append('g53g0x0z0')
         return self.g_code
 
     def frame(self):
@@ -210,7 +209,6 @@ class SandingGenerate:
             self.g_code.append(f'g1z{inside_edge[3][1]- offset_y}')
             self.g_code.append(f'g1x-{inside_edge[0][0] - offset_x}')
             self.g_code.append(self.sander_selection.off())
-            self.g_code.append('g53g0x0z0')
 
         return self.g_code
 
@@ -282,6 +280,12 @@ class SandingGenerate:
 
         self.g_code.append(self.sander_selection.off())
 
+        return self.g_code
+
+    def end_cycle(self):
+        self.g_code.append('m5(deactivate vacuum)')
+        self.g_code.append('g54(reset wco)')
+        self.g_code.append(f'g0x-900z0(go to park position)')
         return self.g_code
 
 
@@ -366,6 +370,8 @@ def generate(sensors_board_ref=None):
         else:  # the part is a slab
             if pass_.contain_slabs:
                 all_g_codes.extend(generate_code.slab(pass_.make_extra_pass_around_perimeter))
+    # todo add logic to turn off vacuum and park machine.
+    all_g_codes.extend(generate_code.end_cycle())
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for x in all_g_codes:
             x.replace("x", "x-")
