@@ -281,7 +281,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         right_slab_selected = widget.right_slap_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
-        part_width , part_length, workspace_width, workspace_length = widget.get_part_diminutions()
+        part_width , part_length, workspace_width, workspace_length = widget.get_part_dimensions()
         x_max_length = CustomMachineParamManager.get_value("x_max_length", 1778)
         y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
         width, length = 0, 0

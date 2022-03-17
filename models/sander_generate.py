@@ -373,8 +373,14 @@ def generate(sensors_board_ref=None):
     # todo add logic to turn off vacuum and park machine.
     all_g_codes.extend(generate_code.end_cycle())
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
-        for x in all_g_codes:
-            x.replace("x", "x-")
+        for index, x in enumerate(all_g_codes):
+            if x.lower().startswith("g0x-"):
+                all_g_codes[index] = x.replace("x-", "x")
+                print(f"old: {x} new {all_g_codes[index]}")
+            elif x.lower().startswith("g0x"):
+                all_g_codes[index] = x.replace("x", "x-")
+                print(f"old: {x} new {all_g_codes[index]}")
+
     print(*all_g_codes, sep="\n")
     return all_g_codes
 
