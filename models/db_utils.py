@@ -7,7 +7,7 @@ from apps.sanding_machine import models as sandig_models
 
 def get_current_program():
     program_name = CustomMachineParamManager.get_value("program_name", "")
-    sanding_paths = sandig_models.SandingProgramPass.objects.filter(sanding_program__name=program_name)
+    sanding_paths = sandig_models.SandingProgramPass.objects.filter(sanding_program__name=program_name).order_by("pass_order")
     return sanding_paths
 
 
