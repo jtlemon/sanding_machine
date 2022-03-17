@@ -11,7 +11,23 @@ except Exception as e:
 from apps.sanding_machine import models
 from PySide2 import QtWidgets, QtCore
 from views.sanding_program_dialog import SandingProgramCreationDialog
-from view_managers.utils import display_error_message
+from view_managers.utils import display_error_message, display_question_dialog
+from apps.commons import SupportedMachines
+import time
+
+class CustomPassItemWidget(QtWidgets.QLabel):
+    def __init__(self, pass_id, lbl_txt,parent=None):
+        super(CustomPassItemWidget, self).__init__(lbl_txt, parent=parent)
+        self.pass_id = pass_id
+
+
+class CustomPassListItem(QtWidgets.QListWidgetItem):
+    def __init__(self, parent: QtWidgets.QListWidget, widget: CustomPassItemWidget):
+        super(CustomPassListItem, self).__init__()
+        parent.addItem(self)
+        parent.setItemWidget(self, widget)
+        self.widget = widget
+        self.setSizeHint(widget.sizeHint())
 
 
 class AddEditSandingProgramDialog(SandingProgramCreationDialog):
@@ -23,7 +39,6 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
         self.passes_list.clear()
 
         self.passes_count = 0
-        self.__all_added_passes = list()
         self.__current_sanding_program = sanding_program
         self.__current_sanding_program_name = "" if sanding_program is None else sanding_program.name
         self.__current_sanding_pass = None
@@ -38,18 +53,21 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
         # install signals
         self.sanders_combo_box.currentTextChanged.connect(self.__handle_sander_changed)
         self.add_pass_btn.clicked.connect(self._handle_add_new_pass)
+        self.del_pass_btn.clicked.connect(self._handle_delete_pass)
         self.passes_list.itemClicked.connect(self._handle_pass_clicked)
         self.panels_checkbox.toggled.connect(lambda new_state: self.panel_option_frame.setVisible(new_state))
         self.save_update_btn.clicked.connect(self.save_program)
+        self.passes_list.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
     def __handle_sander_changed(self, sander_name):
-        if len(sander_name) > 0 and self.__current_sanding_pass.is_temp:
+        if len(sander_name) > 0 :
             sander = models.Sander.objects.get(name=sander_name)
             installed_sandpaper = sander.installed_sandpaper
-            self.set_spinbox_value(self.overlap_spinbox, installed_sandpaper.get_value("sandpaper_overlap"))
-            self.set_spinbox_value(self.pressure_spinbox, installed_sandpaper.get_value("sanding_pressure"))
-            self.set_spinbox_value(self.speed_spinbox, installed_sandpaper.get_value("sandpaper_speed"))
-            self.set_spinbox_value(self.hangover_spinbox, installed_sandpaper.get_value("sandpaper_overhang"))
+            if installed_sandpaper is not None:
+                self.set_spinbox_value(self.overlap_spinbox, installed_sandpaper.get_value("sandpaper_overlap"))
+                self.set_spinbox_value(self.pressure_spinbox, installed_sandpaper.get_value("sanding_pressure"))
+                self.set_spinbox_value(self.speed_spinbox, installed_sandpaper.get_value("sandpaper_speed"))
+                self.set_spinbox_value(self.hangover_spinbox, installed_sandpaper.get_value("sandpaper_overhang"))
 
     def _handle_pass_clicked(self, item: QtWidgets.QListWidgetItem):
         item_index = self.passes_list.row(item)
@@ -58,24 +76,51 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
             if not is_created:
                 self.passes_list.setCurrentRow(self.__current_sanding_pass_index)
                 return
-        self._load_pass_at_index(item_index)
+        self.passes_list.setCurrentRow(item_index)
+        self.reload_current_pass()
 
-    def _load_pass_at_index(self, pass_index: int):
-        self.passes_list.setCurrentRow(pass_index)
-        self.__current_sanding_pass_index = pass_index
-        self.__current_sanding_pass = self.__all_added_passes[pass_index]
-        self.load_pass_details(self.__all_added_passes[pass_index])
+    def reload_current_pass(self):
+        current_pass_index = self.passes_list.currentIndex().row()
+        if current_pass_index < 0:
+            current_pass_index  = 0
+            self.passes_list.setCurrentRow(current_pass_index)
+        self.__current_sanding_pass_index = current_pass_index
+        sanding_pass_item = self.passes_list.currentItem()
+        self.__current_sanding_pass = models.SandingProgramPass.objects.get(pk=sanding_pass_item.widget.pass_id)
+        self.load_pass_details(self.__current_sanding_pass)
 
     def _handle_add_new_pass(self):
         if self.__current_sanding_pass is not None and self.create_pass() is False:
             return
-        self.passes_count += 1
-        pass_name = f"pass {self.passes_count}"
-        self.passes_list.addItem(QtWidgets.QListWidgetItem(pass_name))
         new_pass_obj = models.SandingProgramPass()
         new_pass_obj.save()
-        self.__all_added_passes.append(new_pass_obj)
-        self._load_pass_at_index(self.passes_count - 1)
+        self._insert_pass_from_obj(new_pass_obj)
+
+
+
+    def _insert_pass_from_obj(self, pass_obj :models.SandingProgramPass):
+        pass_name = f"pass {self.passes_count}"
+        new_pass_widget = CustomPassItemWidget(pass_id=pass_obj.pk, lbl_txt=pass_name)
+        item = CustomPassListItem(self.passes_list, new_pass_widget)
+        self.passes_list.addItem(item)
+        self.reload_current_pass()
+        self.passes_count += 1
+
+
+    def _handle_delete_pass(self):
+        current_index = self.passes_list.currentIndex().row()
+        if current_index < 0:
+            display_error_message("please select pass first", "error", self)
+            return
+        sanding_pass_pk = self.passes_list.currentItem().widget.pass_id
+        ans = display_question_dialog("Are you sure you want to delete this pass?", "pass deletion", self)
+        if ans == QtWidgets.QMessageBox.Yes:
+            models.SandingProgramPass.objects.filter(pk=sanding_pass_pk).delete()
+            self.passes_list.takeItem(current_index)
+        next_index = self.passes_list.count() - 1
+        self.passes_list.setCurrentRow(next_index)
+        self.reload_current_pass()
+
 
     def load_program_details(self):
         self.program_name_lin.setText(self.__current_sanding_program.name)
@@ -83,14 +128,11 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
         available_passes = models.SandingProgramPass.objects.filter(
             sanding_program=self.__current_sanding_program,
             is_temp=False
-        )
+        ).order_by("pass_order")
         for index, sanding_program_pass in enumerate(available_passes):
-            self.passes_count += 1
-            pass_name = f"pass {self.passes_count}"
-            self.passes_list.addItem(QtWidgets.QListWidgetItem(pass_name))
-            self.__all_added_passes.append(sanding_program_pass)
+            self._insert_pass_from_obj(sanding_program_pass)
         if self.passes_count > 0:
-            self._load_pass_at_index(0)
+            self.reload_current_pass()
 
     def load_pass_details(self, sanding_program_pass: models.SandingProgramPass):
         # make sure the configuration content is visible
@@ -151,10 +193,29 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
         self.__current_sanding_pass.speed_value = self.speed_spinbox.value()
         self.__current_sanding_pass.hangover_value = self.hangover_spinbox.value()
         self.__current_sanding_pass.is_temp = False
+        # overwrite sander details
+        sandpaper  = self.__current_sanding_pass.sander.installed_sandpaper
+        if sandpaper is None:
+            sandpaper = models.Sandpaper(profile_name=f"{int(time.time())}", machine=SupportedMachines.sandingMachine)
+            sandpaper.save()
+            self.__current_sanding_pass.sander.installed_sandpaper = sandpaper
+            self.__current_sanding_pass.sander.save()
+        payload = sandpaper.json_payload
+        update_payload = {
+            "sanding_pressure":self.pressure_spinbox.value(),
+            "sandpaper_overhang":self.hangover_spinbox.value(),
+            "sandpaper_overlap": self.overlap_spinbox.value(),
+            "sandpaper_speed": self.speed_spinbox.value(),
+        }
+        payload.update(update_payload)
+        sandpaper.json_payload = payload
+        sandpaper.save()
+        self.__current_sanding_pass.save()
+
         return True
 
     def save_program(self):
-        if len(self.__all_added_passes) == 0:
+        if self.passes_list.count() == 0:
             display_error_message(f"you have to add passes to the program first",
                                   "Program passes error", self)
             return
@@ -177,11 +238,22 @@ class AddEditSandingProgramDialog(SandingProgramCreationDialog):
         self.__current_sanding_program.name = program_name
         self.__current_sanding_program.save()
         self.__current_sanding_program_name = program_name
-        for sanding_program_pass in self.__all_added_passes:
+        passes_in_order = self.get_all_added_passes()
+        added_passes = models.SandingProgramPass.objects.filter(pk__in=passes_in_order)
+        for index, sanding_program_pass in enumerate(added_passes):
             sanding_program_pass.sanding_program = self.__current_sanding_program
             sanding_program_pass.is_temp = False
+            sanding_program_pass.pass_order = passes_in_order.index(sanding_program_pass.pk)
             sanding_program_pass.save()
+
+        models.SandingProgramPass.objects.filter(is_temp=True).delete()
         self.accept()
+
+    def get_all_added_passes(self):
+        all_ids = []
+        for item_index in range(self.passes_list.count()):
+            all_ids.append(self.passes_list.item(item_index).widget.pass_id)
+        return all_ids
 
     def is_program_name_is_exist(self, program_name):
         return models.SandingProgram.objects.filter(name=program_name).exclude(

@@ -47,6 +47,7 @@ from views import AlarmViewerDialog
 
 from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
+from view_managers import utils
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -242,6 +243,10 @@ class MachineGuiInterface(MachineInterfaceUi):
             # check here ........................
             widget.change_measure_mode(new_unit)
 
+        # change dim units
+
+
+
     def handle_machine_setting_changed_slot(self):
         for widget in self.__machine_setting_changed_subscribers:
             widget.handle_setting_changed()
@@ -276,24 +281,23 @@ class MachineGuiInterface(MachineInterfaceUi):
         right_slab_selected = widget.right_slap_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
-        left_part_width = self.__get_float(widget.part_width.text())
-        left_part_length = self.__get_float(widget.part_length_lin.text())
-        right_part_width = self.__get_float(widget.workspace_width.text())
-        right_part_length = self.__get_float(widget.workspace_length_lin.text())
-
+        part_width , part_length, workspace_width, workspace_length = widget.get_part_diminutions()
+        if part_width == 0 or part_length == 0 or workspace_width == 0 or  workspace_length == 0:
+            print("you have to set the part and workspace diminutions first")
+            return
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
         # len
-        CustomMachineParamManager.set_value("left_part_width", left_part_width, auto_store=False)
-        CustomMachineParamManager.set_value("left_part_length", left_part_length, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_width", right_part_width, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_length", right_part_length, auto_store=False)
+        CustomMachineParamManager.set_value("left_part_width", part_width, auto_store=False)
+        CustomMachineParamManager.set_value("left_part_length", part_length, auto_store=False)
+        CustomMachineParamManager.set_value("right_part_width", workspace_width, auto_store=False)
+        CustomMachineParamManager.set_value("right_part_length", workspace_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
         # todo call the sanding generate
         print(f'you pressed the {side} button')
-        print(f'right dims: {right_part_length}, {right_part_width}')
+        print(f'right dims: {workspace_length}, {workspace_width}')
         print(f'style {left_slab_selected}')
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
         for command in g_commands:

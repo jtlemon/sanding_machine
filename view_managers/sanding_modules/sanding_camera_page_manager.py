@@ -208,6 +208,8 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         super(SandingCameraPageManager, self).__init__(parent=parent)
         self.__footer_btn_text = footer_btn
         self.camera_widget.newAreaSelectedSignal.connect(self._handle_image_area_selected)
+        self.current_unit = MeasureUnitType.MM_UNIT
+        self.__dims_widgets = [self.part_width, self.part_length_lin, self.workspace_width, self.workspace_length_lin]
 
     def new_image_received(self, cam_index:int, pix_map:QtGui.QPixmap):
         if cam_index == 0:
@@ -218,20 +220,12 @@ class SandingCameraPageManager(ModifiedSandingPageView):
             self.camera_widget.set_image(pix_map)
 
     def get_part_rect(self):
-        part_width_str = self.part_width.text()
-        part_length_str = self.part_length_lin.text()
-        workspace_width_str = self.workspace_width.text()
-        workspace_length_str = self.workspace_length_lin.text()
-        if len(part_width_str) > 0 and len(part_length_str) and\
-            len(workspace_width_str) > 0 and len(workspace_length_str):
-            part_width = float(part_width_str)
-            part_length = float(part_length_str)
-            workspace_width = float(workspace_width_str)
-            workspace_length= float(workspace_length_str)
-            part_width_pixcels = int((part_width/workspace_width)*self.camera_widget.height())
+        part_width, part_length, workspace_width, workspace_length = self.__get_measured_values()
+        if part_width > 0 and part_length and workspace_width > 0 and workspace_length > 0:
+            part_width_pixels = int((part_width/workspace_width)*self.camera_widget.height())
             part_length_pixels = int((part_length/workspace_length)*self.camera_widget.width())
-            generated_rect = QtCore.QRect(0, self.camera_widget.height() - part_width_pixcels,
-                                 part_length_pixels, part_width_pixcels)
+            generated_rect = QtCore.QRect(0, self.camera_widget.height() - part_width_pixels,
+                                 part_length_pixels, part_width_pixels)
             return  generated_rect
 
     def _handle_image_area_selected(self, rect:QtCore.QRect):
@@ -252,10 +246,6 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         self.localize_part_btn.setChecked(False)
         self.camera_widget.enable_annotation(False)
 
-    def change_measure_mode(self, unit: MeasureUnitType):
-        pass
-
-
     def get_footer_btn_name(self) -> str:
         return self.__footer_btn_text
 
@@ -271,22 +261,37 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         pass
 
     def change_measure_mode(self, unit: MeasureUnitType):
-        pass
+        self.current_unit = unit
+        values = self.__get_measured_values()
+        if unit == MeasureUnitType.MM_UNIT:
+            factor = 25.4
+        else:
+            factor = 1/25.4
+        for index, widget in enumerate(self.__dims_widgets):
+            value = values[index] * factor
+            value = round(value, 2)
+            widget.setText(str(value))
+
+    def get_part_diminutions(self):
+        """this will return the dim in mm """
+        values = self.__get_measured_values()
+        if self.current_unit == MeasureUnitType.IN_UNIT:
+            values = [val*25.4 for val in values]
+        return values
+
+    def __get_measured_values(self):
+        measures = []
+        for widget in self.__dims_widgets:
+            text = widget.text()
+            if len(text) > 0:
+                try:
+                    val = float(text)
+                    measures.append(val)
+                except:
+                    measures.append(0)
+            else:
+                measures.append(0)
+        return measures
 
 
-if __name__ == "__main__":
-    from views import utils
-    app = QtWidgets.QApplication([])
-    utils.load_app_fonts()
-    app.setStyleSheet(utils.load_app_style())
-    sanding_camera = ModifiedSandingPageManager()
-    sanding_camera.show()
-    image_source = TestImageSource()
-    image_source.newImageSignal.connect(lambda pixmap: sanding_camera.new_image_received(0, pixmap))
-    image_source.start()
-    sanding_camera.part_width.setText("200")
-    sanding_camera.part_length_lin.setText("200")
-    sanding_camera.workspace_width.setText("400")
-    sanding_camera.workspace_length_lin.setText("800")
-    app.exec_()
 
