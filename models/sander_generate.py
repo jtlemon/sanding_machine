@@ -414,4 +414,4 @@ def generate(sensors_board_ref=None):
 
 if __name__ == "__main__":
     probe_test()
-    #  generate()
+    generate()
