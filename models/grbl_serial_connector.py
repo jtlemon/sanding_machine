@@ -134,6 +134,7 @@ class SerialConnector(Process):
             start_time = time.time()
             while time.time() - start_time < cmd_to_send.get("wait_time") and not self.fast_interrupt_occur():
                 time.sleep(0.01)
+        return response
 
     def fast_interrupt_occur(self):
         return not self.__tx_direct_queue.empty()

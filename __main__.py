@@ -328,7 +328,7 @@ class MachineGuiInterface(MachineInterfaceUi):
     def handle_prob_calibration_values_modified(self):
         # handle the change
         from models.sander_generate import Probe
-        p = Probe()
+        p = Probe(self.__grbl_interface)
         g_code = p.calibrate()
         self.send_g_code(g_code)
 
