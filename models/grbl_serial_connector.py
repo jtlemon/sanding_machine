@@ -53,6 +53,13 @@ class SerialConnector(Process):
             except OSError:
                 self.__is_serial_connected = False
 
+    def send_command_directly(self, cmd: bytes):
+        send_bytes = self.__serial_dev.write(cmd)
+        print(f"{send_bytes} sent directly.")
+
+    def receive_bytes(self):
+        return self.__serial_dev.readlines()
+
     def run(self):
         while not self.__close_event.is_set():
             time.sleep(0.05)
@@ -188,7 +195,7 @@ class SerialConnector(Process):
 
     def add_new_command(self, cmd: str, cmd_type: str = 'g', wait_after: int = 0, notify_message: str = ""):
         if cmd_type == "g":
-            cmd = cmd + "\n"
+            cmd = cmd + "\r\n"
         command_bytes = bytes(cmd, "utf-8")
         command_to_send = {"cmd": command_bytes, "wait_time": wait_after, "notify_message": notify_message}
         self.__tx_queue.put(command_to_send)

@@ -38,6 +38,7 @@ class SensorsSerialConnector(QtCore.QThread):
             except OSError:
                 self.__is_serial_dev_connected = False
 
+
     def run(self):
         if not common_configurations.IS_SENSOR_MODULE_ENABLED:
             sensors_serial_logger.info("the sensors are disabled by the configurations")

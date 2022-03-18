@@ -21,6 +21,7 @@ from configurations.custom_pram_loader import CustomMachineParamManager
 from models import db_utils
 from apps.sanding_machine import models
 from statistics import mean
+from PySide2 import QtCore
 
 """
 need to get all of the parameters from the current program
@@ -286,8 +287,9 @@ class SandingGenerate:
         self.g_code.append(f'g0x-900z0(go to park position)')
         return self.g_code
 
-class Probe:
+class Probe(QtCore.QThread):
     def __init__(self, serial_interface):
+        super(Probe, self).__init__()
         self.g_code = []
         self.serial_interface = serial_interface
         self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
@@ -298,14 +300,43 @@ class Probe:
                               CustomMachineParamManager.get_value('probe_y_zero')
         self.offset_in = 75
 
+    def run(self):
+        self.calibrate()
+
+    def decode_response(self, response_list):
+        values = None
+        for rec_bytes in response_list:
+            rec_str = rec_bytes.decode()
+            rec_str = rec_str.rstrip("\r\n")
+            # [b'[PRB:-137.018,0.000,-623.444:1]\r\n', b'ok\r\n', b'ok\r\n']
+            if "PRB:" in rec_str:
+                sub_str = rec_str[5:-3].split(",")
+                values = [float(val) for val in sub_str]
+        return values
+
+    def send_and_get_response(self,cmd ,  decode:bool=False, delay:int=500):
+        result = None
+        cmd_str = cmd + "\r\n"
+        print(f"{cmd_str} sent to the machine ........")
+        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode())
+        self.msleep(delay)
+        rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes()
+        if decode:
+            result = self.decode_response(rec_bytes_list)
+        return result
+
     def calibrate(self):
-        self.g_code.append('g21g54(set units and wco)')
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.send_and_get_response('g21g54(set units and wco)')
+        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
-        #@TODO check if this will work
-        cmd = {"cmd": 'g38.5x0f1200', "wait_time": 0.5, "notify_message": ""}
-        response = self.serial_interface.grbl_stream.wait_for_response(cmd)
-        print(response)
+        decoded_response = self.send_and_get_response('g38.5x0f1200', delay=5000, decode=True)
+        if decoded_response is None:
+            print("failed to decode the data")
+            return
+        print(decoded_response)
+        x, y, z = decoded_response
+        print(x, y, z )
+
         result_x_minus = -59.997  # todo this will be replaced with result from probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
