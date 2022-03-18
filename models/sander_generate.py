@@ -303,7 +303,8 @@ class Probe:
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
         #@TODO check if this will work
-        response = self.serial_interface.grbl_stream.wait_for_response('g38.5x0f1200')
+        cmd = {"cmd": 'g38.5x0f1200', "wait_time": 0.5, "notify_message": ""}
+        response = self.serial_interface.grbl_stream.wait_for_response(cmd)
         print(response)
         result_x_minus = -59.997  # todo this will be replaced with result from probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
