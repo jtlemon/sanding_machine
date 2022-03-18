@@ -246,8 +246,6 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         # change dim units
 
-
-
     def handle_machine_setting_changed_slot(self):
         for widget in self.__machine_setting_changed_subscribers:
             widget.handle_setting_changed()
@@ -278,46 +276,53 @@ class MachineGuiInterface(MachineInterfaceUi):
             self.__is_right_sanding_running = True
             """
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-        left_slab_selected = widget.left_slap_option.isChecked()
-        right_slab_selected = widget.right_slap_option.isChecked()
+        left_slab_selected = widget.left_slab_option.isChecked()
+        right_slab_selected = widget.right_slab_option.isChecked()
+        probing_on = widget.probing_option.isChecked()
         program_name = widget.sanding_programs_combo.currentText()
         door_style = widget.door_styles_combo.currentText()
-        part_width , part_length, workspace_width, workspace_length = widget.get_part_dimensions()
-        x_max_length = CustomMachineParamManager.get_value("x_max_length", 1778)
-        y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
-        width, length = 0, 0
-        if side == "left":
-            if part_width == 0 or part_length == 0 :
-                print("you have to set the left part  diminutions first")
-                return
-            width, length = part_width, part_length
-        else:
-            if workspace_width == 0 or workspace_length == 0:
-                print("you have to set the right part  diminutions first")
-                return
-            width, length = workspace_width, workspace_length
+        left_part_width, left_part_length, right_part_width, right_part_length = widget.get_part_dimensions()
+        x_max_length = CustomMachineParamManager.get_value("x_max_length")
+        y_max_width = CustomMachineParamManager.get_value("y_max_width")
+        if not probing_on:
+            if side == "left":
+                if left_part_width == 0 or left_part_length == 0 and not probing_on:
+                    print("you have to set the left part  diminutions first")
+                    return
+                width, length = left_part_width, left_part_length
+            else:
+                if right_part_width == 0 or right_part_length == 0:
+                    print("you have to set the right part  diminutions first")
+                    return
+                width, length = right_part_width, right_part_length
 
-        if width > y_max_width or length > x_max_length:
-            print("part is too large")
-            return
+            if width > y_max_width or length > x_max_length:
+                print("part is too large")
+                return
+        else:
+            # todo, call the sander_generate.probe.probe_part from here, poplulate part width and length for left or right
+            print('we are probing the part')
+
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
+        CustomMachineParamManager.set_value("probing_on", probing_on, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
-        # len
-        CustomMachineParamManager.set_value("left_part_width", part_width, auto_store=False)
-        CustomMachineParamManager.set_value("left_part_length", part_length, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_width", workspace_width, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_length", workspace_length, auto_store=False)
+
+        CustomMachineParamManager.set_value("left_part_width", left_part_width, auto_store=False)
+        CustomMachineParamManager.set_value("left_part_length", left_part_length, auto_store=False)
+        CustomMachineParamManager.set_value("right_part_width", right_part_width, auto_store=False)
+        CustomMachineParamManager.set_value("right_part_length", right_part_length, auto_store=False)
         CustomMachineParamManager.set_value("side", side, auto_store=True)
         # todo call the sanding generate
         print(f'you pressed the {side} button')
-        print(f'right dims: {workspace_length}, {workspace_width}')
+
+        print(f'right dims: {right_part_length}, {right_part_width}')
         print(f'style {left_slab_selected}')
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
         self.send_g_code(g_commands)
-        for i in range(10):
-            self.__sensors_board_thread.turn_vacuum_off(i)
+        # for i in range(10):
+        #     self.__sensors_board_thread.turn_vacuum_off(i)
         # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
     def handle_prob_calibration_values_modified(self):

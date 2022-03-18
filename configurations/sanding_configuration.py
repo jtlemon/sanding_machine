@@ -210,3 +210,4 @@ SANDING_RESET_PAGE_BUTTONS = [
         "target_key": "change_paper_button"
     }
 ]
+

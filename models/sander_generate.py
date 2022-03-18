@@ -20,6 +20,7 @@ except Exception as e:
 from configurations.custom_pram_loader import CustomMachineParamManager
 from models import db_utils
 from apps.sanding_machine import models
+from statistics import mean
 
 """
 need to get all of the parameters from the current program
@@ -27,8 +28,8 @@ need to get all of the parameters from the current program
 """
 
 feed_speed_max = 15000  # we probably want to move this to a static config file
-x_max_length = CustomMachineParamManager.get_value("x_max_length", 1778)
-y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
+x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
+y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
 sander_on_delay = .75  # we probably want to move this to a static config file
 sander_off_delay = .5  # we probably want to move this to a static config file
 
@@ -112,11 +113,9 @@ class SandingGenerate:
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
         offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
         step_over_x = float(self.part_length) / (round(
-            float(self.part_length) / (self.sander_selection.get_x_value() * (1 - float(
-                self.__current_pass.overlap_value / 100)))))
+            float(self.part_length) / (self.sander_selection.get_x_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
         step_over_y = float(self.part_width) / (round(
-            float(self.part_width) / (self.sander_selection.get_y_value() * (1 - float(
-                self.__current_pass.overlap_value / 100)))))
+            float(self.part_width) / (self.sander_selection.get_y_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
         starting_position = offset_x, offset_y
         center_line = self.part_width / 2
         print(f'center line: {center_line}')
@@ -295,24 +294,54 @@ class Probe:
             "probe_cal_y", None)  # this will come from settings page
         if self.cal_size[0] is None or self.cal_size[1] is None:
             raise ValueError("you have to set the probe values from the setting page first.")
-        self.starting_rough = 59.627, 629.419  # this will come from config once saved
+        self.starting_rough = CustomMachineParamManager.get_value('probe_x_zero'),\
+                              CustomMachineParamManager.get_value('probe_y_zero')
         self.offset_in = 75
 
     def calibrate(self):
         self.g_code.append('g21g54(set units and wco)')
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append('g38.5x0f1200')
-        # todo get return of probe
+        result_x_minus = -59.997  # todo this will be replaced with result from probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
-        # todo get return of probe
+        result_z_plus = -623.969  # todo get return of probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5x-1700')
-        # todo get return of probe
+        result_x_plus = -805.910  # todo get return of probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
         self.g_code.append('g38.5z0')
-        # todo get return of probe
+        result_z_minus = -334.933  # todo get return of probe
+        result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
+        CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
+                                                                          self.cal_size[1] - result_size[1])),
+                                                                    3), auto_store=True)
+        CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
+        CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
+        # calculated_size = (-1 * result_x_plus) - effective_zero[0], effective_zero[1] + result_z_minus # this will not be used here, will use with probing of actual parts
+        # todo store results from calibration to config file
+        return self.g_code
 
+    def probe_part(self):
+        step_back = 50
+        self.g_code.append('g21g54(set units and wco)')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        # todo, test that probe detects part
+        self.g_code.append('g38.5z0f4800')
+        self.g_code.append('g91')
+        self.g_code.append(f'g0z-{step_back}')
+        self.g_code.append('g38.5z50f1200')
+        result_z = -335.233  # todo, this will be return of z probe
+        self.g_code.append('g90')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.g_code.append('g38.5x-1700f4800')
+        self.g_code.append('g91')
+        self.g_code.append(f'g0x{step_back}')
+        self.g_code.append('g38.5x-50f1200')
+        result_x = -805.310  # todo, this will be return of x probe
+        self.g_code.append('g90')
+        part_size = (-1 * result_x) - CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero') + result_z
+        print(f'part size: {part_size}')
         return self.g_code
 
 
@@ -337,6 +366,7 @@ def probe_test():
     generate_probe = Probe()
     all_g_codes.extend(generate_probe.calibrate())
     print(all_g_codes, sep="\n")
+    print(generate_probe.probe_part())
 
 
 def generate(sensors_board_ref=None):
@@ -345,6 +375,8 @@ def generate(sensors_board_ref=None):
     # todo need to add switch for right side
     # print(f'part type: {part_type}')
     zone = CustomMachineParamManager.get_value('side')
+    probing_on = CustomMachineParamManager.get_value('probing_on')
+
     # sensors_board_ref.turn_vacuum_on()
     # sensors_board_ref.send_vacuum_value(mode, param)
     if zone == 'left':
@@ -372,6 +404,7 @@ def generate(sensors_board_ref=None):
         part_length = CustomMachineParamManager.get_value("right_part_length")
         part_width = CustomMachineParamManager.get_value("right_part_width")
         part_type = CustomMachineParamManager.get_value('right_slab_selected')
+        probing_on = CustomMachineParamManager.get_value('')
         print(f'length: {part_length} width: {part_width} type: {part_type}')
         if part_length >= 700:
             turn_vacuum_on(sensors_board_ref, 5)
