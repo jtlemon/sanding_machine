@@ -22,6 +22,8 @@
     "min_pressure": 0.0,
     "part_length": 0,
     "part_width": 0,
+    "probe_cal_x": 500.0,
+    "probe_cal_y": 20.0,
     "program_name": "sand panel",
     "right_active": 0,
     "right_part_length": 750.0,

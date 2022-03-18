@@ -54,8 +54,7 @@ class SanderControl:
         return f'{sander_dictionary[self._active_sander_id]["extend"]}(extend)' "\n" \
                f'g4p{sander_on_delay}(delay for sander to extend)' "\n" \
                f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}(turn on sander and set pressure)' "\n"\
-               f'g4p{sander_on_delay}(delay for sander to start)' "\n" \
-
+               f'g4p{sander_on_delay}(delay for sander to start)' "\n"
 
     def off(self):
         if self._active_sander_id not in sander_dictionary:
@@ -87,20 +86,20 @@ class SanderControl:
 
 
 class SandingGenerate:
-    def __init__(self, part_type, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length, part_width):
+    def __init__(self, part_type, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length,
+                 part_width):
 
         self.g_code = []
         self.__current_pass = pass_
         self.sander_selection = SanderControl(pass_.sander)
         self._active_sander_id = pass_.sander.pk
-        self.part_type = CustomMachineParamManager.get_value("")
         self.part_length = part_length
         self.part_width = part_width
         self.frame_width = door_style.get_value("outside_edge_width") + \
                            door_style.get_value("inside_edge_width") + \
                            door_style.get_value("frame_width")
         self.hold_back = door_style.get_value("hold_back_inside_edge")
-        self.pressure = 10 *(self.sander_selection.map_pressure(self.__current_pass.pressure_value))
+        self.pressure = 10 * (self.sander_selection.map_pressure(self.__current_pass.pressure_value))
         # print(f'pressure {self.pressure}')
         # print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
@@ -113,8 +112,8 @@ class SandingGenerate:
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
         offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
         step_over_x = float(self.part_length) / (round(
-             float(self.part_length) / (self.sander_selection.get_x_value() * (1- float(
-                 self.__current_pass.overlap_value / 100)))))
+            float(self.part_length) / (self.sander_selection.get_x_value() * (1 - float(
+                self.__current_pass.overlap_value / 100)))))
         step_over_y = float(self.part_width) / (round(
             float(self.part_width) / (self.sander_selection.get_y_value() * (1 - float(
                 self.__current_pass.overlap_value / 100)))))
@@ -124,14 +123,17 @@ class SandingGenerate:
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
         self.g_code.append('g18 g21')
-        self.g_code.append(f'g0x-{round(starting_position[0] + (step_over_x * 2), 1)}z{round(starting_position[1] + (step_over_y / 2), 1)}(ramp in)')
+        self.g_code.append(
+            f'g0x-{round(starting_position[0] + (step_over_x * 2), 1)}z{round(starting_position[1] + (step_over_y / 2), 1)}(ramp in)')
         self.g_code.append(self.sander_selection.on(self.pressure))
-        self.g_code.append(f'g2x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}r{step_over_x * 2}(start)')
+        self.g_code.append(
+            f'g2x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}r{step_over_x * 2}(start)')
         self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
         self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
         self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
         if perimeter:
-            self.g_code.append(f'g1x-{round(starting_position[0] + overhang_mm_x, 1)}z{round(starting_position[1], 1)}(start)')
+            self.g_code.append(
+                f'g1x-{round(starting_position[0] + overhang_mm_x, 1)}z{round(starting_position[1], 1)}(start)')
             self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - overhang_mm_y, 1)}(1)')
             self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x - overhang_mm_x, 1)}(2)')
             self.g_code.append(f'g1z{round(starting_position[1] + overhang_mm_y, 1)}(3)')
@@ -141,14 +143,14 @@ class SandingGenerate:
         passes = int(int(float(self.part_width) / step_over_y) / 2)
         # print(f'passes: {passes}')
         for i in range(passes):
-            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i+1})')
+            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i + 1})')
             self.g_code.append(
-                f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}(2-{i+1})')
+                f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}(2-{i + 1})')
             if (starting_position[1] + (step_over_y * (i + 1))) >= center_line:
                 print('end')
                 break
-            self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i+1})')
-            self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}(4-{i+1})')
+            self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i + 1})')
+            self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}(4-{i + 1})')
             # if i == passes - 1:
             if self.part_width - offset_y - (step_over_y * (i + 1)) <= center_line:
                 break
@@ -159,9 +161,9 @@ class SandingGenerate:
         effective_sander_width = self.sander_selection.get_y_value() - (
                 (self.sander_selection.get_y_value() * (self.__current_pass.hangover_value / 100)) * 2)
         if self.frame_width <= effective_sander_width:
-            center_positions = (self.frame_width / 2, self.frame_width / 2),\
-                               (self.frame_width / 2, self.part_width - (self.frame_width / 2)),\
-                               (self.part_length - (self.frame_width / 2), self.part_width - (self.frame_width / 2)),\
+            center_positions = (self.frame_width / 2, self.frame_width / 2), \
+                               (self.frame_width / 2, self.part_width - (self.frame_width / 2)), \
+                               (self.part_length - (self.frame_width / 2), self.part_width - (self.frame_width / 2)), \
                                (self.part_length - (self.frame_width / 2), self.frame_width / 2)
             print(f'center: {center_positions}')
             self.g_code.append(self.sander_selection.get_offset())
@@ -177,9 +179,9 @@ class SandingGenerate:
             self.g_code.append('g53g0x0z0')
         else:
             start_positions = (0, 0), (0, self.part_width), (self.part_length, self.part_width), (self.part_length, 0)
-            inside_edge = (self.frame_width, self.frame_width),\
-                          (self.frame_width, self.part_width - self.frame_width),\
-                          (self.part_length - self.frame_width, self.part_width - self.frame_width),\
+            inside_edge = (self.frame_width, self.frame_width), \
+                          (self.frame_width, self.part_width - self.frame_width), \
+                          (self.part_length - self.frame_width, self.part_width - self.frame_width), \
                           (self.part_length - self.frame_width, self.frame_width)
             overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
             # print(f'overhang x :{overhang_mm_x}')
@@ -200,9 +202,9 @@ class SandingGenerate:
             self.g_code.append(f'g1z{start_positions[3][1] + offset_y}')
             self.g_code.append(f'g1x-{start_positions[0][0] + offset_x}')
             self.g_code.append(f'g1x-{inside_edge[0][0] - offset_x}z{inside_edge[0][1] - offset_y}')
-            self.g_code.append(f'g1z{inside_edge[1][1]+ offset_y}')
-            self.g_code.append(f'g1x-{inside_edge[2][0]+ offset_x}')
-            self.g_code.append(f'g1z{inside_edge[3][1]- offset_y}')
+            self.g_code.append(f'g1z{inside_edge[1][1] + offset_y}')
+            self.g_code.append(f'g1x-{inside_edge[2][0] + offset_x}')
+            self.g_code.append(f'g1z{inside_edge[3][1] - offset_y}')
             self.g_code.append(f'g1x-{inside_edge[0][0] - offset_x}')
             self.g_code.append(self.sander_selection.off())
 
@@ -251,17 +253,18 @@ class SandingGenerate:
                 self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
                 self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
             if passes == 0:
-                self.g_code.append(f'g1z{((((panel_corners[2][1] - offset_y) - panel_start[1])/2) + panel_start[1])}')
+                self.g_code.append(f'g1z{((((panel_corners[2][1] - offset_y) - panel_start[1]) / 2) + panel_start[1])}')
                 self.g_code.append(f'g1x-{round(float(length) - (panel_start[0] + step_over[0]), 1)}')
             for i in range(passes):
-                self.g_code.append(f'g1z{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i+1})')
                 self.g_code.append(
-                    f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2-{i+1})')
-                if i == passes - 1 and (passes % 2) == 0: # break here if the number of passes was even
+                    f'g1z{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i + 1})')
+                self.g_code.append(
+                    f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2-{i + 1})')
+                if i == passes - 1 and (passes % 2) == 0:  # break here if the number of passes was even
                     break
                 self.g_code.append(
-                    f'g1z{round(panel_corners[2][1] - ((step_over[1]) * (i + 1 ) + offset_y), 1)}(3-{i+1})')
-                self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4-{i+1})')
+                    f'g1z{round(panel_corners[2][1] - ((step_over[1]) * (i + 1) + offset_y), 1)}(3-{i + 1})')
+                self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4-{i + 1})')
                 if i == passes - 1:
                     break
                 # todo break here if the number of passes was odd
@@ -288,7 +291,10 @@ class SandingGenerate:
 class Probe:
     def __init__(self):
         self.g_code = []
-        self.cal_size = 758.2, 301.5  # this will come from settings page
+        self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
+            "probe_cal_y", None)  # this will come from settings page
+        if self.cal_size[0] is None or self.cal_size[1] is None:
+            raise ValueError("you have to set the probe values from the setting page first.")
         self.starting_rough = 59.627, 629.419  # this will come from config once saved
         self.offset_in = 75
 
@@ -298,7 +304,8 @@ class Probe:
         self.g_code.append('g38.5x0f1200')
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.g_code.append(
+            f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5x-1700')
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
 
@@ -398,8 +405,10 @@ def generate(sensors_board_ref=None):
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
             if x[0] == "g" and x[2] == "x":
-                if x[3] == "-":all_g_codes[index] = x.replace("x-", "x")
-                else:x.replace("x", "x-")
+                if x[3] == "-":
+                    all_g_codes[index] = x.replace("x-", "x")
+                else:
+                    x.replace("x", "x-")
                 print(f"old: {x} new {all_g_codes[index]}")
 
     all_g_codes.extend(generate_code.end_cycle())

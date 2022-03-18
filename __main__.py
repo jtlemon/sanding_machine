@@ -106,6 +106,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == AppSupportedOperations.settingParametersOperation:
                 operation_page_widget = MachineSettingsManager()
                 operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
+                operation_page_widget.probCalibrationValuesModifiedSignal.connect(self.handle_prob_calibration_values_modified)
             elif app_operation == AppSupportedOperations.partProfileOperation:
                 operation_page_widget = SandingPartProfilePageManager()
             elif app_operation == AppSupportedOperations.sandingProgramsOperations:
@@ -320,13 +321,11 @@ class MachineGuiInterface(MachineInterfaceUi):
             self.__sensors_board_thread.turn_vacuum_off(i)
         # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
-    def __get_float(self, val_str):
-        result = 0
-        try:
-            result = float(val_str)
-        except:
-            pass
-        return result
+    def handle_prob_calibration_values_modified(self):
+        # handle the change
+        print(CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
+            "probe_cal_y", None))
+        pass
 
 
 def create_default_records():

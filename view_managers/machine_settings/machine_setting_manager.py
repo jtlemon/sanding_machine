@@ -8,7 +8,7 @@ from view_managers.profiles_helper_functions import get_supported_profiles
 from view_managers.gif_player_dialog import ImagePlayerDialog
 from configurations.constants_types import AppSupportedOperations
 from view_managers.dialog_configured_prams import RenderInternalPramsWidget, set_field_value
-
+from view_managers import utils
 
 def is_valid_zipcode(zip_code):
     zip_code= zip_code.replace(" ", "")
@@ -18,6 +18,7 @@ def is_valid_zipcode(zip_code):
 
 class MachineSettingsManager(QtWidgets.QWidget):
     settingChangedSignal = QtCore.Signal()
+    probCalibrationValuesModifiedSignal = QtCore.Signal()
     def __init__(self, footer_btn=""):
         super(MachineSettingsManager, self).__init__()
         self.__footer_btn_text = "Settings" if len(footer_btn) == 0 else footer_btn
@@ -54,6 +55,22 @@ class MachineSettingsManager(QtWidgets.QWidget):
         h_spacer_4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         self.top_layout_1.addItem(h_spacer_4)
         self.widget_layout.addLayout(self.top_layout_1, stretch=0)
+        # new changes for probe calibrate
+        self.calibrate_groupbox = QtWidgets.QGroupBox()
+        self.calibrate_groupbox.setTitle("Probe Calibrate")
+        self.calibrate_groupbox_layout = QtWidgets.QHBoxLayout(self.calibrate_groupbox)
+        self.calibrate_groupbox_layout.addStretch(1)
+        self.calibrate_groupbox_layout.addWidget(QtWidgets.QLabel("X:"))
+        self.probe_calibrate_x_line = QtWidgets.QLineEdit()
+        self.calibrate_groupbox_layout.addWidget(self.probe_calibrate_x_line)
+        self.calibrate_groupbox_layout.addWidget(QtWidgets.QLabel("Y:"))
+        self.probe_calibrate_y_line = QtWidgets.QLineEdit()
+        self.calibrate_groupbox_layout.addWidget(self.probe_calibrate_y_line)
+        self.probe_calibrate_btn = QtWidgets.QPushButton("Calibrate")
+        self.probe_calibrate_btn.setFixedSize(200, 60)
+        self.calibrate_groupbox_layout.addWidget(self.probe_calibrate_btn)
+        self.calibrate_groupbox_layout.addStretch(1)
+        self.widget_layout.addWidget(self.calibrate_groupbox, stretch=0)
         # dynamic part
         supported_setting_options = get_supported_profiles(AppSupportedOperations.settingParametersOperation)
         # if the settings more than 5 split it in to cols
@@ -86,6 +103,9 @@ class MachineSettingsManager(QtWidgets.QWidget):
         self.save_setting_btn.clicked.connect(lambda : self.save_changes(True))
         self.widget_layout.addWidget(self.save_setting_btn, stretch=0)
         self.load_initial_values()
+
+        # cal signals
+        self.probe_calibrate_btn.clicked.connect(self.__handle_probe_calibrate)
 
     def load_initial_values(self):
         has_missing_prams = False
@@ -180,6 +200,21 @@ class MachineSettingsManager(QtWidgets.QWidget):
     def change_measure_mode(self, unit: MeasureUnitType):
         pass
 
+
+    def __handle_probe_calibrate(self):
+        values_lines = [self.probe_calibrate_x_line, self.probe_calibrate_y_line]
+        converted_values = []
+        for index, line_widget in enumerate(values_lines):
+            try:
+                val = float(line_widget.text())
+                converted_values.append(val)
+            except:
+                line_widget.setFocus()
+                utils.display_error_message("you have to set the prob values first", "error", self)
+                return
+        CustomMachineParamManager.set_value("probe_cal_x", converted_values[0])
+        CustomMachineParamManager.set_value("probe_cal_y", converted_values[1], auto_store=True)
+        self.probCalibrationValuesModifiedSignal.emit()
 
 
 
