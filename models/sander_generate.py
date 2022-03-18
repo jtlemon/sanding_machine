@@ -296,11 +296,16 @@ class Probe:
         self.g_code.append('g21g54(set units and wco)')
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append('g38.5x0f1200')
+        # todo get return of probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
+        # todo get return of probe
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         self.g_code.append(f'g38.5x-1700')
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        # todo get return of probe
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
+        self.g_code.append('g38.5z0')
+        # todo get return of probe
 
         return self.g_code
 
