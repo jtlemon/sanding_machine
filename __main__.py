@@ -315,17 +315,23 @@ class MachineGuiInterface(MachineInterfaceUi):
         print(f'right dims: {workspace_length}, {workspace_width}')
         print(f'style {left_slab_selected}')
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
-        for command in g_commands:
-            self.__grbl_interface.grbl_stream.add_new_command(command)
+        self.send_g_code(g_commands)
         for i in range(10):
             self.__sensors_board_thread.turn_vacuum_off(i)
         # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
     def handle_prob_calibration_values_modified(self):
         # handle the change
-        print(CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
-            "probe_cal_y", None))
-        pass
+        from models.sander_generate import Probe
+        p = Probe()
+        g_code = p.calibrate()
+        self.send_g_code(g_code)
+
+    def send_g_code(self, g_commands:list):
+        for command in g_commands:
+            self.__grbl_interface.grbl_stream.add_new_command(command)
+
+
 
 
 def create_default_records():
