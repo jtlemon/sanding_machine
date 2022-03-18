@@ -286,9 +286,8 @@ class SandingGenerate:
         self.g_code.append(f'g0x-900z0(go to park position)')
         return self.g_code
 
-from models.sanding_grbl_hal import SandingGRBLHalController
 class Probe:
-    def __init__(self, serial_interface:SandingGRBLHalController):
+    def __init__(self, serial_interface):
         self.g_code = []
         self.serial_interface = serial_interface
         self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
@@ -302,7 +301,7 @@ class Probe:
     def calibrate(self):
         self.g_code.append('g21g54(set units and wco)')
         self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.g_code.append('g38.5x0f1200')
+        #self.g_code.append('g38.5x0f1200')
         #@TODO check if this will work
         response = self.serial_interface.grbl_stream.wait_for_response('g38.5x0f1200')
         print(response)
