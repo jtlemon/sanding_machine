@@ -226,7 +226,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
             part_length_pixels = int((part_length/workspace_length)*self.camera_widget.width())
             generated_rect = QtCore.QRect(0, self.camera_widget.height() - part_width_pixels,
                                  part_length_pixels, part_width_pixels)
-            return  generated_rect
+            return generated_rect
 
     def _handle_image_area_selected(self, rect:QtCore.QRect):
         if self.localize_workplace_btn.isChecked():

@@ -32,14 +32,10 @@ y_max_width = CustomMachineParamManager.get_value("y_max_width", 660.4)
 sander_on_delay = .75  # we probably want to move this to a static config file
 sander_off_delay = .5  # we probably want to move this to a static config file
 
-sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55',
-                         "x": 100, "y": 75},
-                     2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56',
-                         "x": 75, "y": 100},
-                     3: {'on': 'm66', 'off': 'm67', 'extend': 'm74', 'retract': 'm75', 'offset': 'g57',
-                         "x": 125, "y": 125},
-                     4: {'on': 'm68', 'off': 'm69', 'extend': 'm78', 'retract': 'm79', 'offset': 'g58',
-                         "x": 125, "y": 125}
+sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55'},
+                     2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56'},
+                     3: {'on': 'm66', 'off': 'm67', 'extend': 'm74', 'retract': 'm75', 'offset': 'g57'},
+                     4: {'on': 'm68', 'off': 'm69', 'extend': 'm78', 'retract': 'm79', 'offset': 'g58'}
                      }
 
 
@@ -289,6 +285,26 @@ class SandingGenerate:
         return self.g_code
 
 
+class Probe:
+    def __init__(self):
+        self.g_code = []
+        self.cal_size = 758.2, 301.5  # this will come from settings page
+        self.starting_rough = 59.627, 629.419  # this will come from config once saved
+        self.offset_in = 75
+
+    def calibrate(self):
+        self.g_code.append('g21g54(set units and wco)')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.g_code.append('g38.5x0f1200')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.g_code.append(f'g38.5x-1700')
+        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+
+        return self.g_code
+
+
 def turn_vacuum_on(sensors_board_ref, ch):
     if sensors_board_ref is not None:
         sensors_board_ref.turn_vacuum_on(ch)
@@ -303,6 +319,13 @@ def turn_vacuum_off(sensors_board_ref, ch):
     else:
         # print(f"debug mode turn off vacuum {ch}")
         pass
+
+
+def probe_test():
+    all_g_codes = []
+    generate_probe = Probe()
+    all_g_codes.extend(generate_probe.calibrate())
+    print(all_g_codes, sep="\n")
 
 
 def generate(sensors_board_ref=None):
@@ -371,16 +394,19 @@ def generate(sensors_board_ref=None):
             if pass_.contain_slabs:
                 all_g_codes.extend(generate_code.slab(pass_.make_extra_pass_around_perimeter))
     # todo add logic to turn off vacuum and park machine.
-    all_g_codes.extend(generate_code.end_cycle())
+
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":all_g_codes[index] = x.replace("x-", "x")
                 else:x.replace("x", "x-")
                 print(f"old: {x} new {all_g_codes[index]}")
+
+    all_g_codes.extend(generate_code.end_cycle())
     print(*all_g_codes, sep="\n")
     return all_g_codes
 
 
 if __name__ == "__main__":
-    generate()
+    probe_test()
+    #  generate()
