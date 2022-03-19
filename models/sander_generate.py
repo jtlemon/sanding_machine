@@ -300,7 +300,9 @@ class Probe(QtCore.QThread):
                               CustomMachineParamManager.get_value('probe_y_zero')
         self.offset_in = 75
 
+
     def run(self):
+        self.serial_interface.grbl_stream.reset_prob_buffer()
         self.calibrate()
 
     def decode_response(self, response_list):
@@ -315,12 +317,13 @@ class Probe(QtCore.QThread):
         return values
 
     def send_and_get_response(self,cmd ,  decode:bool=False, delay:int=500):
+        timeout = delay/1000.0
         result = None
         cmd_str = cmd + "\r\n"
         print(f"{cmd_str} sent to the machine ........")
-        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode())
+        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay)
         self.msleep(delay)
-        rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes()
+        rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=timeout)
         if decode:
             result = self.decode_response(rec_bytes_list)
         return result

@@ -20,6 +20,8 @@ class SerialConnector(Process):
     def __init__(self, tx_queue: Queue, tx_direct_queue: Queue, event_queue: Queue,
                  last_responses_queue: Queue, serial_port=None):
         super(SerialConnector, self).__init__()
+        self.__prob_commands_tx = Queue(20)
+        self.__prob_commands_rx = Queue(20)
         self.__tx_queue = tx_queue
         self.__tx_direct_queue = tx_direct_queue
         self.__event_queue = event_queue
@@ -53,12 +55,22 @@ class SerialConnector(Process):
             except OSError:
                 self.__is_serial_connected = False
 
-    def send_command_directly(self, cmd: bytes):
-        send_bytes = self.__serial_dev.write(cmd)
-        print(f"{send_bytes} sent directly.")
+    def reset_prob_buffer(self):
+        while not self.__prob_commands_tx.empty():
+            self.__prob_commands_tx.get()
+        while not self.__prob_commands_rx.empty():
+            self.__prob_commands_rx.get()
 
-    def receive_bytes(self):
-        return self.__serial_dev.readlines()
+    def send_command_directly(self, cmd: bytes, wait_for=500):
+        self.__prob_commands_tx.put_nowait((cmd, wait_for))
+
+    def receive_bytes(self, timeout=None):
+        rec = []
+        try:
+            rec = self.__prob_commands_rx.get(block=True, timeout=timeout)
+        except:
+            pass
+        return rec
 
     def run(self):
         while not self.__close_event.is_set():
@@ -77,6 +89,12 @@ class SerialConnector(Process):
                         self.__tx_direct_queue.get()
                     while not self.__tx_queue.empty():
                         self.__tx_queue.get()
+            while not self.__prob_commands_tx.empty():
+                cmd_to_send, wait_for = self.__prob_commands_tx.get()
+                self.__serial_dev.write(cmd_to_send)
+                time.sleep(wait_for/1000.0)
+                rec_bytes_list = self.__serial_dev.readlines()
+                self.__prob_commands_rx.put_nowait(rec_bytes_list)
             if not self.__tx_queue.empty():
                 cmd_to_send = self.__tx_queue.get()
                 self.send_message(cmd_to_send.get("cmd"))
