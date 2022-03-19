@@ -344,18 +344,16 @@ class Probe(QtCore.QThread):
             return
         print(decoded_response)
         x, y, z = decoded_response
-        print(x, y, z )
-
-        result_x_minus = -59.997  # todo this will be replaced with result from probe
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.g_code.append(f'g38.5z-{self.starting_rough[1] + 10}')
-        result_z_plus = -623.969  # todo get return of probe
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.g_code.append(f'g38.5x-1700')
-        result_x_plus = -805.910  # todo get return of probe
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
-        self.g_code.append('g38.5z0')
-        result_z_minus = -334.933  # todo get return of probe
+        result_x_minus = x  # todo this will be replaced with result from probe
+        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}')
+        result_z_plus = z  # todo get return of probe
+        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        self.send_and_get_response(f'g38.5x-1700')
+        result_x_plus = x  # todo get return of probe
+        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
+        self.send_and_get_response('g38.5z0')
+        result_z_minus = z  # todo get return of probe
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
                                                                           self.cal_size[1] - result_size[1])),
