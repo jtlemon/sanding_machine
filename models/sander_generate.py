@@ -29,7 +29,7 @@ from PySide2 import QtCore
 need to get all of the parameters from the current program
 
 """
-
+MAX_WAIT_TIME = 20 # 20 sec
 feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
@@ -318,33 +318,27 @@ class Probe(QtCore.QThread):
                 values = [float(val) for val in sub_str]
         return values
 
-    def send_and_get_response(self,cmd ,  decode:bool=False, delay:int=500, block_flag=False):
-        timeout = delay/1000.0
+    def send_and_get_response(self,cmd , delay_ms:int=500, decode_block_flag=False):
         result = None
         cmd_str = cmd + "\r\n"
-        print(f"{cmd_str} sent to the machine ........")
-        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay, block_flag)
-        if block_flag is True:
+        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay_ms, decode_block_flag)
+        if decode_block_flag is True:
             start_time = time.time()
-            while time.time() - start_time < 20:
+            while time.time() - start_time < MAX_WAIT_TIME:
                 rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=0.1)
-                if rec_bytes_list is not None:
-                    if decode:
-                        print("rec list", rec_bytes_list)
-                        result = self.decode_response(rec_bytes_list)
-                        print("result is", result)
-                        if result is not None:
-                            break 
-                    
-                else:
+                if rec_bytes_list is  None:
                     self.msleep(50)
+                else:
+                    result = self.decode_response(rec_bytes_list)
+                    if result is not None:
+                        break
         return result
 
     def calibrate(self):
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
-        decoded_response = self.send_and_get_response('g38.5x0f1200', delay=5000, decode=True, block_flag=True)
+        decoded_response = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
             print("failed to decode the data")
             return

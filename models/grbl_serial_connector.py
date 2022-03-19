@@ -37,19 +37,8 @@ class SerialConnector(Process):
 
     def send_message(self, msg_to_send):
         module_logger.debug("({})>> {}".format(self.__logging_header, str(msg_to_send, "utf-8")))
-        #print(f'sent {str(msg_to_send, "utf-8")}')
         if self.__is_serial_connected:
             try:
-                msg_to_send_str =  msg_to_send.decode()
-                if  msg_to_send_str.startswith("hello"):
-                    parts = msg_to_send_str.replace("hello", "").split("\r\n")
-                    print(parts)
-                    for part in parts:
-                        if len(part) > 3:
-                            msg = part + "\n"
-                            self.__serial_dev.write(msg.encode())
-                    return
-
                 sent_bytes = self.__serial_dev.write(msg_to_send)
                 print(f"{sent_bytes}    sent....")
             except OSError:
@@ -61,8 +50,8 @@ class SerialConnector(Process):
         while not self.__prob_commands_rx.empty():
             self.__prob_commands_rx.get()
 
-    def send_command_directly(self, cmd: bytes, wait_for=500, block_flag=False):
-        self.__prob_commands_tx.put_nowait((cmd, wait_for, block_flag))
+    def send_command_directly(self, cmd: bytes, wait_for_ms=500, block_flag=False):
+        self.__prob_commands_tx.put_nowait((cmd, wait_for_ms, block_flag))
 
     def receive_bytes(self, timeout=None):
         rec = None
@@ -91,22 +80,23 @@ class SerialConnector(Process):
                         self.__tx_queue.get()
             while not self.__prob_commands_tx.empty():
                 cmd_to_send, wait_for, block_flag = self.__prob_commands_tx.get()
-                print("cmd >>>>>>>>>", cmd_to_send)
                 self.__serial_dev.write(cmd_to_send)
                 if block_flag is True:
                     start_time = time.time()
                     while (time.time() - start_time) < 20:
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
-                            print("got bytes:", packet)
+                            self.__last_responses_queue.put({"cmd": cmd_to_send, "response": packet.decode()})
+                            cmd_to_send = ""
                             if packet.startswith(b'[PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
                         else:
                             time.sleep(0.05)
                 else:
                     time.sleep(wait_for/1000.0)
-                    rec_bytes_list = self.__serial_dev.readlines()
-                    self.__prob_commands_rx.put_nowait(rec_bytes_list)
+                    rec_bytes_line = self.__serial_dev.readline()
+                    self.__prob_commands_rx.put_nowait([rec_bytes_line])
+                    self.__last_responses_queue.put({"cmd": cmd_to_send, "response": rec_bytes_line.decode()})
             if not self.__tx_queue.empty():
                 cmd_to_send = self.__tx_queue.get()
                 self.send_message(cmd_to_send.get("cmd"))
