@@ -65,7 +65,7 @@ class SerialConnector(Process):
         self.__prob_commands_tx.put_nowait((cmd, wait_for, block_flag))
 
     def receive_bytes(self, timeout=None):
-        rec = []
+        rec = None
         try:
             rec = self.__prob_commands_rx.get(block=True, timeout=timeout)
         except:
@@ -96,7 +96,6 @@ class SerialConnector(Process):
                 if block_flag is True:
                     start_time = time.time()
                     while (time.time() - start_time) < 20:
-                        print("pulling wait......")
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
                             if packet.startswith(b'PRB:'):
