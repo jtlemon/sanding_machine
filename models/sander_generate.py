@@ -327,10 +327,11 @@ class Probe(QtCore.QThread):
             start_time = time.time()
             while time.time() - start_time < 20:
                 rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=0.1)
-                if decode:
-                    result = self.decode_response(rec_bytes_list)
-                if decode is not None:
-                    break
+                if rec_bytes_list is not None:
+                    if decode :
+                        result = self.decode_response(rec_bytes_list)
+                        if result:
+                            break
                 else:
                     self.msleep(50)
         return result
