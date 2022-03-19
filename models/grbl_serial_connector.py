@@ -96,10 +96,13 @@ class SerialConnector(Process):
                 if block_flag is True:
                     start_time = time.time()
                     while (time.time() - start_time) < 20:
+                        print("pulling wait......")
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
                             if packet.startswith(b'PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
+                        else:
+                            time.sleep(0.05)
                 else:
                     time.sleep(wait_for/1000.0)
                     rec_bytes_list = self.__serial_dev.readlines()
