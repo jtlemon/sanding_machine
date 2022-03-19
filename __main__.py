@@ -337,6 +337,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__grbl_interface.park()
         utils.display_error_message("Failed to calibrate probs", "error", self)
 
+
     def send_g_code(self, g_commands:list):
         for command in g_commands:
             self.__grbl_interface.grbl_stream.add_new_command(command)
