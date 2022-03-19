@@ -342,21 +342,25 @@ class Probe(QtCore.QThread):
         decoded_response = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_x_minus = decoded_response[0]  # todo this will be replaced with result from probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         decoded_response = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_z_plus = decoded_response[2] # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         decoded_response=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_x_plus = decoded_response[0]  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
         decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_z_minus = decoded_response[0]  # todo get return of probe
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
