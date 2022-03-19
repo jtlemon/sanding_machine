@@ -91,9 +91,11 @@ class SerialConnector(Process):
                         self.__tx_queue.get()
             while not self.__prob_commands_tx.empty():
                 cmd_to_send, wait_for = self.__prob_commands_tx.get()
+                print("cmd >>>>>>>>>")
                 self.__serial_dev.write(cmd_to_send)
                 time.sleep(wait_for/1000.0)
                 rec_bytes_list = self.__serial_dev.readlines()
+                print("<<<<<<<", rec_bytes_list)
                 self.__prob_commands_rx.put_nowait(rec_bytes_list)
             if not self.__tx_queue.empty():
                 cmd_to_send = self.__tx_queue.get()
