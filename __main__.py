@@ -89,6 +89,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
+                operation_page_widget.start_left_button.setCheckable(True)
+                operation_page_widget.start_right_button.setCheckable(True)
                 operation_page_widget.start_left_button.clicked.connect(self.handle_left_start)
                 operation_page_widget.start_right_button.clicked.connect(self.handle_right_start)
                 self.subscribe_to_image(0, operation_page_widget)
@@ -258,25 +260,29 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__estop_interface.requestInterruption()
 
     def handle_left_start(self):
+        print("left btn clicked")
         self.common_sanding_start('left')
 
     def handle_right_start(self):
+        print("right btn clicked")
         self.common_sanding_start('right')
 
     def common_sanding_start(self, side="left"):
-        """
-        if self.__is_left_sanding_running and side is "left":
-            print("left sanding is running....")
-            return
-        else:
-            self.__is_left_sanding_running = True
-        if self.__is_right_sanding_running and side is "right":
-            print("right sanding is running....")
-            return
-        else:
-            self.__is_right_sanding_running = True
-            """
+        print("main handler called ..........")
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+        if side == "left":
+            if not widget.start_left_button.isChecked():
+                widget.start_left_button.setStyleSheet("color:red")
+                return
+            else:
+                widget.start_left_button.setStyleSheet("color:green")
+        if side == "right":
+            if not widget.start_right_button.isChecked():
+                widget.start_right_button.setStyleSheet("color:red")
+                return
+            else:
+                widget.start_right_button.setStyleSheet("color:green")
+
         left_slab_selected = widget.left_slab_option.isChecked()
         right_slab_selected = widget.right_slab_option.isChecked()
         probing_on = widget.probing_option.isChecked()
