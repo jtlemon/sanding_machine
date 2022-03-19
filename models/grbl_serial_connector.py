@@ -81,13 +81,15 @@ class SerialConnector(Process):
             while not self.__prob_commands_tx.empty():
                 cmd_to_send, wait_for, block_flag = self.__prob_commands_tx.get()
                 self.__serial_dev.write(cmd_to_send)
+                print("send", cmd_to_send)
                 if block_flag is True:
                     start_time = time.time()
                     while (time.time() - start_time) < 20:
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
-                            self.__last_responses_queue.put({"cmd": cmd_to_send, "response": packet.decode()})
-                            cmd_to_send = ""
+                            print("rec packet", packet)
+                            self.__last_responses_queue.put({"cmd": cmd_to_send.decode(), "response": packet.decode()})
+                            cmd_to_send = b""
                             if packet.startswith(b'[PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
                         else:
@@ -96,7 +98,7 @@ class SerialConnector(Process):
                     time.sleep(wait_for/1000.0)
                     rec_bytes_line = self.__serial_dev.readline()
                     self.__prob_commands_rx.put_nowait([rec_bytes_line])
-                    self.__last_responses_queue.put({"cmd": cmd_to_send, "response": rec_bytes_line.decode()})
+                    self.__last_responses_queue.put({"cmd": cmd_to_send.decode(), "response": rec_bytes_line.decode()})
             if not self.__tx_queue.empty():
                 cmd_to_send = self.__tx_queue.get()
                 self.send_message(cmd_to_send.get("cmd"))
@@ -104,7 +106,6 @@ class SerialConnector(Process):
             else:
                 self.serial_read()
                 time.sleep(0.05)
-
         if self.__serial_dev:
             try:
                 self.__serial_dev.close()

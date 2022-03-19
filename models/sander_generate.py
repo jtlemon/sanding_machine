@@ -342,18 +342,17 @@ class Probe(QtCore.QThread):
         if decoded_response is None:
             print("failed to decode the data")
             return
-        print(decoded_response)
         x, y, z = decoded_response
         result_x_minus = x  # todo this will be replaced with result from probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}')
-        result_z_plus = z  # todo get return of probe
+        x1,y1,z1 = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
+        result_z_plus = z1 # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.send_and_get_response(f'g38.5x-1700')
-        result_x_plus = x  # todo get return of probe
+        x2, y2, z2=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
+        result_x_plus = x2  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
-        self.send_and_get_response('g38.5z0')
-        result_z_minus = z  # todo get return of probe
+        x3, y3, z3= self.send_and_get_response('g38.5z0', decode_block_flag=True)
+        result_z_minus = z3  # todo get return of probe
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
                                                                           self.cal_size[1] - result_size[1])),
@@ -362,7 +361,7 @@ class Probe(QtCore.QThread):
         CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
         # calculated_size = (-1 * result_x_plus) - effective_zero[0], effective_zero[1] + result_z_minus # this will not be used here, will use with probing of actual parts
         # todo store results from calibration to config file
-        return self.g_code
+
 
     def probe_part(self):
         step_back = 50
