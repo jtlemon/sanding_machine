@@ -91,14 +91,15 @@ class SerialConnector(Process):
                         self.__tx_queue.get()
             while not self.__prob_commands_tx.empty():
                 cmd_to_send, wait_for, block_flag = self.__prob_commands_tx.get()
-                print("cmd >>>>>>>>>")
+                print("cmd >>>>>>>>>", cmd_to_send)
                 self.__serial_dev.write(cmd_to_send)
                 if block_flag is True:
                     start_time = time.time()
                     while (time.time() - start_time) < 20:
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
-                            if packet.startswith(b'PRB:'):
+                            print("got bytes:", packet)
+                            if packet.startswith(b'[PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
                         else:
                             time.sleep(0.05)
