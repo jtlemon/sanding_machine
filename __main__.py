@@ -47,7 +47,7 @@ from views import AlarmViewerDialog
 
 from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
-from view_managers import utils
+from view_managers import utils as view_manager_utils
 
 
 class MachineGuiInterface(MachineInterfaceUi):
@@ -335,7 +335,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def __handle_calibration_failed(self):
         self.__grbl_interface.park()
-        utils.display_error_message("Failed to calibrate probs", "error", self)
+        view_manager_utils.display_error_message("Failed to calibrate probs", "error", self)
 
 
     def send_g_code(self, g_commands:list):
