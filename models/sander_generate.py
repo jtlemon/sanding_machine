@@ -316,12 +316,12 @@ class Probe(QtCore.QThread):
                 values = [float(val) for val in sub_str]
         return values
 
-    def send_and_get_response(self,cmd ,  decode:bool=False, delay:int=500):
+    def send_and_get_response(self,cmd ,  decode:bool=False, delay:int=500, block_flag=False):
         timeout = delay/1000.0
         result = None
         cmd_str = cmd + "\r\n"
         print(f"{cmd_str} sent to the machine ........")
-        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay)
+        self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay, block_flag)
         self.msleep(delay)
         rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=timeout)
         if decode:
@@ -332,7 +332,7 @@ class Probe(QtCore.QThread):
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
-        decoded_response = self.send_and_get_response('g38.5x0f1200', delay=5000, decode=True)
+        decoded_response = self.send_and_get_response('g38.5x0f1200', delay=5000, decode=True, block_flag=True)
         if decoded_response is None:
             print("failed to decode the data")
             return

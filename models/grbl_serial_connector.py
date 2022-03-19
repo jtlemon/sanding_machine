@@ -61,8 +61,8 @@ class SerialConnector(Process):
         while not self.__prob_commands_rx.empty():
             self.__prob_commands_rx.get()
 
-    def send_command_directly(self, cmd: bytes, wait_for=500):
-        self.__prob_commands_tx.put_nowait((cmd, wait_for))
+    def send_command_directly(self, cmd: bytes, wait_for=500, block_flag=False):
+        self.__prob_commands_tx.put_nowait((cmd, wait_for, block_flag))
 
     def receive_bytes(self, timeout=None):
         rec = []
@@ -90,13 +90,20 @@ class SerialConnector(Process):
                     while not self.__tx_queue.empty():
                         self.__tx_queue.get()
             while not self.__prob_commands_tx.empty():
-                cmd_to_send, wait_for = self.__prob_commands_tx.get()
+                cmd_to_send, wait_for, block_flag = self.__prob_commands_tx.get()
                 print("cmd >>>>>>>>>")
                 self.__serial_dev.write(cmd_to_send)
-                time.sleep(wait_for/1000.0)
-                rec_bytes_list = self.__serial_dev.readlines()
-                print("<<<<<<<", rec_bytes_list)
-                self.__prob_commands_rx.put_nowait(rec_bytes_list)
+                if block_flag is True:
+                    start_time = time.time()
+                    while (time.time() - start_time) < 20:
+                        if self.__serial_dev.inWaiting()> 0:
+                            packet = self.__serial_dev.readline()
+                            if packet.startswith(b'PRB:'):
+                                self.__prob_commands_rx.put_nowait([packet])
+                else:
+                    time.sleep(wait_for/1000.0)
+                    rec_bytes_list = self.__serial_dev.readlines()
+                    self.__prob_commands_rx.put_nowait(rec_bytes_list)
             if not self.__tx_queue.empty():
                 cmd_to_send = self.__tx_queue.get()
                 self.send_message(cmd_to_send.get("cmd"))
