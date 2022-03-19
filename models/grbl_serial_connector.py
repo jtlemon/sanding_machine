@@ -84,7 +84,7 @@ class SerialConnector(Process):
                 print("send", cmd_to_send)
                 if block_flag is True:
                     start_time = time.time()
-                    while (time.time() - start_time) < 20:
+                    while (time.time() - start_time) < 50:
                         if self.__serial_dev.inWaiting()> 0:
                             packet = self.__serial_dev.readline()
                             print("rec packet", packet)
@@ -92,6 +92,7 @@ class SerialConnector(Process):
                             cmd_to_send = b""
                             if packet.startswith(b'[PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
+                                break
                         else:
                             time.sleep(0.05)
                 else:

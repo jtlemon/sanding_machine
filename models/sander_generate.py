@@ -29,7 +29,7 @@ from PySide2 import QtCore
 need to get all of the parameters from the current program
 
 """
-MAX_WAIT_TIME = 20 # 20 sec
+MAX_WAIT_TIME = 30 # 20 sec
 feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
