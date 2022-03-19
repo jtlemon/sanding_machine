@@ -8,6 +8,7 @@ created by: Jeremiah Lemon
 """
 
 import os
+import time
 
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
@@ -322,10 +323,16 @@ class Probe(QtCore.QThread):
         cmd_str = cmd + "\r\n"
         print(f"{cmd_str} sent to the machine ........")
         self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay, block_flag)
-        self.msleep(delay)
-        rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=timeout)
-        if decode:
-            result = self.decode_response(rec_bytes_list)
+        if block_flag is True:
+            start_time = time.time()
+            while time.time() - start_time < 20:
+                rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=0.1)
+                if decode:
+                    result = self.decode_response(rec_bytes_list)
+                if decode is not None:
+                    break
+                else:
+                    self.msleep(50)
         return result
 
     def calibrate(self):
