@@ -160,6 +160,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
         self.pageSelectedSignal.connect(self.handle_page_selected)
         self.handle_page_selected(0)
+        self.switch_to_another_page(6)
 
     def handle_page_selected(self, page_index):
         if page_index == 0:

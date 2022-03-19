@@ -23,6 +23,7 @@
     "min_pressure": 0.0,
     "part_length": 0,
     "part_width": 0,
+
     "probe_cal_x": 758.2,
     "probe_cal_y": 301.5,
     "probe_diameter": 12.375,
