@@ -93,7 +93,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget.start_right_button.clicked.connect(self.handle_right_start)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
-                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface, sensors_board_ref=self.__sensors_board_thread)
+                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface,
+                                                         sensors_board_ref=self.__sensors_board_thread)
                 for cam_index in range(common_configurations.AVAILABLE_CAMERAS):
                     self.subscribe_to_image(cam_index, operation_page_widget)
                 operation_page_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
@@ -106,7 +107,8 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == AppSupportedOperations.settingParametersOperation:
                 operation_page_widget = MachineSettingsManager()
                 operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
-                operation_page_widget.probCalibrationValuesModifiedSignal.connect(self.handle_prob_calibration_values_modified)
+                operation_page_widget.probCalibrationValuesModifiedSignal.connect(
+                    self.handle_prob_calibration_values_modified)
             elif app_operation == AppSupportedOperations.partProfileOperation:
                 operation_page_widget = SandingPartProfilePageManager()
             elif app_operation == AppSupportedOperations.sandingProgramsOperations:
@@ -336,12 +338,9 @@ class MachineGuiInterface(MachineInterfaceUi):
     def __handle_calibration_failed(self):
         self.__grbl_interface.park()
         utils.display_error_message("Failed to calibrate probs", "error", self)
-
-    def send_g_code(self, g_commands:list):
+    def send_g_code(self, g_commands: list):
         for command in g_commands:
             self.__grbl_interface.grbl_stream.add_new_command(command)
-
-
 
 
 def create_default_records():

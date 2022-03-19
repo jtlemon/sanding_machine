@@ -178,7 +178,7 @@ class SandingGenerate:
             self.g_code.append(f'g1z{center_positions[3][1]}')
             self.g_code.append(f'g1x-{center_positions[0][0]}')
             self.g_code.append(self.sander_selection.off())
-            self.g_code.append('g53g0x0z0')
+            # self.g_code.append('g53g0x0z0')
         else:
             start_positions = (0, 0), (0, self.part_width), (self.part_length, self.part_width), (self.part_length, 0)
             inside_edge = (self.frame_width, self.frame_width), \
@@ -289,8 +289,10 @@ class SandingGenerate:
         self.g_code.append(f'g0x-900z0(go to park position)')
         return self.g_code
 
+
 class Probe(QtCore.QThread):
     calibrationFailedSignal = QtCore.Signal()
+
     def __init__(self, serial_interface):
         super(Probe, self).__init__()
         self.g_code = []
@@ -327,7 +329,7 @@ class Probe(QtCore.QThread):
             start_time = time.time()
             while time.time() - start_time < MAX_WAIT_TIME:
                 rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=0.1)
-                if rec_bytes_list is  None:
+                if rec_bytes_list is None:
                     self.msleep(50)
                 else:
                     result = self.decode_response(rec_bytes_list)
@@ -341,23 +343,19 @@ class Probe(QtCore.QThread):
         #self.g_code.append('g38.5x0f1200')
         decoded_response = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
-            self.calibrationFailedSignal.emit()
-        result_x_minus = decoded_response[0]  # todo this will be replaced with result from probe
+            print("failed to decode the data")
+            return
+        x, y, z = decoded_response
+        result_x_minus = x  # todo this will be replaced with result from probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
-        if decoded_response is None:
-            self.calibrationFailedSignal.emit()
-        result_z_plus = decoded_response[2] # todo get return of probe
+        x1,y1,z1 = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
+        result_z_plus = z1 # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
-        if decoded_response is None:
-            self.calibrationFailedSignal.emit()
-        result_x_plus = decoded_response[0]  # todo get return of probe
+        x2, y2, z2=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
+        result_x_plus = x2  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
-        decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
-        if decoded_response is None:
-            self.calibrationFailedSignal.emit()
-        result_z_minus = decoded_response[0]  # todo get return of probe
+        x3, y3, z3= self.send_and_get_response('g38.5z0', decode_block_flag=True)
+        result_z_minus = z3  # todo get return of probe
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
                                                                           self.cal_size[1] - result_size[1])),
