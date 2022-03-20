@@ -471,32 +471,35 @@ def generate(sensors_board_ref=None):
     if sensors_board_ref is not None:
         sensors_board_ref.send_vacuum_value(1, 30)  # activating pressure at full pressure. not sure if this is needed.
 
-    all_g_codes = []
+    # all_g_codes = []
     for index, pass_ in enumerate(passes):
-        # print(f"pass no {index}")
+        print(f"pass no {index}")
         generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
         if part_type:  # if the part is a 5-piece
             if pass_.contain_frames:
-                all_g_codes.extend(generate_code.frame())
+                generate_code.frame()
             if pass_.contain_panels:
-                all_g_codes.extend(generate_code.panel(pass_.make_extra_pass_around_perimeter, pass_.is_entire_panel))
+                generate_code.panel(pass_.make_extra_pass_around_perimeter, pass_.is_entire_panel)
         else:  # the part is a slab
             if pass_.contain_slabs:
-                all_g_codes.extend(generate_code.slab(pass_.make_extra_pass_around_perimeter))
+                generate_code.slab(pass_.make_extra_pass_around_perimeter)
+        # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
-
+    
+    
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
-        for index, x in enumerate(all_g_codes):
+        for index, x in enumerate(generate_code.g_code):
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
-                    all_g_codes[index] = x.replace("x-", "x")
+                    generate_code.g_code[index] = x.replace("x-", "x")
                 else:
-                    x.replace("x", "x-")
-                print(f"old: {x} new {all_g_codes[index]}")
+                    generate_code.g_code[index]=x.replace("x", "x-")
+                #  rint(f"old: {x} new {all_g_codes[index]}")
+    
 
-    all_g_codes.extend(generate_code.end_cycle())
-    print(*all_g_codes, sep="\n")
-    return all_g_codes
+    return generate_code.end_cycle()
+    # print(*all_g_codes, sep="\n")
+
 
 
 if __name__ == "__main__":
