@@ -313,7 +313,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             from models.sander_generate import Probe
             self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False, side=side)
             self.p_1.calibrationFailedSignal.connect(self.__handle_calibration_failed)
-            self.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
+            self.p_1.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
             self.p_1.start()
 
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
