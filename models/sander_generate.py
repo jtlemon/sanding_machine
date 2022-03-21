@@ -385,12 +385,12 @@ class Probe(QtCore.QThread):
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
-        self.send_and_get_response(f'g0z-{result_1 + step_back}')
-        decoded_response = self.send_and_get_response(f'g38.5z-{result_1 - (step_back * 2)}f1200', decode_block_flag=True)
+        self.send_and_get_response(f'g0z-{(-1 * result_1) + step_back}')
+        decoded_response = self.send_and_get_response(f'g38.5z-{(-1 * result_1) - (step_back * 2)}f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_z = decoded_response[2]
-        self.send_and_get_response(f'g0z-{decoded_response + step_back}')
+        self.send_and_get_response(f'g0z-{(-1*result_z)  + step_back}')
         decoded_response = self.send_and_get_response('g38.5x-1700f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
