@@ -309,10 +309,12 @@ class MachineGuiInterface(MachineInterfaceUi):
         else:
             # todo, call the sander_generate.probe.probe_part from here, poplulate part width and length for left or right
             print('we are probing the part')
+            from models.sander_generate import Probe
+            self.p_1 = Probe(self.__grbl_interface)
+            self.p_1.probe_part()
 
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
-        CustomMachineParamManager.set_value("probing_on", probing_on, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
 
@@ -328,9 +330,6 @@ class MachineGuiInterface(MachineInterfaceUi):
         print(f'style {left_slab_selected}')
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
         self.send_g_code(g_commands)
-        # for i in range(10):
-        #     self.__sensors_board_thread.turn_vacuum_off(i)
-        # self.__sensors_board_thread.send_vacuum_value(0, 30) this shouldn't be needed.
 
     def handle_prob_calibration_values_modified(self):
         # handle the change
@@ -341,7 +340,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def __handle_calibration_failed(self):
         self.__grbl_interface.park()
-        utils.display_error_message("Failed to calibrate probs", "error", self)
+        utils.display_error_message("Failed to calibrate probe", "error", self)
 
     def send_g_code(self, g_commands:list):
         for command in g_commands:

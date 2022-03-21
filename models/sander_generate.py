@@ -289,6 +289,7 @@ class SandingGenerate:
         self.g_code.append(f'g0x-900z0(go to park position)')
         return self.g_code
 
+
 class Probe(QtCore.QThread):
     calibrationFailedSignal = QtCore.Signal()
 
@@ -303,7 +304,6 @@ class Probe(QtCore.QThread):
         self.starting_rough = CustomMachineParamManager.get_value('probe_x_zero'),\
                               CustomMachineParamManager.get_value('probe_y_zero')
         self.offset_in = 75
-
 
     def run(self):
         self.serial_interface.grbl_stream.reset_prob_buffer()
@@ -381,12 +381,12 @@ class Probe(QtCore.QThread):
         step_back = 50
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
-        decoded_response= self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800')
+        decoded_response = self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800')
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
         self.send_and_get_response(f'g0z-{result_1 + step_back}')
-        decoded_response= self.send_and_get_response(f'g38.5z-{result_1 - (step_back * 2)}f1200')
+        decoded_response = self.send_and_get_response(f'g38.5z-{result_1 - (step_back * 2)}f1200')
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_z = decoded_response[2]
@@ -397,6 +397,7 @@ class Probe(QtCore.QThread):
         result_x = decoded_response[0]
         part_size = (-1 * result_x) - x_y_0[0], x_y_0 - (-1 * result_z)
         print(f'part size: {part_size}')
+
 
 def turn_vacuum_on(sensors_board_ref, ch):
     if sensors_board_ref is not None:
