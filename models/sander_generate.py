@@ -390,10 +390,11 @@ class Probe(QtCore.QThread):
         decoded_response , alarm_no = self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
         if alarm_no == 5:
             # probe along x axis till part is found
-            pass
+            print('part not found')
+            return
         elif alarm_no == 4:
             # cancel the probing routine
-            pass
+            return
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
