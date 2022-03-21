@@ -394,6 +394,10 @@ class Probe(QtCore.QThread):
         if alarm_no == 5:
             print('part not found yet')
             decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}', decode_block_flag=True)
+            if alarm_no == 5:
+                print('no part found, canceling probe')
+                self.send_and_get_response('g0x-900z0')
+                return
         elif alarm_no == 4:
             print('probing failed')
             self.send_and_get_response('g0x-900z0')
