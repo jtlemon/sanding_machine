@@ -317,6 +317,7 @@ class Probe(QtCore.QThread):
 
     def decode_response(self, response_list):
         values = None
+        alarm_no = 0
         for rec_bytes in response_list:
             rec_str = rec_bytes.decode()
             rec_str = rec_str.rstrip("\r\n")
@@ -328,12 +329,14 @@ class Probe(QtCore.QThread):
                 print('probe is on')
                 break
             elif "ALARM:4" in rec_str:
-                print('probe error')
-                break
-        return values
+                alarm_no = 4
+            elif "ALARM:5" in rec_str:
+                alarm_no = 5
+        return values, alarm_no
 
     def send_and_get_response(self, cmd , delay_ms: int = 500, decode_block_flag=False):
         result = None
+        alarm_no = 0
         cmd_str = cmd + "\r\n"
         self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay_ms, decode_block_flag)
         if decode_block_flag is True:
@@ -343,10 +346,10 @@ class Probe(QtCore.QThread):
                 if rec_bytes_list is None:
                     self.msleep(50)
                 else:
-                    result = self.decode_response(rec_bytes_list)
-                    if result is not None:
+                    result, alarm_no = self.decode_response(rec_bytes_list)
+                    if result is not None or alarm_no >0:
                         break
-        return result
+        return result, alarm_no
 
     def calibrate(self):
 
@@ -354,22 +357,22 @@ class Probe(QtCore.QThread):
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
         test_probe = self.send_and_get_response('?')
-        decoded_response = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_x_minus = decoded_response[0]  # todo this will be replaced with result from probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_z_plus = decoded_response[2]  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
+        decoded_response, alarm_no=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_x_plus = decoded_response[0]  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
-        decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
+        decoded_response, alarm_no= self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         self.send_and_get_response('g0x-900z0(park machine)')

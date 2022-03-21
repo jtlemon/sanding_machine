@@ -93,6 +93,8 @@ class SerialConnector(Process):
                             if packet.startswith(b'[PRB:'):
                                 self.__prob_commands_rx.put_nowait([packet])
                                 break
+                            elif packet.startswith(b'ALARM'):
+                                self.__prob_commands_rx.put_nowait([packet])
                         else:
                             time.sleep(0.05)
                 else:
