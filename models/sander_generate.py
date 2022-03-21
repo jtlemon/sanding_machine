@@ -317,7 +317,7 @@ class Probe(QtCore.QThread):
             if "PRB:" in rec_str:
                 sub_str = rec_str[5:-3].split(",")
                 values = [float(val) for val in sub_str]
-            if "PN:P" in rec_str:
+            elif "PN:P" in rec_str:
                 print('probe is on')
                 break
             elif "ALARM:4" in rec_str:
