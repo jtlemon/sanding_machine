@@ -423,7 +423,7 @@ class Probe(QtCore.QThread):
         decoded_response = self.send_and_get_response('g38.5x-1700f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
-        result_x = decoded_response[0]
+        result_x = decoded_response[0][0]
         print(f'result {result_x}, {result_z}')
         part_size = (-1 * result_x) - x_y_0[0], x_y_0[1] - (-1 * result_z)
         print(f'part size: {part_size}')
