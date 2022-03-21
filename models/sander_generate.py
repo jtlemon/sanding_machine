@@ -317,9 +317,12 @@ class Probe(QtCore.QThread):
             if "PRB:" in rec_str:
                 sub_str = rec_str[5:-3].split(",")
                 values = [float(val) for val in sub_str]
+            if "PN:P" in rec_str:
+                print('probe is on')
+                break
         return values
 
-    def send_and_get_response(self,cmd , delay_ms:int=500, decode_block_flag=False):
+    def send_and_get_response(self, cmd , delay_ms: int = 500, decode_block_flag=False):
         result = None
         cmd_str = cmd + "\r\n"
         self.serial_interface.grbl_stream.send_command_directly(cmd_str.encode(), delay_ms, decode_block_flag)
@@ -327,7 +330,7 @@ class Probe(QtCore.QThread):
             start_time = time.time()
             while time.time() - start_time < MAX_WAIT_TIME:
                 rec_bytes_list = self.serial_interface.grbl_stream.receive_bytes(timeout=0.1)
-                if rec_bytes_list is  None:
+                if rec_bytes_list is None:
                     self.msleep(50)
                 else:
                     result = self.decode_response(rec_bytes_list)
@@ -339,6 +342,8 @@ class Probe(QtCore.QThread):
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
+        test_probe = self.send_and_get_response('?')
+        print(f'test probe: {test_probe}')
         decoded_response = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
@@ -347,7 +352,7 @@ class Probe(QtCore.QThread):
         decoded_response = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
-        result_z_plus = decoded_response[2] # todo get return of probe
+        result_z_plus = decoded_response[2]  # todo get return of probe
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         decoded_response=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
         if decoded_response is None:
