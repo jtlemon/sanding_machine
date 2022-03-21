@@ -387,12 +387,13 @@ class Probe(QtCore.QThread):
         step_back = 50
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
-        decoded_response , alarm_no = self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
+        decoded_response , alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*2)}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
         if alarm_no == 5:
             # probe along x axis till part is found
             print('part not found')
             return
         elif alarm_no == 4:
+            print('probing failed')
             # cancel the probing routine
             return
         if decoded_response is None:
