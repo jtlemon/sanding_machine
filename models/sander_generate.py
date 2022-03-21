@@ -328,6 +328,7 @@ class Probe(QtCore.QThread):
                 print('probe is on')
                 break
             elif "ALARM:4" in rec_str:
+                self.send_and_get_response('$x')
                 alarm_no = 4
             elif "ALARM:5" in rec_str:
                 self.send_and_get_response('$x')
@@ -391,18 +392,17 @@ class Probe(QtCore.QThread):
         self.send_and_get_response('g0x-900z0')
         decoded_response , alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*2)}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
         if alarm_no == 5:
-            # probe along x axis till part is found
-            print('part not found')
             self.send_and_get_response('g0x-900z0')
-            return
+            decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}')
         elif alarm_no == 4:
             print('probing failed')
+            self.send_and_get_response('g0x-900z0')
             # cancel the probing routine
             return
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
-        self.send_and_get_response(f'g0z-{(-1 * result_1) + step_back}')
+        self.send_and_get_response(f'g0x-{-1 * (decoded_response[0]) + step_back}z-{(-1 * result_1) + step_back}')
         decoded_response = self.send_and_get_response(f'g38.5z-{(-1 * result_1) - (step_back * 2)}f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
