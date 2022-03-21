@@ -426,6 +426,8 @@ class Probe(QtCore.QThread):
         result_x = decoded_response[0][0]
         print(f'result {result_x}, {result_z}')
         part_size = (-1 * result_x) - x_y_0[0], x_y_0[1] - (-1 * result_z)
+        CustomMachineParamManager.set_value(f"prob_{self.current_side}_size", part_size, auto_store=True)
+        self.partProbbeingFinishedSignal.emit(self.current_side, part_size[0], part_size[1])
         print(f'part size: {part_size}')
 
 
