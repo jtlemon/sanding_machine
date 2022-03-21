@@ -11,6 +11,7 @@ try:
 except Exception as e:
     print(e)
 from PySide2 import QtWidgets, QtGui, QtCore
+from models.sander_generate import Probe
 from models import CameraMangerProcess
 from models.sander_generate import generate
 from view_managers.sanding_modules import (
@@ -310,33 +311,39 @@ class MachineGuiInterface(MachineInterfaceUi):
             # todo, call the sander_generate.probe.probe_part from here, poplulate part width and length for left or right
             print('we are probing the part')
             from models.sander_generate import Probe
-            self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False)
+            self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False, side=side)
             self.p_1.calibrationFailedSignal.connect(self.__handle_calibration_failed)
+            self.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
             self.p_1.start()
-
-
 
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
-        CustomMachineParamManager.set_value("door_style", door_style, auto_store=False)
+        CustomMachineParamManager.set_value("door_style", door_style, auto_store=True)
+        print(f'style {left_slab_selected}')
+        if not probing_on:
+            self._handle_executing_machine_cycle(side, length, width)
 
-        CustomMachineParamManager.set_value("left_part_width", left_part_width, auto_store=False)
-        CustomMachineParamManager.set_value("left_part_length", left_part_length, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_width", right_part_width, auto_store=False)
-        CustomMachineParamManager.set_value("right_part_length", right_part_length, auto_store=False)
+    def _handle_executing_machine_cycle(self, side, length, width):
+        if side == "left":
+            CustomMachineParamManager.set_value("left_part_width", width, auto_store=False)
+            CustomMachineParamManager.set_value("left_part_length", length, auto_store=False)
+        else:
+            CustomMachineParamManager.set_value("right_part_width", width, auto_store=False)
+            CustomMachineParamManager.set_value("right_part_length", length, auto_store=False)
+        print(f'{side} dims: {length}, {width}')
         CustomMachineParamManager.set_value("side", side, auto_store=True)
         # todo call the sanding generate
         print(f'you pressed the {side} button')
 
-        print(f'right dims: {right_part_length}, {right_part_width}')
-        print(f'style {left_slab_selected}')
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
         self.send_g_code(g_commands)
 
+
+
     def handle_prob_calibration_values_modified(self):
         # handle the change
-        from models.sander_generate import Probe
+
         self.p = Probe(self.__grbl_interface, in_calibration_mode=True)
         self.p.calibrationFailedSignal.connect(self.__handle_calibration_failed)
         self.p.start()
