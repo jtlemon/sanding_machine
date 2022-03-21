@@ -410,7 +410,10 @@ class Probe(QtCore.QThread):
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
         self.send_and_get_response(f'g0x-{-1 * (decoded_response[0]) - step_back}z-{(-1 * result_1) + step_back}')
-        decoded_response = self.send_and_get_response(f'g38.5z-{(-1 * result_1) - (step_back * 2)}f1200', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.3z0f1200', decode_block_flag=True)
+        if alarm_no == 5:
+            print('part may be too big')
+            return
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_z = decoded_response[2]
