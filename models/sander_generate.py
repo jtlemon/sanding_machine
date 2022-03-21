@@ -388,7 +388,7 @@ class Probe(QtCore.QThread):
         CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_y_diameter'), auto_store=True)
 
     def probe_part(self):
-        step_back = 50
+        step_back = 30
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response('g0x-900z0')
