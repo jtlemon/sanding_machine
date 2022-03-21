@@ -295,7 +295,6 @@ class Probe(QtCore.QThread):
     def __init__(self, serial_interface):
         super(Probe, self).__init__()
         self.g_code = []
-        self.hal = GrblControllerHal()
         self.serial_interface = serial_interface
         self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
             "probe_cal_y", None)  # this will come from settings page
