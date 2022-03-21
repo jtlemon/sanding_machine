@@ -320,6 +320,9 @@ class Probe(QtCore.QThread):
             if "PN:P" in rec_str:
                 print('probe is on')
                 break
+            elif "ALARM:4" in rec_str:
+                print('probe error')
+                break
         return values
 
     def send_and_get_response(self, cmd , delay_ms: int = 500, decode_block_flag=False):
