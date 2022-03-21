@@ -330,9 +330,11 @@ class Probe(QtCore.QThread):
             elif "ALARM:4" in rec_str:
                 self.send_and_get_response('$x')
                 alarm_no = 4
+                time.sleep(2)
             elif "ALARM:5" in rec_str:
                 self.send_and_get_response('$x')
                 alarm_no = 5
+                time.sleep(2)
         return values, alarm_no
 
     def send_and_get_response(self, cmd , delay_ms: int = 500, decode_block_flag=False):
