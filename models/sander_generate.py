@@ -24,7 +24,6 @@ from models import db_utils
 from apps.sanding_machine import models
 from statistics import mean
 from PySide2 import QtCore
-from models.grbl_hal import GrblControllerHal
 
 """
 need to get all of the parameters from the current program
@@ -368,7 +367,7 @@ class Probe(QtCore.QThread):
         decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
-        self.hal.park()
+        self.send_and_get_response('g0x-900z0(park machine)')
         result_z_minus = decoded_response[2]  # todo get return of probe
         print(f'results: {result_x_minus}, {result_x_plus}. {result_z_plus}, {result_z_minus}')
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
