@@ -369,8 +369,8 @@ class Probe(QtCore.QThread):
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_x_diameter", (self.cal_size[0] - result_size[0]), auto_store=True)
         CustomMachineParamManager.set_value("probe_y_diameter", (self.cal_size[1] - result_size[1]), auto_store=True)
-        CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
-        CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
+        CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value('probe_x_diameter'), auto_store=True)
+        CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_y_diameter'), auto_store=True)
         # calculated_size = (-1 * result_x_plus) - effective_zero[0], effective_zero[1] + result_z_minus # this will not be used here, will use with probing of actual parts
         # todo store results from calibration to config file
 
