@@ -24,6 +24,7 @@ from models import db_utils
 from apps.sanding_machine import models
 from statistics import mean
 from PySide2 import QtCore
+from models.grbl_hal import GrblControllerHal
 
 """
 need to get all of the parameters from the current program
@@ -291,9 +292,11 @@ class SandingGenerate:
 
 class Probe(QtCore.QThread):
     calibrationFailedSignal = QtCore.Signal()
+
     def __init__(self, serial_interface):
         super(Probe, self).__init__()
         self.g_code = []
+        self.hal = GrblControllerHal()
         self.serial_interface = serial_interface
         self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
             "probe_cal_y", None)  # this will come from settings page
@@ -342,6 +345,7 @@ class Probe(QtCore.QThread):
         return result
 
     def calibrate(self):
+
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
         #self.g_code.append('g38.5x0f1200')
@@ -364,6 +368,7 @@ class Probe(QtCore.QThread):
         decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+        self.hal.park()
         result_z_minus = decoded_response[2]  # todo get return of probe
         print(f'results: {result_x_minus}, {result_x_plus}. {result_z_plus}, {result_z_minus}')
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus

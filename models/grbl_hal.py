@@ -196,7 +196,7 @@ class GrblControllerHal(QtCore.QObject):
         self.deactivate_solenoids()
         self.grbl_stream.add_new_command('g90', notify_message='Parking')
         self.grbl_stream.add_new_command('g0z0')
-        self.grbl_stream.add_new_command('g0x-150y0', notify_message='Parked-Ready')
+        self.grbl_stream.add_new_command('g0x-900y0', notify_message='Parked-Ready')
         module_logger.debug("parking machine")
 
     def spindle_on(self):
