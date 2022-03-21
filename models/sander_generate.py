@@ -330,6 +330,7 @@ class Probe(QtCore.QThread):
             elif "ALARM:4" in rec_str:
                 alarm_no = 4
             elif "ALARM:5" in rec_str:
+                self.send_and_get_response('$x')
                 alarm_no = 5
         return values, alarm_no
 
@@ -391,6 +392,7 @@ class Probe(QtCore.QThread):
         if alarm_no == 5:
             # probe along x axis till part is found
             print('part not found')
+            self.send_and_get_response('g0x-900z0')
             return
         elif alarm_no == 4:
             print('probing failed')
