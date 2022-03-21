@@ -310,8 +310,11 @@ class MachineGuiInterface(MachineInterfaceUi):
             # todo, call the sander_generate.probe.probe_part from here, poplulate part width and length for left or right
             print('we are probing the part')
             from models.sander_generate import Probe
-            self.p_1 = Probe(self.__grbl_interface)
-            self.p_1.probe_part()
+            self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False)
+            self.p_1.calibrationFailedSignal.connect(self.__handle_calibration_failed)
+            self.p_1.start()
+
+
 
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
@@ -334,7 +337,7 @@ class MachineGuiInterface(MachineInterfaceUi):
     def handle_prob_calibration_values_modified(self):
         # handle the change
         from models.sander_generate import Probe
-        self.p = Probe(self.__grbl_interface)
+        self.p = Probe(self.__grbl_interface, in_calibration_mode=True)
         self.p.calibrationFailedSignal.connect(self.__handle_calibration_failed)
         self.p.start()
 

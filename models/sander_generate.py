@@ -293,9 +293,10 @@ class SandingGenerate:
 class Probe(QtCore.QThread):
     calibrationFailedSignal = QtCore.Signal()
 
-    def __init__(self, serial_interface):
+    def __init__(self, serial_interface, in_calibration_mode=False):
         super(Probe, self).__init__()
         self.g_code = []
+        self.in_calibration_mode = in_calibration_mode
         self.serial_interface = serial_interface
         self.cal_size = CustomMachineParamManager.get_value("probe_cal_x", None), CustomMachineParamManager.get_value(
             "probe_cal_y", None)  # this will come from settings page
@@ -307,7 +308,11 @@ class Probe(QtCore.QThread):
 
     def run(self):
         self.serial_interface.grbl_stream.reset_prob_buffer()
-        self.calibrate()
+        if self.in_calibration_mode:
+            self.calibrate()
+        else:
+            self.probe_part()
+
 
     def decode_response(self, response_list):
         values = None
