@@ -314,7 +314,6 @@ class Probe(QtCore.QThread):
         else:
             self.probe_part()
 
-
     def decode_response(self, response_list):
         values = None
         for rec_bytes in response_list:
@@ -380,14 +379,15 @@ class Probe(QtCore.QThread):
         CustomMachineParamManager.set_value("probe_y_diameter", (self.cal_size[1] - result_size[1]), auto_store=True)
         CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value('probe_x_diameter'), auto_store=True)
         CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_y_diameter'), auto_store=True)
-        # calculated_size = (-1 * result_x_plus) - effective_zero[0], effective_zero[1] + result_z_minus # this will not be used here, will use with probing of actual parts
-        # todo store results from calibration to config file
 
     def probe_part(self):
         step_back = 50
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
         decoded_response = self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
+        if "alarm:5" in decoded_response:
+            # probe along x axis till part is found
+
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_1 = decoded_response[2]
@@ -402,8 +402,6 @@ class Probe(QtCore.QThread):
             self.calibrationFailedSignal.emit()
         result_x = decoded_response[0]
         part_size = (-1 * result_x) - x_y_0[0], x_y_0[1] - (-1 * result_z)
-        CustomMachineParamManager.set_value(f"prob_{self.current_side}_size", part_size, auto_store=True)
-        self.partProbbeingFinishedSignal.emit(self.current_side, part_size[0], part_size[1])
         print(f'part size: {part_size}')
 
 

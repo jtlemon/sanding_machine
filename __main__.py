@@ -272,7 +272,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
         if side == "left":
             if not widget.start_left_button.isChecked():
-                print ("enable button again ............")
+                print("enable button again ............")
                 widget.start_left_button.setStyleSheet("color:red")
                 return
             else:

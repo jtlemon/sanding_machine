@@ -158,7 +158,7 @@ class SerialConnector(Process):
             if notify_message != "emit_measure_response":
                 self.__event_queue.put({"type": "notification", "value": notify_message})
             else:
-                self.__event_queue.put({"type": "received_response", "value": notify_message, "response":response})
+                self.__event_queue.put({"type": "received_response", "value": notify_message, "response": response})
         if cmd_to_send.get("wait_time") > 0:
             start_time = time.time()
             while time.time() - start_time < cmd_to_send.get("wait_time") and not self.fast_interrupt_occur():
