@@ -328,11 +328,11 @@ class Probe(QtCore.QThread):
                 print('probe is on')
                 break
             elif "ALARM:4" in rec_str:
-                self.send_and_get_response('$x')
+                self.serial_interface.grbl_stream.send_command_directly(b'$x')
                 alarm_no = 4
                 time.sleep(2)
             elif "ALARM:5" in rec_str:
-                self.send_and_get_response('$x')
+                self.serial_interface.grbl_stream.send_command_directly(b'$x')
                 alarm_no = 5
                 time.sleep(2)
         return values, alarm_no
@@ -408,6 +408,7 @@ class Probe(QtCore.QThread):
             return
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_1 = decoded_response[2]
         self.send_and_get_response(f'g0x-{-1 * (decoded_response[0]) - step_back}z-{(-1 * result_1) + step_back}')
         decoded_response, alarm_no = self.send_and_get_response(f'g38.4z0f1200', decode_block_flag=True)
@@ -418,11 +419,13 @@ class Probe(QtCore.QThread):
             print('probe not in correct state')
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_z = decoded_response[2]
         self.send_and_get_response(f'g0z-{(-1*result_z)  + step_back}')
         decoded_response = self.send_and_get_response('g38.5x-1700f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
+            return
         result_x = decoded_response[0][0]
         print(f'result {result_x}, {result_z}')
         part_size = (-1 * result_x) - x_y_0[0], x_y_0[1] - (-1 * result_z)
