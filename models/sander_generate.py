@@ -390,10 +390,10 @@ class Probe(QtCore.QThread):
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response('g0x-900z0')
-        decoded_response , alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*2)}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*4)}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
         if alarm_no == 5:
-            self.send_and_get_response('g0x-900z0')
-            decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}')
+            print('part not found yet')
+            decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}', decode_block_flag=True)
         elif alarm_no == 4:
             print('probing failed')
             self.send_and_get_response('g0x-900z0')
