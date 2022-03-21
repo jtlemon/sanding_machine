@@ -364,7 +364,7 @@ class Probe(QtCore.QThread):
         decoded_response= self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
-        result_z_minus = decoded_response[0]  # todo get return of probe
+        result_z_minus = decoded_response[2]  # todo get return of probe
         print(f'results: {result_x_minus}, {result_x_plus}. {result_z_plus}, {result_z_minus}')
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_diameter", round(mean((self.cal_size[0] - result_size[0],
@@ -374,7 +374,6 @@ class Probe(QtCore.QThread):
         CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_diameter'), auto_store=True)
         # calculated_size = (-1 * result_x_plus) - effective_zero[0], effective_zero[1] + result_z_minus # this will not be used here, will use with probing of actual parts
         # todo store results from calibration to config file
-
 
     def probe_part(self):
         step_back = 50
