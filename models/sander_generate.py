@@ -379,26 +379,24 @@ class Probe(QtCore.QThread):
 
     def probe_part(self):
         step_back = 50
-        self.g_code.append('g21g54(set units and wco)')
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        # todo, test that probe detects part
-        self.g_code.append('g38.5z0f4800')
-        self.g_code.append('g91')
-        self.g_code.append(f'g0z-{step_back}')
-        self.g_code.append('g38.5z50f1200')
-        result_z = -335.233  # todo, this will be return of z probe
-        self.g_code.append('g90')
-        self.g_code.append(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        self.g_code.append('g38.5x-1700f4800')
-        self.g_code.append('g91')
-        self.g_code.append(f'g0x{step_back}')
-        self.g_code.append('g38.5x-50f1200')
-        result_x = -805.310  # todo, this will be return of x probe
-        self.g_code.append('g90')
-        part_size = (-1 * result_x) - CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero') + result_z
+        x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
+        self.send_and_get_response('g21g54(set units and wco)')
+        decoded_response= self.send_and_get_response(f'g38.3x-{x_y_0[0] + step_back}z-{x_y_0[1] - step_back}f4800')
+        if decoded_response is None:
+            self.calibrationFailedSignal.emit()
+        result_1 = decoded_response[2]
+        self.send_and_get_response(f'g0z-{result_1 + step_back}')
+        decoded_response= self.send_and_get_response(f'g38.5z-{result_1 - (step_back * 2)}f1200')
+        if decoded_response is None:
+            self.calibrationFailedSignal.emit()
+        result_z = decoded_response[2]
+        self.send_and_get_response(f'g0z-{decoded_response + step_back}')
+        decoded_response = self.send_and_get_response('g38.5x-1700f1200')
+        if decoded_response is None:
+            self.calibrationFailedSignal.emit()
+        result_x = decoded_response[0]
+        part_size = (-1 * result_x) - x_y_0[0], x_y_0 - (-1 * result_z)
         print(f'part size: {part_size}')
-        return self.g_code
-
 
 def turn_vacuum_on(sensors_board_ref, ch):
     if sensors_board_ref is not None:
