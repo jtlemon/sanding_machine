@@ -301,7 +301,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 width, length = left_part_width, left_part_length
             else:
                 if widget.l_r_process.isChecked():
-                    length, width = CustomMachineParamManager.get_value(f"prob_right_size", (0, 0))
+                    length, width = CustomMachineParamManager.get_value(f"prob_left_size", (0, 0))
                 else:
                     if right_part_width == 0 or right_part_length == 0:
                         print("you have to set the right part  diminutions first")
@@ -313,7 +313,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 return
         else:
             if widget.l_r_process.isChecked() and side == 'right':
-                length, width = CustomMachineParamManager.get_value(f"prob_right_size", (0, 0))
+                length, width = CustomMachineParamManager.get_value(f"prob_left_size", (0, 0))
+
             else:
                 from models.sander_generate import Probe
                 self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False, side=side)
