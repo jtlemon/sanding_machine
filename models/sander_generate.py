@@ -63,13 +63,11 @@ class SanderControl:
     def off(self):
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
-        code_list = []
 
-        code_list.append(f'{sander_dictionary[self._active_sander_id]["retract"]}')
-        code_list.append(f'g4p{sander_off_delay}')
-        code_list.append('m5')
-        code_list.append(f'{sander_dictionary[self._active_sander_id]["off"]}')
-        return code_list
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}s800(retract)'"\n"\
+               f'g4p{sander_off_delay}(delay for retraction)'"\n"\
+               'm5(cancel pressure control)'"\n"\
+               f'{sander_dictionary[self._active_sander_id]["off"]}'
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
