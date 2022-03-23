@@ -292,6 +292,7 @@ class MachineGuiInterface(MachineInterfaceUi):
         left_part_width, left_part_length, right_part_width, right_part_length = widget.get_part_dimensions()
         x_max_length = CustomMachineParamManager.get_value("x_max_length")
         y_max_width = CustomMachineParamManager.get_value("y_max_width")
+        self.p_1 = None
         if not probing_on:
             if side == "left":
                 if left_part_width == 0 or left_part_length == 0 and not probing_on:
@@ -299,29 +300,34 @@ class MachineGuiInterface(MachineInterfaceUi):
                     return
                 width, length = left_part_width, left_part_length
             else:
-                if right_part_width == 0 or right_part_length == 0:
-                    print("you have to set the right part  diminutions first")
-                    return
-                width, length = right_part_width, right_part_length
+                if widget.l_r_process.isChecked():
+                    length, width = CustomMachineParamManager.get_value(f"prob_right_size", (0, 0))
+                else:
+                    if right_part_width == 0 or right_part_length == 0:
+                        print("you have to set the right part  diminutions first")
+                        return
+                    width, length = right_part_width, right_part_length
 
             if width > y_max_width or length > x_max_length:
                 print("part is too large")
                 return
         else:
-            # todo, call the sander_generate.probe.probe_part from here, poplulate part width and length for left or right
-            print('we are probing the part')
-            from models.sander_generate import Probe
-            self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False, side=side)
-            self.p_1.calibrationFailedSignal.connect(self.__handle_calibration_failed)
-            self.p_1.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
-            self.p_1.start()
+            if widget.l_r_process.isChecked() and side == 'right':
+                length, width = CustomMachineParamManager.get_value(f"prob_right_size", (0, 0))
+            else:
+                from models.sander_generate import Probe
+                self.p_1 = Probe(self.__grbl_interface, in_calibration_mode=False, side=side)
+                self.p_1.calibrationFailedSignal.connect(self.__handle_calibration_failed)
+                self.p_1.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
+                self.p_1.start()
+
 
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
         CustomMachineParamManager.set_value("door_style", door_style, auto_store=True)
         print(f'style {left_slab_selected}')
-        if not probing_on:
+        if self.p_1 is None:
             self._handle_executing_machine_cycle(side, length, width)
 
     def _handle_executing_machine_cycle(self, side, length, width):
