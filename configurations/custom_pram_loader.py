@@ -47,3 +47,23 @@ class CustomMachineParamManager:
             CustomMachineParamManager.load_configuration()
             CustomMachineParamManager.__is_loaded = True
         return getattr(CustomMachineParamManager, key, default)
+
+    @staticmethod
+    def add_part_size(length, width):
+        parts = getattr(CustomMachineParamManager, "part_sizes", [])
+        if len(parts) > 100:
+            parts.pop(0)
+        parts.append((length, width))
+        setattr(CustomMachineParamManager, "part_sizes", parts)
+        CustomMachineParamManager.store()
+
+    @staticmethod
+    def get_avg_part_size():
+        parts = getattr(CustomMachineParamManager, "part_sizes", [])
+        avg_length, avg_width = 0, 0
+        for length, width in parts:
+            avg_length += length
+            avg_width += width
+        avg_length = avg_length/len(parts)
+        avg_width = avg_width / len(parts)
+        return  avg_length, avg_width
