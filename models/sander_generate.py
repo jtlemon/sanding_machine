@@ -490,6 +490,7 @@ def generate(sensors_board_ref=None):
             turn_vacuum_on(sensors_board_ref, 1)
         elif part_width >= 135:
             turn_vacuum_on(sensors_board_ref, 2)
+            print('turning on vacuum 2')
         else:
             print('part is too short for work holding on x')
     if zone == 'right':
