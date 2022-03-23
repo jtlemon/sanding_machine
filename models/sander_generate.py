@@ -34,7 +34,7 @@ feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
 sander_on_delay = .75  # we probably want to move this to a static config file
-sander_off_delay = 1  # we probably want to move this to a static config file
+sander_off_delay = 3  # we probably want to move this to a static config file
 
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55'},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56'},
@@ -394,7 +394,7 @@ class Probe(QtCore.QThread):
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response('g0x-900z0')
-        decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*4)}z-{x_y_0[1] - step_back}f4800', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*4)}z-{x_y_0[1] - step_back}f8000', decode_block_flag=True)
         if alarm_no == 5:
             # @todo for some reason i am not getting into this if statement when i should be, i suspect it is because it is reading the response to the unlock
             print('part not found yet')
@@ -413,7 +413,7 @@ class Probe(QtCore.QThread):
             return
         result_1 = decoded_response[2]
         self.send_and_get_response(f'g0x-{-1 * (decoded_response[0]) - step_back}z-{(-1 * result_1) + step_back}')
-        decoded_response, alarm_no = self.send_and_get_response(f'g38.4z0f1200', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.4z0f2400', decode_block_flag=True)
         if alarm_no == 5:
             print('part may be too big')
             return
@@ -424,7 +424,7 @@ class Probe(QtCore.QThread):
             return
         result_z = decoded_response[2]
         self.send_and_get_response(f'g0z-{(-1*result_z)  + step_back}')
-        decoded_response = self.send_and_get_response('g38.5x-1700f1200', decode_block_flag=True)
+        decoded_response = self.send_and_get_response('g38.5x-1700f2400', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
             return
