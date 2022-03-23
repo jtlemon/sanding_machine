@@ -34,7 +34,7 @@ feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
 sander_on_delay = .75  # we probably want to move this to a static config file
-sander_off_delay = .5  # we probably want to move this to a static config file
+sander_off_delay = 1  # we probably want to move this to a static config file
 
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55'},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56'},
@@ -63,9 +63,13 @@ class SanderControl:
     def off(self):
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
+        code_list = []
 
-        return f'{sander_dictionary[self._active_sander_id]["retract"]}m5' "\n" f'g4p{sander_off_delay}' \
-               "\n" f'{sander_dictionary[self._active_sander_id]["off"]}'
+        code_list.append(f'{sander_dictionary[self._active_sander_id]["retract"]}')
+        code_list.append(f'g4p{sander_off_delay}')
+        code_list.append('m5')
+        code_list.append(f'{sander_dictionary[self._active_sander_id]["off"]}')
+        return code_list
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
@@ -536,7 +540,7 @@ def generate(sensors_board_ref=None):
                 if x[3] == "-":
                     generate_code.g_code[index] = x.replace("x-", "x")
                 else:
-                    generate_code.g_code[index]=x.replace("x", "x-")
+                    generate_code.g_code[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
     
 
