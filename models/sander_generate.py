@@ -34,7 +34,7 @@ feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
 sander_on_delay = .75  # we probably want to move this to a static config file
-sander_off_delay = 3  # we probably want to move this to a static config file
+sander_off_delay = 5  # we probably want to move this to a static config file
 
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55'},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56'},
@@ -64,7 +64,8 @@ class SanderControl:
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
 
-        return f'{sander_dictionary[self._active_sander_id]["retract"]}s800(retract)'"\n"\
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}'"\n"\
+               's1000'"\n"\
                f'g4p{sander_off_delay}(delay for retraction)'"\n"\
                'm5(cancel pressure control)'"\n"\
                f'{sander_dictionary[self._active_sander_id]["off"]}'
@@ -531,22 +532,37 @@ def generate(sensors_board_ref=None):
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
     
-    
+
+    """x_offset = max_length - part_length
+    for each x-:
+        old x - x_offset"""
+
+
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
+        x_offset =  CustomMachineParamManager.get_value('x_max_length') - part_length
+        print(f'offset: {x_offset}')
         for index, x in enumerate(generate_code.g_code):
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
-                    generate_code.g_code[index] = x.replace("x-", "x")
+                    s = ""
+                    for i in range(4, len(x)):
+                      if x[i] in "0123456789.":
+                          s += x[i]
+                      else:
+                          break
+                    new_value = round(-1*float(s) - x_offset , 2)
+                    new_string = x[:3] + str(new_value)+x[i:]
+                    generate_code.g_code[index] = new_string
                 else:
                     generate_code.g_code[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
-    
 
-    return generate_code.end_cycle()
-    # print(*all_g_codes, sep="\n")
-
+    all_g_codes = generate_code.end_cycle()
+    print(*all_g_codes, sep="\n")
+    return all_g_codes
+    #
 
 
 if __name__ == "__main__":
-    probe_test()
-    #  generate()
+    # probe_test()
+    generate()

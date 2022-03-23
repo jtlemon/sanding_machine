@@ -350,7 +350,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def __handle_calibration_failed(self):
         self.__grbl_interface.park()
-        utils.display_error_message("Failed to calibrate probe", "error", self)
+        view_manager_utils.display_error_message("Failed to calibrate probe", "error", self)
 
     def send_g_code(self, g_commands:list):
         for command in g_commands:
