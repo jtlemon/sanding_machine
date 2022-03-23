@@ -84,7 +84,7 @@ class SandingProgramsPageManager(QtWidgets.QWidget, AbstractOperationWidgetMange
             self.programsChanged.emit(self.__all_added_programs)
 
     def handle_delete_program(self, program_id:int):
-        program = self.profile_db_model.objects.get(pk=program_id)
+        program = models.SandingProgram.objects.get(pk=program_id)
         self.__all_added_programs.remove(program.name)
         program.delete()
         row_id = self.get_row_id(program_id)
