@@ -34,7 +34,7 @@ feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
 sander_on_delay = .75  # we probably want to move this to a static config file
-sander_off_delay = 5  # we probably want to move this to a static config file
+sander_off_delay = 3  # we probably want to move this to a static config file
 
 sander_dictionary = {1: {'on': 'm62', 'off': 'm63', 'extend': 'm70', 'retract': 'm71', 'offset': 'g55'},
                      2: {'on': 'm64', 'off': 'm65', 'extend': 'm72', 'retract': 'm73', 'offset': 'g56'},
@@ -65,10 +65,11 @@ class SanderControl:
             raise Exception("Sander ID is invalid")
 
         return f'{sander_dictionary[self._active_sander_id]["retract"]}'"\n"\
+                f'{sander_dictionary[self._active_sander_id]["off"]}'\
                's1000'"\n"\
                f'g4p{sander_off_delay}(delay for retraction)'"\n"\
-               'm5(cancel pressure control)'"\n"\
-               f'{sander_dictionary[self._active_sander_id]["off"]}'
+               'm5(cancel pressure control)'"\n"
+               
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
