@@ -124,6 +124,8 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.probing_option = QtWidgets.QCheckBox("Probing")
         self.top_h_layout.addWidget(self.probing_option)
         self.probing_option.setChecked(True)
+        self.l_r_process = QtWidgets.QCheckBox("Left>Right Process")
+        self.top_h_layout.addWidget(self.l_r_process)
         self.top_h_layout.addStretch(1)
         self.sanding_programs_combo = ProfileComboBox(self)
         self.sanding_programs_combo.setFixedSize(350, 60)

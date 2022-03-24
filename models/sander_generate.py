@@ -64,10 +64,12 @@ class SanderControl:
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
 
-        return f'{sander_dictionary[self._active_sander_id]["retract"]}s800(retract)'"\n"\
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}'"\n"\
+                f'{sander_dictionary[self._active_sander_id]["off"]}'\
+               's1000'"\n"\
                f'g4p{sander_off_delay}(delay for retraction)'"\n"\
-               'm5(cancel pressure control)'"\n"\
-               f'{sander_dictionary[self._active_sander_id]["off"]}'
+               'm5(cancel pressure control)'"\n"
+
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
@@ -490,6 +492,7 @@ def generate(sensors_board_ref=None):
             turn_vacuum_on(sensors_board_ref, 1)
         elif part_width >= 135:
             turn_vacuum_on(sensors_board_ref, 2)
+            print('turning on vacuum 2')
         else:
             print('part is too short for work holding on x')
     if zone == 'right':
@@ -517,7 +520,7 @@ def generate(sensors_board_ref=None):
     if sensors_board_ref is not None:
         sensors_board_ref.send_vacuum_value(1, 30)  # activating pressure at full pressure. not sure if this is needed.
 
-    all_g_codes = []
+    # all_g_codes = []
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
         generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
@@ -533,12 +536,29 @@ def generate(sensors_board_ref=None):
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
     
-    
+
+    """x_offset = max_length - part_length
+    for each x-:
+        old x - x_offset"""
+
+
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
+        x_offset =  CustomMachineParamManager.get_value('x_max_length') - part_length
+        print(f'offset: {x_offset}')
+        for index, x in enumerate(generate_code.g_code):
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
                     all_g_codes[index] = x.replace("x-", "x")
+                    s = ""
+                    for i in range(4, len(x)):
+                      if x[i] in "0123456789.":
+                          s += x[i]
+                      else:
+                          break
+                    new_value = round(-1*float(s) - x_offset , 2)
+                    new_string = x[:3] + str(new_value)+x[i:]
+                    generate_code.g_code[index] = new_string
                 else:
                     all_g_codes[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
