@@ -286,10 +286,11 @@ class SandingGenerate:
         return self.g_code
 
     def end_cycle(self):
-        self.g_code.append('m5(deactivate vacuum)')
-        self.g_code.append('g54(reset wco)')
-        self.g_code.append(f'g0x-900z0(go to park position)')
-        return self.g_code
+        buffer = []
+        buffer.append('m5(deactivate vacuum)')
+        buffer.append('g54(reset wco)')
+        buffer.append(f'g0x-900z0(go to park position)')
+        return buffer
 
 
 class Probe(QtCore.QThread):
@@ -516,7 +517,7 @@ def generate(sensors_board_ref=None):
     if sensors_board_ref is not None:
         sensors_board_ref.send_vacuum_value(1, 30)  # activating pressure at full pressure. not sure if this is needed.
 
-    # all_g_codes = []
+    all_g_codes = []
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
         generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
@@ -528,21 +529,22 @@ def generate(sensors_board_ref=None):
         else:  # the part is a slab
             if pass_.contain_slabs:
                 generate_code.slab(pass_.make_extra_pass_around_perimeter)
+        all_g_codes.extend(generate_code.g_code)
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
     
     
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
-        for index, x in enumerate(generate_code.g_code):
+        for index, x in enumerate(all_g_codes):
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
-                    generate_code.g_code[index] = x.replace("x-", "x")
+                    all_g_codes[index] = x.replace("x-", "x")
                 else:
-                    generate_code.g_code[index] = x.replace("x", "x-")
+                    all_g_codes[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
-    
 
-    return generate_code.end_cycle()
+    all_g_codes.extend(generate_code.end_cycle())
+    return all_g_codes
     # print(*all_g_codes, sep="\n")
 
 
