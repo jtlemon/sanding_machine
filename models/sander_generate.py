@@ -520,7 +520,7 @@ def generate(sensors_board_ref=None):
     if sensors_board_ref is not None:
         sensors_board_ref.send_vacuum_value(1, 30)  # activating pressure at full pressure. not sure if this is needed.
 
-    # all_g_codes = []
+    all_g_codes = []
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
         generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
@@ -544,12 +544,10 @@ def generate(sensors_board_ref=None):
 
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
-        x_offset =  CustomMachineParamManager.get_value('x_max_length') - part_length
-        print(f'offset: {x_offset}')
-        for index, x in enumerate(generate_code.g_code):
+            x_offset =  CustomMachineParamManager.get_value('x_max_length') - part_length
+            print(f'offset: {x_offset}')
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
-                    all_g_codes[index] = x.replace("x-", "x")
                     s = ""
                     for i in range(4, len(x)):
                       if x[i] in "0123456789.":
@@ -558,7 +556,7 @@ def generate(sensors_board_ref=None):
                           break
                     new_value = round(-1*float(s) - x_offset , 2)
                     new_string = x[:3] + str(new_value)+x[i:]
-                    generate_code.g_code[index] = new_string
+                    all_g_codes[index] = new_string
                 else:
                     all_g_codes[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
