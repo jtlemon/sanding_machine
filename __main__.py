@@ -92,8 +92,10 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = SandingCameraPageManager("Camera")
                 operation_page_widget.start_left_button.setCheckable(True)
                 operation_page_widget.start_right_button.setCheckable(True)
+                operation_page_widget.right_cancel_button.setCheckable(True)
                 operation_page_widget.start_left_button.clicked.connect(self.handle_left_start)
                 operation_page_widget.start_right_button.clicked.connect(self.handle_right_start)
+                operation_page_widget.right_cancel_button.clicked.connect(self.handle_cancel)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
                 operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface, sensors_board_ref=self.__sensors_board_thread)
@@ -267,6 +269,11 @@ class MachineGuiInterface(MachineInterfaceUi):
     def handle_right_start(self):
         print("right btn clicked")
         self.common_sanding_start('right')
+
+    def handle_cancel(self):
+        print('cancel pressed')
+        self.__grbl_interface.cancel_sanding()
+
 
     def common_sanding_start(self, side="left"):
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]

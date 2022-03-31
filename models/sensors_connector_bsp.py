@@ -22,6 +22,7 @@ class SensorsSerialConnector(QtCore.QThread):
     weightChanged = QtCore.Signal(float)
     start_left_signal = QtCore.Signal()
     start_right_signal = QtCore.Signal()
+    cancel_signal = QtCore.Signal()
 
     def __init__(self):
         super(SensorsSerialConnector, self).__init__()

@@ -143,7 +143,9 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.localize_part_btn.setFixedHeight(60)
         self.localize_part_btn.setCheckable(True)
 
-        self.left_side_cam_frame =  QtWidgets.QFrame()
+        self.right_cancel_button = QtWidgets.QPushButton("Cancel")
+        self.right_cancel_button.setMinimumSize(200, 60)
+        self.left_side_cam_frame = QtWidgets.QFrame()
         self.left_side_cam_frame_layout = QtWidgets.QVBoxLayout(self.left_side_cam_frame)
         self.left_side_cam_frame_layout.setSpacing(15)
         self.left_side_cam_frame_layout.addWidget(self.localize_part_btn)
@@ -151,6 +153,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.start_left_button.setMinimumSize(200, 60)
         self.left_slab_option = QtWidgets.QCheckBox("5 piece")
         self.left_side_cam_frame_layout.addWidget(self.start_left_button)
+        self.left_side_cam_frame_layout.addWidget(self.right_cancel_button)
         self.left_side_cam_frame_layout.addWidget(self.left_slab_option)
         self.left_side_cam_frame_layout.addStretch(1)
         self.left_side_cam_frame_layout.addWidget(QtWidgets.QLabel("Width(mm)"))
@@ -189,6 +192,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.start_right_button.setMinimumSize(200, 60)
         self.right_slab_option = QtWidgets.QCheckBox("5 piece")
         self.right_side_cam_frame_layout.addWidget(self.start_right_button)
+        self.right_side_cam_frame_layout.addWidget(self.right_cancel_button)
         self.right_side_cam_frame_layout.addWidget(self.right_slab_option)
 
         self.right_side_cam_frame_layout.addStretch(1)

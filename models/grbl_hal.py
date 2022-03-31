@@ -208,6 +208,12 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g0x-900z-780', notify_message='Parked-Ready')
         module_logger.debug("change paper position")
 
+    def cancel_sanding(self):
+        print('cancel sanding')  # todo cancel
+        self.grbl_stream.send_direct_command(chr(0x84), clr_buffer=True)
+        # todo clear buffer of all commands being sent to grbl
+        self.park()
+
 
     def spindle_on(self):
         spindle_time_out = CustomMachineParamManager.get_value("spindle_time_out")
