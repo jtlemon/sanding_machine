@@ -14,6 +14,7 @@ class ResetPageManager(ResetPageView):
         self.reset_controller_btn.clicked.connect(grbl_interface_ref.reset_machine)
         # self.home_btn.clicked.connect(grbl_interface_ref.reset_and_home)
         self.go_to_park_btn.clicked.connect(grbl_interface_ref.park)
+        self.change_paper_btn.clicked.connect(grbl_interface_ref.change_paper)
         self.serial_monitor_widget.monitorSendCmdSignal.connect(lambda cmd:
                                                                 grbl_interface_ref.grbl_stream.send_direct_command(
                                                                     cmd,

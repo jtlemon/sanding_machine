@@ -270,7 +270,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def common_sanding_start(self, side="left"):
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-        if side == "left":
+        """if side == "left":
             if not widget.start_left_button.isChecked():
                 print("enable button again ............")
                 widget.start_left_button.setStyleSheet("color:red")
@@ -284,6 +284,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             else:
                 widget.start_right_button.setStyleSheet("color:green")
         print("let's execute the code ..............")
+        """
         left_slab_selected = widget.left_slab_option.isChecked()
         right_slab_selected = widget.right_slab_option.isChecked()
         probing_on = widget.probing_option.isChecked()

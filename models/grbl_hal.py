@@ -199,6 +199,16 @@ class GrblControllerHal(QtCore.QObject):
         self.grbl_stream.add_new_command('g0x-900y0', notify_message='Parked-Ready')
         module_logger.debug("parking machine")
 
+    def change_paper(self):
+        print('change paper')
+        self.spindle_off()
+        self.deactivate_solenoids()
+        self.grbl_stream.add_new_command('g90', notify_message='Parking')
+        self.grbl_stream.add_new_command('g0z0')
+        self.grbl_stream.add_new_command('g0x-900z-780', notify_message='Parked-Ready')
+        module_logger.debug("change paper position")
+
+
     def spindle_on(self):
         spindle_time_out = CustomMachineParamManager.get_value("spindle_time_out")
         # spindle_speed = CustomMachineParamManager.get_value("spindle_speed")

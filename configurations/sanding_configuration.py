@@ -207,7 +207,7 @@ SANDING_RESET_PAGE_BUTTONS = [
     },
     {
         "lbl": "Change Paper",
-        "target_key": "change_paper_button"
+        "target_key": "change_paper_btn"
     }
 ]
 

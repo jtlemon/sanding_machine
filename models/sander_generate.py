@@ -393,6 +393,9 @@ class Probe(QtCore.QThread):
         CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_y_diameter'), auto_store=True)
 
     def probe_part(self):
+        if self.current_side == "right":
+            print('probing on right side not implemented')
+            return  # todo finish logic for left or right probe.
         step_back = 30
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
@@ -535,12 +538,10 @@ def generate(sensors_board_ref=None):
         all_g_codes.extend(generate_code.g_code)
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
-    
 
     """x_offset = max_length - part_length
     for each x-:
         old x - x_offset"""
-
 
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
@@ -554,14 +555,15 @@ def generate(sensors_board_ref=None):
                           s += x[i]
                       else:
                           break
-                    new_value = round(-1*float(s) - x_offset , 2)
+                    new_value = round(-1*float(s) - x_offset, 2)
                     new_string = x[:3] + str(new_value)+x[i:]
                     all_g_codes[index] = new_string
                 else:
                     all_g_codes[index] = x.replace("x", "x-")
                 #  rint(f"old: {x} new {all_g_codes[index]}")
 
-    all_g_codes.extend(generate_code.end_cycle())
+    all_g_codes.extend(generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
+
     return all_g_codes
     # print(*all_g_codes, sep="\n")
 
