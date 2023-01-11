@@ -4,7 +4,7 @@ from PySide2 import QtCore
 def get_order_number_from_name(order_name: str):
     order_system_number = -1
     order_name = order_name.lstrip("#")
-    content = order_name.split("_")
+    content = order_name.split(" ")
     if len(content) > 0:
         order_number_str = content[0]
         if order_number_str.isdigit():
