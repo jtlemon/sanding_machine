@@ -46,7 +46,7 @@ from view_managers import MachineSettingsManager, ResetPageManager
 from views import MachineInterfaceUi
 from configurations import AppSupportedOperations
 import time
-
+from access_browser_widget import AccessBrowserWidget
 from custom_widgets.spin_box import CustomSpinBox, SpinUnitMode
 from models.estop_serial_parser import EStopSerialInterface
 from configurations.system_configuration_loader import MainConfigurationLoader
@@ -89,6 +89,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         else:
             raise ValueError("not supported machine.")
         self.__estop_interface = EStopSerialInterface()
+
+
 
         # create dynamic pages........
         for app_operation in machine_supported_operations:
@@ -181,6 +183,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.qr_scanner = OrderQRScannerManager()
         self.qr_scanner.orderInfoDetectedSignal.connect(self._handle_qr_code_scanned)
 
+        self.access_widget = AccessBrowserWidget()
+        self.add_app_window_widget(self.access_widget)
 
     def handle_page_selected(self, page_index):
         if page_index == 0:

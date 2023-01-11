@@ -15,7 +15,7 @@ class AppSupportedOperations(Enum):
     sandingCameraOperations = 10
     doorStylesOperation = 11
     sandersManagementOperations = 12
-
+    viewAccessDbOperation = 13
 
 
 class AppSupportedSettingValues(Enum):

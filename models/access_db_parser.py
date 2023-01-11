@@ -1,5 +1,5 @@
 import os
-from typing import Union
+from typing import Union, List
 from pathlib import Path
 import logging
 import jaydebeapi
@@ -92,6 +92,7 @@ class MDBFileConnector:
                                                     f"jdbc:ucanaccess://{str(self.__db_file_path)}", ["", ""],
                                                     CLASS_PATH)
         except Exception as e:
+            print(e)
             logger.exception(f"Failed to connect to {self.__db_file_path} > {e}")
         else:
             logger.info(f"connected to {self.__db_file_path}")
@@ -110,6 +111,36 @@ class MDBFileConnector:
     def close(self):
         if self.is_connected:
             self.db_connection.close()
+
+    def list_tables(self) -> List[str]:
+        if not self.is_connected:
+            self.connect()
+        md = self.db_connection.jconn.getMetaData()
+        tables_result_set = md.getTables(None, None, "%", None)
+        table_names = []
+        while tables_result_set.next():
+            table_names.append(tables_result_set.getString(3))
+        return table_names
+
+    def get_table_columns(self, table_name: str) -> List[str]:
+        if not self.is_connected:
+            self.connect()
+        md = self.db_connection.jconn.getMetaData()
+        columns_result_set = md.getColumns(None, None, table_name, None)
+        columns = []
+        while columns_result_set.next():
+            columns.append(columns_result_set.getString(4))
+        return columns
+
+    def get_table_content(self, table_name: str) -> List[dict]:
+        if not self.is_connected:
+            self.connect()
+        self.execute(f"SELECT * FROM {table_name}")
+        columns = self.get_table_columns(table_name)
+        content = []
+        for row in self.db_cursor.fetchall():
+            content.append(dict(zip(columns, row)))
+        return content
 
 
     def get_parts(self, part_id) -> list:
