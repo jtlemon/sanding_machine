@@ -27,13 +27,10 @@ class OrderQRScannerManager(QtCore.QObject):
             tld_part_id = -1
             order_oms_id = -1
             string_parts = self.detected_string.split(",")
-            string_parts = "18", "2438_HWC-OMS Tilia Court Unite 132 1 Car Garage No Laundry Uppers Black Island"
-
             if len(string_parts) == 2:
                 if string_parts[0].isdigit():
                     tld_part_id = int(string_parts[0])
                 order_oms_id = get_order_number_from_name(string_parts[1])
-            print(tld_part_id, order_oms_id)
             if tld_part_id > -1 and order_oms_id > -1:
                 self.orderInfoDetectedSignal.emit(tld_part_id, order_oms_id)
             else:
