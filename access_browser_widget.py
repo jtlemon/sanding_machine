@@ -71,7 +71,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.table_names_list_widget.itemClicked.connect(self._table_name_clicked)
 
     def _browse_btn_clicked(self):
-        default_path = "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders"
+        default_path = "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders" # default path to open file dialog to
         file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Open Access File", default_path, "Access Files (*.tld)")
         if file_path[0]:
             self.file_path_le.setText(file_path[0])
@@ -86,6 +86,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.table_names_list_widget.addItems(table_names)
         self.table_names_list_widget.setCurrentRow(0)
         self._table_name_clicked(self.table_names_list_widget.currentItem())
+        # @todo show parts table as the default table
 
     def _table_name_clicked(self, item: QtWidgets.QListWidgetItem):
         self._load_table_content(item.text())
