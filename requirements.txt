@@ -8,7 +8,7 @@ JayDeBeApi==1.2.3
 JPype1==1.4.1
 logzero==1.5.0
 numpy==1.24.1
-opencv-contrib-python-headless==4.7.0.68
+opencv-contrib-python-headless==4.5.5.62
 packaging==23.0
 pyserial==3.5
 PySide2==5.15.2.1
