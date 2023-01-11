@@ -71,7 +71,8 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.table_names_list_widget.itemClicked.connect(self._table_name_clicked)
 
     def _browse_btn_clicked(self):
-        file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Open Access File", "", "Access Files (*.tld)")
+        default_path = "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders"
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Open Access File", default_path, "Access Files (*.tld)")
         if file_path[0]:
             self.file_path_le.setText(file_path[0])
             #self._load_file(file_path[0])
@@ -81,6 +82,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
 
     def _load_table_names(self, table_names: List[str]):
         self.table_names_list_widget.clear()
+        # @todo filter tables, and only show the following tables: part, operations, tools, toolsets, partOperations, shapes
         self.table_names_list_widget.addItems(table_names)
         self.table_names_list_widget.setCurrentRow(0)
         self._table_name_clicked(self.table_names_list_widget.currentItem())
@@ -102,6 +104,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         for row in table_content:
             values = [str(row[key]) for key in columns]
             if self._current_table_name == "Parts":
+                # @todo on parts table, only show the following columns: Id, name, width, length, shape, outline
                 values = [""] + values
             self.add_row_to_table(values)
 
@@ -110,6 +113,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.tableWidget.insertRow(row_position)
         for column, item in enumerate(row):
             if self._current_table_name == "Parts" and column == 0:
+                # @todo column headers do not match columns, need to shift due to show button
                 btn = CustomIdButton(int(row[1]), "Show")
                 btn.showSignal.connect(self._show_part_image)
                 self.tableWidget.setCellWidget(row_position, column, btn)
