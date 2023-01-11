@@ -4,6 +4,7 @@ from .temperature_service import TemperatureService
 from .sensors_connector_hal import SensorConnector
 from .sanding_grbl_hal import SandingGRBLHalController
 from .dovetail_grbl_hal import DovetailGRBLHalController
+from .qr_scanner import OrderQRScannerManager
 
 
 

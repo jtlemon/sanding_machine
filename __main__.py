@@ -1,7 +1,8 @@
 import os
 import sys
+from pathlib import Path
 
-# import models.sander_generate
+
 
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
@@ -13,6 +14,11 @@ except Exception as e:
 from PySide2 import QtWidgets, QtGui, QtCore
 from models.sander_generate import Probe
 from models import CameraMangerProcess
+from models.draw_utils import draw_parts_on_image
+# import models.sander_generate
+from configurations.common_configurations import DROPBOX_FOLDER_PATH
+from models.qr_scanner import OrderQRScannerManager
+from models.tld_file_scanner import TldFileScanner
 from models.sander_generate import generate
 from view_managers.sanding_modules import (
     SandingDoorStylesManager,
@@ -50,11 +56,15 @@ from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
 from view_managers import utils as view_manager_utils
 
+import logging
+module_logger = logging.getLogger(__name__)
+
 
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self, machine_supported_operations: list):
         super(MachineGuiInterface, self).__init__()
         self.__current_machine_cycle = 0
+        self.current_parts = []
         self.__camera_image_subscribers = {index: list() for index in
                                            range(common_configurations.AVAILABLE_CAMERAS)}
         self.__joint_dowel_profile_update_subscribers = set()
@@ -167,6 +177,11 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.handle_page_selected(0)
         self.switch_to_another_page(0)
 
+        # add qr services
+        self.qr_scanner = OrderQRScannerManager()
+        self.qr_scanner.orderInfoDetectedSignal.connect(self._handle_qr_code_scanned)
+
+
     def handle_page_selected(self, page_index):
         if page_index == 0:
             if common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.sandingMachine:
@@ -222,6 +237,10 @@ class MachineGuiInterface(MachineInterfaceUi):
                 image = camera_process.get_image(cam_index)
                 if image is None:
                     continue
+                # let's draw parts over the image
+                if cam_index == 0 and len(self.current_parts) > 0:
+                    image = draw_parts_on_image(image, self.current_parts)
+
                 # convert image to pix mab
                 height, width, channel = image.shape
                 bytes_per_line = 3 * width
@@ -371,6 +390,45 @@ class MachineGuiInterface(MachineInterfaceUi):
         for command in g_commands:
             self.__grbl_interface.grbl_stream.add_new_command(command)
 
+    # listen to barcode data stream
+    def keyReleaseEvent(self, event) -> None:
+        key_value = event.key()
+        self.qr_scanner.on_new_char_received(key_value)
+
+    def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):
+        # dropbox folder path
+        module_logger.info(f"new part detected <{tld_part_id} > order:{order_oms_id}")
+        try:
+            # get order info using order_oms_id
+            pass
+        except Exception as e:
+            module_logger.warning(f"order {order_oms_id} is not exist on the planner db")
+        else:
+            # find the tld file
+            # currently all the files exist on the dropbox
+
+            order_oms_id_as_str = str(order_oms_id)
+            target_order_folder_path = ""
+            folder_detected = False
+            for order_folder_name in os.listdir(DROPBOX_FOLDER_PATH):
+                folder_name_as_parts = order_folder_name.split("_")
+                if folder_name_as_parts[0] == order_oms_id_as_str:
+                    target_order_folder_path = os.path.join(DROPBOX_FOLDER_PATH, order_folder_name)
+                    folder_detected = True
+                    break
+            # I have to make sure that only one TldFileScanner is running at a time
+            if folder_detected:
+                module_logger.debug(f"order folder detected {target_order_folder_path}")
+                if TldFileScanner.is_running:
+                    module_logger.debug("TldFileScanner is already running")
+                    return
+                self.scanning_thread = TldFileScanner(Path(target_order_folder_path), tld_part_id)
+                self.scanning_thread.ploting_metadata_available_signal.connect(self._handle_tld_file_scanned)
+                self.scanning_thread.start()
+
+    def _handle_tld_file_scanned(self, ploting_metadata: list):
+        self.current_parts = ploting_metadata
+        print(f"ploting_metadata {ploting_metadata}")
 
 
 

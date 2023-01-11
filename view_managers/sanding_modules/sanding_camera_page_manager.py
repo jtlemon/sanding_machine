@@ -229,6 +229,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
                 self.camera_widget.draw_rectangles(pix_map, rect, QtCore.Qt.darkGreen)
             self.camera_widget.set_image(pix_map)
 
+
     def get_part_rect(self):
         part_width, part_length, workspace_width, workspace_length = self.__get_measured_values()
         if part_width > 0 and part_length and workspace_width > 0 and workspace_length > 0:
