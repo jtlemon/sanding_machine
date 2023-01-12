@@ -40,6 +40,7 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.header_frame_layout.addItem(h_spacer_item_1)
         self.header_frame.setObjectName("app_header_frame")
         self.calculator_btn = QtWidgets.QPushButton(self)
+        self.calculator_btn.setDisabled(True)
         self.header_frame_layout.addWidget(self.calculator_btn)
         self.calculator_btn.setIcon(QtGui.QIcon(':/icons/icons/icons8-calculator-64.png'))
         self.calculator_btn.setIconSize(QtCore.QSize(30, 30))

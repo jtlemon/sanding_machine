@@ -17,7 +17,8 @@ class Ui_AccessViewerWidget(object):
     def setupUi(self, AccessViewerWidget):
         if not AccessViewerWidget.objectName():
             AccessViewerWidget.setObjectName(u"AccessViewerWidget")
-        AccessViewerWidget.resize(1171, 820)
+        AccessViewerWidget.resize(1171, 820) # i think this is locking the page size
+        
         self.gridLayout = QGridLayout(AccessViewerWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.horizontalLayout_2 = QHBoxLayout()

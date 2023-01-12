@@ -71,9 +71,12 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.table_names_list_widget.itemClicked.connect(self._table_name_clicked)
 
     def _browse_btn_clicked(self):
-        file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Open Access File", "", "Access Files (*.tld)")
+        default_path = "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders" # default path to open file dialog to
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self, "Open Access File", default_path, "Access Files (*.tld)")
+        opened_path_trimmed = "opened" # @todo we need to trim the opened file path down to just the order # and job name probably.
         if file_path[0]:
-            self.file_path_le.setText(file_path[0])
+            self.file_path_le.setText(opened_path_trimmed)
+            # self.file_path_le.setText(file_path[0])
             #self._load_file(file_path[0])
             self._mdb_file_connector = MDBFileConnector(Path(file_path[0]))
             table_names = self._mdb_file_connector.list_tables()
@@ -81,9 +84,15 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
 
     def _load_table_names(self, table_names: List[str]):
         self.table_names_list_widget.clear()
+        tables_to_keep = ("Parts", "Operations", "Tools", "PartOperations", "Shapes", "Jobs", "Assemblies", "ToolSets")
+        table_names = [x for x in table_names if x in tables_to_keep] # remove tables we do not need
+        table_names.remove("Parts") # move table names to begging of list
+        table_names.insert(0, "Parts") # move table names to beggining of list
+        print(f'table names: {table_names}')
         self.table_names_list_widget.addItems(table_names)
         self.table_names_list_widget.setCurrentRow(0)
         self._table_name_clicked(self.table_names_list_widget.currentItem())
+    
 
     def _table_name_clicked(self, item: QtWidgets.QListWidgetItem):
         self._load_table_content(item.text())
@@ -93,16 +102,31 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.tableWidget.clear()
         self.tableWidget.setRowCount(0)
         columns = self._mdb_file_connector.get_table_columns(table_name)
+        columns_to_keep = ()
         if self._current_table_name == "Parts":
+            columns_to_keep = ('ID', 'JobID', 'Name', 'Width', 'Length', 'Shaped', 'Outline', 'AssemblyID')
+            # @todo need to trim width and length to 3 decimal places.
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
             self.tableWidget.setColumnCount(len(columns)+1)
+        elif self._current_table_name == "PartOperations":
+            columns_to_keep = ('PartID', 'ID', 'Name', 'Type', 'ToolID', 'Width', 'Length', 'Depth', 'PosX', 'PosY', 'PosZ', 'RotX', 'RotY', 'RotZ', 'Repeat', 'Spacing', 'Outline')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
+        elif self._current_table_name == "Tools":
+            columns_to_keep = ('ID', 'Name', 'Type')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
+        elif self._current_table_name == "Operations":
+            columns_to_keep = ('ID', 'PartID', 'Name', 'Type', 'ToolID', 'Width', 'Length', 'Depth', 'PartOperationID', 'ToolsetsID')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
         else:
             self.tableWidget.setColumnCount(len(columns))
+        
         self.tableWidget.setHorizontalHeaderLabels(columns)
         table_content = self._mdb_file_connector.get_table_content(table_name)
         for row in table_content:
             values = [str(row[key]) for key in columns]
-            if self._current_table_name == "Parts":
-                values = [""] + values
             self.add_row_to_table(values)
 
     def add_row_to_table(self, row: List[str]):
