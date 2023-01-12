@@ -64,7 +64,6 @@ class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self, machine_supported_operations: list):
         super(MachineGuiInterface, self).__init__()
         self.__current_machine_cycle = 0
-        self.installEventFilter(self)
         self.current_parts = []
         self.__camera_image_subscribers = {index: list() for index in
                                            range(common_configurations.AVAILABLE_CAMERAS)}
@@ -103,6 +102,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
+                operation_page_widget.qr_scan_line.returnPressed.connect(self._handle_qr_code_detected)
+                operation_page_widget.qr_scan_line.setFocus()
                 operation_page_widget.start_left_button.setCheckable(True)
                 operation_page_widget.start_right_button.setCheckable(True)
                 operation_page_widget.right_cancel_button.setCheckable(True)
@@ -397,14 +398,35 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     # listen to barcode data stream
     def keyReleaseEvent(self, event) -> None:
-        pass 
+        key_value = event.key()
+        #self.qr_scanner.on_new_char_received(key_value)
 
-    def eventFilter(self, obj, event):
-        if event.type() == QtCore.QEvent.KeyRelease:
-            key_value = event.key()
-            self.qr_scanner.on_new_char_received(key_value)
-            event.ignore()
-        return super().eventFilter(obj, event)
+    def _handle_qr_code_detected(self):
+        camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+        qr_code = camera_widget_manager.qr_scan_line.text()
+        def get_order_number_from_name(order_name: str):
+            order_system_number = -1
+            order_name = order_name.lstrip("#")
+            content = order_name.split(" ")
+            if len(content) > 0:
+                order_number_str = content[0]
+                if order_number_str.isdigit():
+                    order_system_number = int(order_number_str)
+            return order_system_number
+
+        if len(qr_code) == 0:
+            return
+        tld_part_id = -1
+        order_oms_id = -1
+        string_parts = qr_code.split(",")
+        if len(string_parts) == 2:
+            if string_parts[0].isdigit():
+                tld_part_id = int(string_parts[0])
+            order_oms_id = get_order_number_from_name(string_parts[1])
+        if tld_part_id > -1 and order_oms_id > -1:
+            self._handle_qr_code_scanned(tld_part_id, order_oms_id)
+        camera_widget_manager.qr_scan_line.setText("")
+
 
     def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):
         # dropbox folder path
@@ -429,15 +451,13 @@ class MachineGuiInterface(MachineInterfaceUi):
                     break
             # I have to make sure that only one TldFileScanner is running at a time
             if folder_detected:
-                print(f"order folder detected {target_order_folder_path}")
+                module_logger.debug(f"order folder detected {target_order_folder_path}")
                 if TldFileScanner.is_running:
-                    print("TldFileScanner is already running")
+                    module_logger.debug("TldFileScanner is already running")
                     return
                 self.scanning_thread = TldFileScanner(Path(target_order_folder_path), tld_part_id)
                 self.scanning_thread.ploting_metadata_available_signal.connect(self._handle_tld_file_scanned)
                 self.scanning_thread.start()
-            else:
-                print("folder not detected .............")
 
     def _handle_tld_file_scanned(self, ploting_metadata: list):
         self.current_parts = ploting_metadata
