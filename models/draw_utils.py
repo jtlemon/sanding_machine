@@ -13,7 +13,7 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part]):
     real_height_in, real_width_in = 24, 70  # in inches
     for part in parts:
         part_height, part_width = part.get_outer_dims()
-        print(f'Part width: {part_width}, Part height: {part_height}')
+        # print(f'Part width: {part_width}, Part height: {part_height}')
         part_height_pixels = scale_dim_to_pixels(image_height_pixels, real_height_in, part_height)
         part_width_pixels = scale_dim_to_pixels(image_width_pixels, real_width_in, part_width)
         # now we have to draw a rectangle that represents the part on the image

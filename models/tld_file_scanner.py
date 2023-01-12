@@ -34,7 +34,7 @@ class TldFileScanner(QtCore.QThread):
     def get_plotting_metadata(self, tld_file_content: List[Part]) -> List[Dict[str, Any]]:
         """
         get the plotting metadata from the tld file content
-        :param tld_file_content: the content of the tld file
+        :param tld_efile_content: the content of the tld file
         :return: the plotting metadata
         """
         meta_data = []
