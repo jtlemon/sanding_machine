@@ -21,11 +21,21 @@ class TldFileScanner(QtCore.QThread):
     def run(self):
         TldFileScanner.is_running = True
         tld_file_content = []
-        for file in self.order_folder_path.iterdir():
-            if file.suffix == ".tld":
-                tld_file_content = self.get_tld_part_content(file, self.tld_part_id)
+        for folder in self.order_folder_path.iterdir():
+            if folder.is_dir():
+                for file in folder.iterdir():
+                    if file.suffix == ".tld":
+                        print(f"check {file}")
+                        tld_file_content = self.get_tld_part_content(file, self.tld_part_id)
+                        if len(tld_file_content) > 0:
+                            print("content detected ")
+                            break
+            if len(tld_file_content) > 0:
+                break
         if len(tld_file_content) > 0:
             self.ploting_metadata_available_signal.emit(tld_file_content)
+        else:
+            print("no content ")
         TldFileScanner.is_running = False
 
     def get_plotting_metadata(self, tld_file_content: List[Part]) -> List[Dict[str, Any]]:

@@ -88,6 +88,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         table_names = [x for x in table_names if x in tables_to_keep] # remove tables we do not need
         table_names.remove("Parts") # move table names to begging of list
         table_names.insert(0, "Parts") # move table names to beggining of list
+        print(f'table names: {table_names}')
         self.table_names_list_widget.addItems(table_names)
         self.table_names_list_widget.setCurrentRow(0)
         self._table_name_clicked(self.table_names_list_widget.currentItem())
@@ -101,13 +102,27 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
         self.tableWidget.clear()
         self.tableWidget.setRowCount(0)
         columns = self._mdb_file_connector.get_table_columns(table_name)
-        
+        columns_to_keep = ()
         if self._current_table_name == "Parts":
             columns_to_keep = ('ID', 'JobID', 'Name', 'Width', 'Length', 'Shaped', 'Outline', 'AssemblyID')
+            # @todo need to trim width and length to 3 decimal places.
             columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
             self.tableWidget.setColumnCount(len(columns)+1)
+        elif self._current_table_name == "PartOperations":
+            columns_to_keep = ('PartID', 'ID', 'Name', 'Type', 'ToolID', 'Width', 'Length', 'Depth', 'PosX', 'PosY', 'PosZ', 'RotX', 'RotY', 'RotZ', 'Repeat', 'Spacing', 'Outline')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
+        elif self._current_table_name == "Tools":
+            columns_to_keep = ('ID', 'Name', 'Type')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
+        elif self._current_table_name == "Operations":
+            columns_to_keep = ('ID', 'PartID', 'Name', 'Type', 'ToolID', 'Width', 'Length', 'Depth', 'PartOperationID', 'ToolsetsID')
+            columns = [x for x in columns if x in columns_to_keep] # remove unwanted columns in parts table
+            self.tableWidget.setColumnCount(len(columns))
         else:
             self.tableWidget.setColumnCount(len(columns))
+        
         self.tableWidget.setHorizontalHeaderLabels(columns)
         table_content = self._mdb_file_connector.get_table_content(table_name)
         for row in table_content:

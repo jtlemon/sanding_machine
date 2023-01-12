@@ -64,6 +64,7 @@ class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self, machine_supported_operations: list):
         super(MachineGuiInterface, self).__init__()
         self.__current_machine_cycle = 0
+        self.installEventFilter(self)
         self.current_parts = []
         self.__camera_image_subscribers = {index: list() for index in
                                            range(common_configurations.AVAILABLE_CAMERAS)}
@@ -396,8 +397,14 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     # listen to barcode data stream
     def keyReleaseEvent(self, event) -> None:
-        key_value = event.key()
-        self.qr_scanner.on_new_char_received(key_value)
+        pass 
+
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.KeyRelease:
+            key_value = event.key()
+            self.qr_scanner.on_new_char_received(key_value)
+            event.ignore()
+        return super().eventFilter(obj, event)
 
     def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):
         # dropbox folder path
@@ -422,13 +429,15 @@ class MachineGuiInterface(MachineInterfaceUi):
                     break
             # I have to make sure that only one TldFileScanner is running at a time
             if folder_detected:
-                module_logger.debug(f"order folder detected {target_order_folder_path}")
+                print(f"order folder detected {target_order_folder_path}")
                 if TldFileScanner.is_running:
-                    module_logger.debug("TldFileScanner is already running")
+                    print("TldFileScanner is already running")
                     return
                 self.scanning_thread = TldFileScanner(Path(target_order_folder_path), tld_part_id)
                 self.scanning_thread.ploting_metadata_available_signal.connect(self._handle_tld_file_scanned)
                 self.scanning_thread.start()
+            else:
+                print("folder not detected .............")
 
     def _handle_tld_file_scanned(self, ploting_metadata: list):
         self.current_parts = ploting_metadata

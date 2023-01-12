@@ -33,8 +33,8 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part]):
                 cv2.line(image, pt1, pt2, (0, 255, 0), 3)
         # now we have to draw the operations of the part on the image
         for operation in part.operations:
-            # if operation.tool_id == 107:
-            #     continue
+            if operation.tool_id == 107:
+                continue
             op_height, op_width = operation.get_outer_dims()
             op_height_pixels = scale_dim_to_pixels(image_height_pixels, real_height_in, op_height)
             op_width_pixels = scale_dim_to_pixels(image_width_pixels, real_width_in, op_width)
