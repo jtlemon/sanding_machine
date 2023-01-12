@@ -17,13 +17,16 @@ class TldFileScanner(QtCore.QThread):
         self.order_folder_path = order_folder_path
         self.tld_part_id = tld_part_id
 
-
     def run(self):
         TldFileScanner.is_running = True
         tld_file_content = []
-        for file in self.order_folder_path.iterdir():
-            if file.suffix == ".tld":
-                tld_file_content = self.get_tld_part_content(file, self.tld_part_id)
+        for material_folder in self.order_folder_path.iterdir():
+            for file in material_folder.iterdir():
+                if file.suffix == ".tld":
+                    tld_file_content = self.get_tld_part_content(file, self.tld_part_id)
+                    if len(tld_file_content) > 0:
+                        self.ploting_metadata_available_signal.emit(tld_file_content)
+                        break
         if len(tld_file_content) > 0:
             self.ploting_metadata_available_signal.emit(tld_file_content)
         TldFileScanner.is_running = False

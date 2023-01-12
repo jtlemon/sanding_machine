@@ -134,8 +134,6 @@ class MachineInterfaceUi(QtWidgets.QWidget):
         self.pageSelectedSignal.emit(page_index)
 
 
-
-
     def get_current_active_widget(self):
         return self.__app_pages.currentWidget()
 
