@@ -37,7 +37,7 @@ def convert_outlines(outlines_dict, rel_x, rel_y):
     return outlines
 
 class RoutePath(object):
-    def __init__(self, route_width, route_length, route_depth, route_posX, route_posY, route_posZ, route_outline):
+    def __init__(self, route_width, route_length, route_depth, route_posX, route_posY, route_posZ, route_outline, tool_id):
         self.width = route_width
         self.length = route_length
         self.depth = route_depth
@@ -45,6 +45,19 @@ class RoutePath(object):
         self.posY = route_posY
         self.posZ = route_posZ
         self.outline = route_outline
+        self.tool_id  = tool_id
+    
+    def __repr__(self) -> str:
+        return(f"""
+        *************************** route path *********************
+        width:{self.width}
+        length:{self.length}
+        posx:{self.posX}
+        posy:{self.posY}
+        outline:{self.outline}
+        tool_id:{self.tool_id}
+
+        """)
 
     def get_outer_dims(self):
         return scale_dim(self.length), scale_dim(self.width)
@@ -69,6 +82,15 @@ class Part(object):
         self.outline = outline
         self.operations = operations
 
+    def __repr__(self) -> str:
+        return f"""
+        ********  part ******
+        width:{self.width}
+        length:{self.length}
+        shaped:{self.shaped}
+        outline:{self.outline}
+        operations:{self.operations}
+        """
     def get_outer_dims(self):
         return scale_dim(self.length), scale_dim(self.width)
 
@@ -148,13 +170,15 @@ class MDBFileConnector:
         qur = f"""SELECT ID,  Width, Length,Shaped, Outline FROM Parts s where [ID]={part_id};"""
         self.db_cursor.execute(qur)
         for _id,  width, length, shaped, outline in self.db_cursor.fetchall():
-            route_qur = f"""SELECT Width, Length, Depth, PosX, PosY, PosZ, Outline FROM PartOperations s where PartID={_id} and Name="Route Path";"""
+            route_qur = f"""SELECT Width, Length, Depth, PosX, PosY, PosZ, Outline, ToolID FROM PartOperations s where PartID={_id} and Name="Route Path";"""
             self.db_cursor.execute(route_qur)
             paths = []
-            for route_width, route_length, route_depth, route_posX, route_posY, route_posZ, route_outline in self.db_cursor.fetchall():
-                path = RoutePath(float(route_width), float(route_length), float(route_depth), float(route_posX), float(route_posY), float(route_posZ), route_outline)
+            for route_width, route_length, route_depth, route_posX, route_posY, route_posZ, route_outline, tool_id in self.db_cursor.fetchall():
+                path = RoutePath(float(route_width), float(route_length), float(route_depth), float(route_posX), float(route_posY), float(route_posZ), route_outline, tool_id)
                 paths.append(path)
             part = Part(_id,  float(width), float(length), bool(shaped), outline, paths)
+            print("*********************** part detected *************************************")
+            print(part)
             parts.append(part)
         return parts
 
