@@ -1,4 +1,7 @@
 from multiprocessing import Process, Event, Value, Lock, Queue
+from collections import deque
+from threading import Thread, Event, Lock
+from queue import Queue
 import cv2
 import time
 import threading
@@ -74,8 +77,8 @@ class CameraOnly:
         self.frame_loss_counter = 0
 
     def connect(self):
-        self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
-        self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+        self.__cam = cv2.VideoCapture(self.__cam_index)
+        #self.__cam.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
         self.__cam.set(cv2.CAP_PROP_FPS, common_configurations.FRAME_RATE)
         self.__cam.set(cv2.CAP_PROP_FRAME_WIDTH, common_configurations.IMAGE_WIDTH)
         self.__cam.set(cv2.CAP_PROP_FRAME_HEIGHT, common_configurations.IMAGE_HEIGHT)
@@ -107,23 +110,25 @@ class CameraOnly:
         self.__cam = None
 
 
-class CameraMangerProcess(Process):
+class CameraMangerProcess(Thread):
     process_close_event = Event()
-    images_queue = [Queue(maxsize=4) for i in range(common_configurations.AVAILABLE_CAMERAS)]
+    images_queue = [list() for i in range(common_configurations.AVAILABLE_CAMERAS)]
+
     @staticmethod
     def run():
         sys_cameras_list = [CameraOnly(i) for i in range(common_configurations.AVAILABLE_CAMERAS)]
         for cam in sys_cameras_list:
             cam.connect()
-        while not CameraMangerProcess.process_close_event.is_set():
+        while True :
             time.sleep(1/common_configurations.FRAME_RATE)
             for index, cam in enumerate(sys_cameras_list):
                 image = cam.read_cycle()
+
                 if not (image is None):
                     queue_ref = CameraMangerProcess.images_queue[index]
-                    if queue_ref.full():
-                        queue_ref.get()
-                    queue_ref.put(image)
+                    if len(queue_ref) == 4:
+                        queue_ref.pop(0)
+                    queue_ref.append(image)
         # release camera
         for cam in sys_cameras_list:
             cam.close_cam()
@@ -133,8 +138,9 @@ class CameraMangerProcess(Process):
     def get_image(cam_index:int):
         if cam_index < common_configurations.AVAILABLE_CAMERAS:
             queue_ref = CameraMangerProcess.images_queue[cam_index]
-            if not queue_ref.empty():
-                return queue_ref.get()
+            if len(queue_ref) > 0:
+                return queue_ref[0]
+
     @staticmethod
     def close_service():
         CameraMangerProcess.process_close_event.set()
