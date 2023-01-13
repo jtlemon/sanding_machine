@@ -143,4 +143,5 @@ class CameraMangerProcess(Thread):
 
     @staticmethod
     def close_service():
+        print("hello world .......")
         CameraMangerProcess.process_close_event.set()
