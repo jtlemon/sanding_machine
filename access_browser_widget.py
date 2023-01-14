@@ -50,6 +50,7 @@ class ImageViewerDialog(QtWidgets.QDialog):
         self.set_image(image)
 
     def draw_part(self, parts):
+        # todo update this to show correct work envelope
         height, width =  self.image_label.size().height() , self.image_label.size().width()
         image = np.zeros((width, height, 3), dtype=np.uint8)
         image.fill(255)
