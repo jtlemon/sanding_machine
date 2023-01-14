@@ -84,7 +84,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
 
     def _load_table_names(self, table_names: List[str]):
         self.table_names_list_widget.clear()
-        tables_to_keep = ("Parts", "Operations", "Tools", "PartOperations", "Shapes", "Jobs", "Assemblies", "ToolSets")
+        tables_to_keep = ("Parts", "Operations", "Tools", "PartOperations", "Shapes", "Jobs", "Assemblies", "ToolSets", "Outlines")
         table_names = [x for x in table_names if x in tables_to_keep] # remove tables we do not need
         table_names.remove("Parts") # move table names to begging of list
         table_names.insert(0, "Parts") # move table names to beggining of list
@@ -122,11 +122,19 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
             self.tableWidget.setColumnCount(len(columns))
         else:
             self.tableWidget.setColumnCount(len(columns))
-        
-        self.tableWidget.setHorizontalHeaderLabels(columns)
+        if self._current_table_name == "Parts":
+            self.tableWidget.setHorizontalHeaderLabels([""]+columns)
+        else:
+            self.tableWidget.setHorizontalHeaderLabels(columns)
+
         table_content = self._mdb_file_connector.get_table_content(table_name)
+
         for row in table_content:
+            if self._current_table_name =="PartOperations" and "Route Path" not in row["Name"]:
+                continue
             values = [str(row[key]) for key in columns]
+            if self._current_table_name == "Parts":
+                values = [""] + values
             self.add_row_to_table(values)
 
     def add_row_to_table(self, row: List[str]):
@@ -137,6 +145,7 @@ class AccessBrowserWidget(QtWidgets.QWidget, Ui_AccessViewerWidget):
                 btn = CustomIdButton(int(row[1]), "Show")
                 btn.showSignal.connect(self._show_part_image)
                 self.tableWidget.setCellWidget(row_position, column, btn)
+     
             else:
                 self.tableWidget.setItem(row_position, column, QtWidgets.QTableWidgetItem(item))
 

@@ -57,6 +57,11 @@ from configurations.custom_pram_loader import CustomMachineParamManager
 from view_managers import utils as view_manager_utils
 
 import logging
+import cv2
+for k, v in os.environ.items():
+    if k.startswith("QT_") and "cv2" in v:
+        del os.environ[k]
+
 module_logger = logging.getLogger(__name__)
 
 

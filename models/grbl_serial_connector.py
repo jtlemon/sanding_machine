@@ -40,7 +40,7 @@ class SerialConnector(Process):
         if self.__is_serial_connected:
             try:
                 sent_bytes = self.__serial_dev.write(msg_to_send)
-                print(f"{sent_bytes}    sent....")
+                # print(f"{sent_bytes}    sent....")
             except OSError:
                 self.__is_serial_connected = False
 

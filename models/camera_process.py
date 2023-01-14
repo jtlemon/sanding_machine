@@ -3,6 +3,8 @@ import cv2
 import time
 import threading
 from configurations import common_configurations
+import json
+import numpy as np
 
 class CameraManger:
     def __init__(self, cam_index):
@@ -72,6 +74,20 @@ class CameraOnly:
         self.__is_camera_running = False
         self.__cam = None
         self.frame_loss_counter = 0
+        mtx_json = open('configurations/custom_configurations/camera_matrix.json')
+        # returns JSON object as
+        # a dictionary
+        data = json.load(mtx_json)
+        self.mtx = np.array([[data['fx'],0,data['cx']],[0,data['fy'],data['cy']],[0,0,1]])
+        mtx_json.close()
+        dist_json = open('configurations/custom_configurations/camera_dist.json')
+        # returns JSON object as
+        # a dictionary
+        data = json.load(dist_json)
+        self.dist = np.array([[data["k1"],data["k2"],data["p1"],data["p2"],data["k3"]]])
+        dist_json.close()
+        print(self.mtx)
+        print(self.dist)
 
     def connect(self):
         self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)
@@ -88,9 +104,11 @@ class CameraOnly:
             is_valid, image = self.__cam.read()
             if is_valid:
                 self.frame_loss_counter = 0
+                image = cv2.undistort(image, self.mtx, self.dist, None, self.mtx)
                 image = cv2.resize(image, (common_configurations.IMAGE_HEIGHT,
                                            common_configurations.IMAGE_WIDTH
                                     ))
+                # 
                 #image = cv2.rotate(image, cv2.ROTATE_180)
                 return  cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             else:
