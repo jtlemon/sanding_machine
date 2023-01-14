@@ -3,6 +3,7 @@ import cv2
 import json
 import time
 import open3d as o3d
+import sys
 
 from scipy.spatial.transform import Rotation as R
 
@@ -139,7 +140,7 @@ def create_transformation_frame(three_p):
     return bTw
 
 if __name__ == '__main__':
-
+    
     #find aruco
     mtx_json = open('/home/sanding/dovetail_drill_dowel/configurations/custom_configurations/camera_matrix.json')
     # returns JSON object as
@@ -172,9 +173,9 @@ if __name__ == '__main__':
 
     video.release()
     cv2.destroyAllWindows()
-
+    '''
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.medianBlur(gray,5)
+    # gray = cv2.medianBlur(gray,5)
     # gray = cv2.GaussianBlur(gray,(5,5),0)
     cv2.aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_ARUCO_ORIGINAL)
     parameters = cv2.aruco.DetectorParameters_create()
@@ -186,12 +187,12 @@ if __name__ == '__main__':
     # bboxs, ids, rejected = cv2.aruco.detectMarkers(gray, arucoDict, parameters=arucoParam)
 
         # If markers are detected
-    print((corners[0][0][0][0],corners[0][0][0][1]))
-    cv2.circle(frame,(int(corners[0][0][0][0]),int(corners[0][0][0][1])),10,(0,255,0),10)
+    print((corners[2][0][0][0],corners[2][0][0][1]))
+    cv2.circle(frame,(int(corners[2][0][0][0]),int(corners[2][0][0][1])),10,(0,255,0),10)
     # cv2.imshow('frame',frame)
     # cv2.waitKey(0)
-    print(corners[0])
-    rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[0], 186, mtx,
+    print(corners[1])
+    rvec, tvec, markerPoints = cv2.aruco.estimatePoseSingleMarkers(corners[2], 186, mtx,
                                                                        dist)
     rotm = cv2.Rodrigues(rvec)[0]
 
@@ -226,8 +227,10 @@ if __name__ == '__main__':
 
     plane = find_plane(point1[0:3], point2[0:3], point3[0:3])
     print("plane:", plane)
-    mouse_points = [[290, 869],[1342 ,865],[295 ,400]]
     
+    
+    mouse_points = [[298, 865],[1342 ,865],[295 ,400]]
+    # mouse_points = []
 
 
 
@@ -249,6 +252,7 @@ if __name__ == '__main__':
     #         break
     #     elif k == ord('a'):
     #         print(mouse_points)
+    # cv2.destroyAllWindows()
 
     
 
@@ -287,12 +291,19 @@ if __name__ == '__main__':
     u,v = project_3d_to_image(three_p[0], mtx, dist[0])
     print(u,v)
    
-
+'''
 #     [[ 9.99926092e-01 -4.78753531e-03 -1.11754220e-02 -8.95281255e+02]
 #  [-4.07404801e-03 -9.98004185e-01  6.30162665e-02  4.66110891e+02]
 #  [-1.14548105e-02 -6.29660799e-02 -9.97949929e-01  7.47481826e+03]
 #  [ 0.00000000e+00  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
 # [-895.2812545577443, 466.1108905587368, 7474.818257005325, -0.23344171808966493, 0.6563266525603568, -176.38968400879827]
+
+    
+    cTcnc = np.array([[ 9.99661735e-01,  5.75641957e-03,  2.53629384e-02, -8.61079574e+02],
+    [ 2.00750775e-03, -9.89367360e-01 , 1.45424197e-01 , 4.48560712e+02],
+    [ 2.59303861e-02, -1.45324089e-01, -9.89044248e-01 , 7.28219983e+03],
+    [ 0.00000000e+00,  0.00000000e+00 , 0.00000000e+00,  1.00000000e+00]])
+
 
 
     #generate 3 points on aruco's x,y plane 
@@ -308,17 +319,32 @@ if __name__ == '__main__':
     #projecting these x,y data to camera's coordinates system
 
     part_origin_points = [[0,0,0.75*25.4,1], [16*25.4,0,0.75*25.4,1], [16*25.4,12*25.4,0.75*25.4,1],[0,12*25.4,0.75*25.4,1]]
+    part2_origin_points = [[(70*25.4)-(12*25.4),0,0.75*25.4,1],
+                            [70*25.4,0,0.75*25.4,1],
+                            [70*25.4,16*25.4,0.75*25.4,1],
+                            [(70*25.4)-(12*25.4),16*25.4,0.75*25.4,1]]
+    
     # part_camera_points = []
     part_pixel_points = []
-    for point in part_origin_points:
+    part2_pixel_points = []
+    
+    for count,point in enumerate(part_origin_points):
         part_camera_point = cTcnc@point
+        part2_camera_point = cTcnc@part2_origin_points[count]
         u,v = project_3d_to_image(part_camera_point[0:3], mtx, dist[0])
+        u2,v2 = project_3d_to_image(part2_camera_point[0:3], mtx, dist[0])
+
+
         part_pixel_points.append([int(u),int(v)])
+        part2_pixel_points.append([int(u2),int(v2)])
 
     pts = np.array(part_pixel_points,
                     np.int32)
+    pts2 = np.array(part2_pixel_points,
+                    np.int32)
 
     pts = pts.reshape((-1, 1, 2))
+    pts2 = pts2.reshape((-1, 1, 2))
     
     isClosed = True
     
@@ -326,18 +352,20 @@ if __name__ == '__main__':
     color = (255, 0, 0)
     
     # Line thickness of 2 px
-    thickness = 2
+    thickness = 7
     
     # Using cv2.polylines() method
     # Draw a Blue polygon with 
     # thickness of 1 px
     frame = cv2.polylines(frame, [pts], isClosed, color, thickness)
+    frame = cv2.polylines(frame, [pts2], isClosed, color, thickness)
 
     cv2.imshow('frame',frame)
     cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
         
-
+    sys.exit()
 
 
 
