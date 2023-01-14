@@ -301,6 +301,46 @@ if __name__ == '__main__':
     # this gives out machine coordinates w.r.t camera.
     #using parts length project back points in image
 
+    # drawing back the squares on the part 
+    # test part is 12 inch by 16 inch
+    # So the 3d points of square are [0,0,0], [16*25.4,0,0], [16*25.4,12*16.25,0],[0,12*16.25,0] 
+    
+    #projecting these x,y data to camera's coordinates system
+
+    part_origin_points = [[0,0,0.75*25.4,1], [16*25.4,0,0.75*25.4,1], [16*25.4,12*25.4,0.75*25.4,1],[0,12*25.4,0.75*25.4,1]]
+    # part_camera_points = []
+    part_pixel_points = []
+    for point in part_origin_points:
+        part_camera_point = cTcnc@point
+        u,v = project_3d_to_image(part_camera_point[0:3], mtx, dist[0])
+        part_pixel_points.append([int(u),int(v)])
+
+    pts = np.array(part_pixel_points,
+                    np.int32)
+
+    pts = pts.reshape((-1, 1, 2))
+    
+    isClosed = True
+    
+    # Blue color in BGR
+    color = (255, 0, 0)
+    
+    # Line thickness of 2 px
+    thickness = 2
+    
+    # Using cv2.polylines() method
+    # Draw a Blue polygon with 
+    # thickness of 1 px
+    frame = cv2.polylines(frame, [pts], isClosed, color, thickness)
+
+    cv2.imshow('frame',frame)
+    cv2.waitKey(0)
+
+        
+
+
+
+
 
 
 

@@ -164,6 +164,7 @@ class SandingGenerate:
         return self.g_code
 
     def frame(self):
+        # todo, look at changing the way we pass the frame info.  likely want to implement new strategy
         effective_sander_width = self.sander_selection.get_y_value() - (
                 (self.sander_selection.get_y_value() * (self.__current_pass.hangover_value / 100)) * 2)
         if self.frame_width <= effective_sander_width:
@@ -217,6 +218,7 @@ class SandingGenerate:
         return self.g_code
 
     def panel(self, perimeter, entire_panel):
+        # todo, look at how we pass panel info
         stile = self.frame_width
         width = float(self.part_width)
         length = float(self.part_length)
@@ -477,8 +479,10 @@ def generate(sensors_board_ref=None):
     # sensors_board_ref.turn_vacuum_on()
     # sensors_board_ref.send_vacuum_value(mode, param)
     if zone == 'left':
+        # todo, part length and with is pulled from param manager, draw_utils should save there
         part_length = CustomMachineParamManager.get_value("left_part_length")
         part_width = CustomMachineParamManager.get_value("left_part_width")
+        # todo, save whether a slab or has panel 
         part_type = CustomMachineParamManager.get_value('left_slab_selected')
         if part_length >= 1488:
             turn_vacuum_on(sensors_board_ref, 6)
@@ -526,6 +530,7 @@ def generate(sensors_board_ref=None):
     all_g_codes = []
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
+        # todo, will need to modify this for new db info
         generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
         if part_type:  # if the part is a 5-piece
             if pass_.contain_frames:
@@ -560,7 +565,7 @@ def generate(sensors_board_ref=None):
                     all_g_codes[index] = new_string
                 else:
                     all_g_codes[index] = x.replace("x", "x-")
-                #  rint(f"old: {x} new {all_g_codes[index]}")
+                #  print(f"old: {x} new {all_g_codes[index]}")
 
     all_g_codes.extend(generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
 
