@@ -34,7 +34,10 @@ from view_managers import RetrieveMachinePramsDialog
 from models.db_utils import is_bit_loaded, get_loaded_bit_name
 from view_managers.utils import display_error_message
 from custom_widgets.countdown_timer import CountDownTimerManager
-
+import cv2
+for k, v in os.environ.items():
+    if k.startswith("QT_") and "cv2" in v:
+        del os.environ[k]
 
 class MachineGuiInterface(MachineInterfaceUi):
     def __init__(self):
