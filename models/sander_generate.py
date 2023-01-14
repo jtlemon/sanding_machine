@@ -29,7 +29,7 @@ from PySide2 import QtCore
 need to get all of the parameters from the current program
 
 """
-MAX_WAIT_TIME = 30 # 20 sec
+MAX_WAIT_TIME = 30  # 20 sec
 feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
@@ -69,7 +69,6 @@ class SanderControl:
                's1000'"\n"\
                f'g4p{sander_off_delay}(delay for retraction)'"\n"\
                'm5(cancel pressure control)'"\n"
-
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
@@ -566,7 +565,6 @@ def generate(sensors_board_ref=None):
 
     return all_g_codes
     # print(*all_g_codes, sep="\n")
-
 
 
 if __name__ == "__main__":
