@@ -288,11 +288,12 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
         pts = pts.reshape((-1, 1, 2))
         color = (0, 0, 255)
 
-        if part_position_id == 4: #"flipped"
-            # image = cv2.polylines(image, [pts], True, color, thickness,cv2.LINE_8)
-            drawpoly(image,panel_pixel_points,color,thickness,style='dotted',)
-        else:
-            image = cv2.polylines(image, [pts], True, color, thickness)
+        # if part_position_id == 4: #"flipped"
+        #     # image = cv2.polylines(image, [pts], True, color, thickness,cv2.LINE_8)
+        #     drawpoly(image,panel_pixel_points,color,thickness,style='dotted',)
+        # else:
+        #     image = cv2.polylines(image, [pts], True, color, thickness)
+        image = cv2.polylines(image, [pts], True, color, thickness)
 
 
     # image_height_pixels, image_width_pixels = image.shape[:2]
