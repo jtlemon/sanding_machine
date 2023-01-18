@@ -55,6 +55,7 @@ from views import AlarmViewerDialog
 from configurations import common_configurations
 from configurations.custom_pram_loader import CustomMachineParamManager
 from view_managers import utils as view_manager_utils
+from models.get_part_from_tld import getParts
 
 import logging
 import cv2
@@ -94,6 +95,8 @@ class MachineGuiInterface(MachineInterfaceUi):
         else:
             raise ValueError("not supported machine.")
         self.__estop_interface = EStopSerialInterface()
+        self.part_getter = getParts()
+
 
 
 
@@ -109,6 +112,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = SandingCameraPageManager("Camera")
                 self.operation_page_widget = operation_page_widget 
                 operation_page_widget.qr_scan_line.returnPressed.connect(self._handle_qr_code_detected)
+                operation_page_widget.part_placement_group.clicked.connect(self.swap_length_and_width_for_90_rotation())
                 operation_page_widget.qr_scan_line.setFocus()
                 operation_page_widget.start_left_button.setCheckable(True)
                 operation_page_widget.start_right_button.setCheckable(True)
@@ -260,6 +264,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 pix_map = QtGui.QPixmap.fromImage(q_image)
                 active_widget.new_image_received(cam_index, pix_map)
 
+
+
     def handle_joint_dowel_profile_updates(self, new_profiles):
         for subscriber_widget in self.__joint_dowel_profile_update_subscribers:
             subscriber_widget.handle_joint_dowel_profile_updated(new_profiles)
@@ -408,7 +414,22 @@ class MachineGuiInterface(MachineInterfaceUi):
         #self.qr_scanner.on_new_char_received(key_value)
 
     def _handle_qr_code_detected(self):
+        part_info = self.part_getter.create_part_info(self.current_parts)
+
+
         camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+
+        part_placement_id = camera_widget_manager.part_placement_group.checkedId()
+
+        work_zone = camera_widget_manager.current_work_zone
+
+        if part_placement_id == 1 or part_placement_id == 2:
+            length = part_info[0][0]
+            width = part_info[0][1]
+        else:
+            length = part_info[0][1]
+            width = part_info[0][0]
+
         qr_code = camera_widget_manager.qr_scan_line.text()
         def get_order_number_from_name(order_name: str):
             order_system_number = -1
@@ -432,6 +453,27 @@ class MachineGuiInterface(MachineInterfaceUi):
         if tld_part_id > -1 and order_oms_id > -1:
             self._handle_qr_code_scanned(tld_part_id, order_oms_id)
         camera_widget_manager.qr_scan_line.setText("")
+
+        camera_widget_manager.update_length_width_line_edit(str(length),str(width),work_zone)
+
+
+    def swap_length_and_width_for_90_rotation(self):
+        part_info = self.part_getter.create_part_info(self.current_parts)
+        camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
+
+        part_placement_id = camera_widget_manager.part_placement_group.checkedId()
+
+        work_zone = camera_widget_manager.current_work_zone
+
+        if part_placement_id == 1 or part_placement_id == 2:
+            length = part_info[0][0]
+            width = part_info[0][1]
+        else:
+            length = part_info[0][1]
+            width = part_info[0][0]
+        camera_widget_manager.update_length_width_line_edit(str(length), str(width), work_zone)
+
+
 
 
     def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):

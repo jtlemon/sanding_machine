@@ -174,6 +174,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.part_placement_layout.addWidget(mirrored_placement_button)
 
 
+
         
         
 
@@ -284,15 +285,33 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         #self.widget_layout.addStretch(1)
         #self.camera_widget.setMinimumSize(2000, 600)
 
+
+
+    def update_length_width_line_edit(self,length:str,width:str,work_zone:str):
+        if work_zone == 'left':
+            self.part_length_lin.setText(length)
+            self.part_width_lin.setText(width)
+            self.workspace_length_lin.setText("")
+            self.workspace_width_lin.setText("")
+        elif work_zone == 'right':
+            self.workspace_length_lin.setText(length)
+            self.workspace_width_lin.setText(width)
+            self.part_length_lin.setText("")
+            self.part_width_lin.setText("")
+
+
+
     def move_workspace_to(self,work_zone:str):
         if work_zone == 'left':
             self.current_work_zone = 'left'
             self.move_to_left_work_zone_button.setDisabled(True)
             self.move_to_right_work_zone_button.setEnabled(True)
+            self.update_length_width_line_edit(self.workspace_length_lin.text(),self.workspace_width.text(),work_zone)
         elif work_zone == 'right':
             self.current_work_zone = 'right'
             self.move_to_right_work_zone_button.setDisabled(True)
             self.move_to_left_work_zone_button.setEnabled(True)
+            self.update_length_width_line_edit(self.length_lin.text(), self.part_width.text(), work_zone)
 
 
 
