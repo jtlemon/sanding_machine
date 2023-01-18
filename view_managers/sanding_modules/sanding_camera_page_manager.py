@@ -4,6 +4,7 @@ from views.custom_app_widgets import ProfileComboBox
 from configurations.system_configuration_loader import MainConfigurationLoader
 from models import MeasureUnitType
 from view_managers.abs_operation_widget_manager import AbstractOperationWidgetManger
+from functools import partial
 
 
 class SandingCameraWidget(QtWidgets.QLabel):
@@ -133,6 +134,54 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.top_h_layout.addWidget(self.sanding_programs_combo)
         self.main_widget_frame_layout.addLayout(self.top_h_layout, stretch=0)
         self.main_widget_frame_layout.addStretch(1)
+
+
+        # Added radio buttons for Part placement by Bhavin on 1/16/23
+
+        self.part_placement_layout = QtWidgets.QHBoxLayout(self)
+        self.part_placement_layout.addWidget(QtWidgets.QLabel("Part Placement:"))
+        self.part_placement_group = QtWidgets.QButtonGroup(self) # Number group
+        
+        normal_placement_button = QtWidgets.QRadioButton("Normal",self)
+        normal_placement_button.setChecked(True)
+        
+        self.part_placement_group.addButton(normal_placement_button,0)
+        self.part_placement_layout.addWidget(normal_placement_button)
+
+        rotate_plus_90_placement_button = QtWidgets.QRadioButton("Rotate +90°",self)
+        
+        self.part_placement_group.addButton(rotate_plus_90_placement_button,1)
+        self.part_placement_layout.addWidget(rotate_plus_90_placement_button)
+
+        rotate_minus_90_placement_button = QtWidgets.QRadioButton("Rotate -90°",self)
+        
+        self.part_placement_group.addButton(rotate_minus_90_placement_button,2)
+        self.part_placement_layout.addWidget(rotate_minus_90_placement_button)
+
+        rotate_180_placement_button = QtWidgets.QRadioButton("Rotate 180°",self)
+        
+        self.part_placement_group.addButton(rotate_180_placement_button,3)
+        self.part_placement_layout.addWidget(rotate_180_placement_button)
+
+        flipped_placement_button = QtWidgets.QRadioButton("Flipped",self)
+        
+        self.part_placement_group.addButton(flipped_placement_button,4)
+        self.part_placement_layout.addWidget(flipped_placement_button)
+
+        mirrored_placement_button = QtWidgets.QRadioButton("Mirrored",self)
+        
+        self.part_placement_group.addButton(mirrored_placement_button,5)
+        self.part_placement_layout.addWidget(mirrored_placement_button)
+
+
+        
+        
+
+
+        self.main_widget_frame_layout.addLayout(self.part_placement_layout, stretch=0)
+        self.main_widget_frame_layout.addStretch(1)
+
+
         ########################
         # validator = QRegExpValidator(QRegExp(r'[0-9].+'))
         self.float_validator = QtGui.QDoubleValidator(0, 10000, 2)
@@ -169,9 +218,24 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.center_side_cam_frame_layout.addWidget(self.camera_widget, stretch=1)
         self.camera_frame_layout.addWidget(self.center_side_cam_frame, stretch=1)
         self.center_footer_layout = QtWidgets.QHBoxLayout()
+        
+        #Adding move right and left buttons (Bhavin 1/16/2023)
+        self.current_work_zone = 'left'
+        self.move_to_right_work_zone_button = QtWidgets.QPushButton('Move right',self)
+        self.move_to_left_work_zone_button = QtWidgets.QPushButton('Move left',self)
+        self.move_to_left_work_zone_button.setDisabled(True)
+
+        self.move_to_right_work_zone_button.clicked.connect(partial(self.move_workspace_to,'right'))
+        self.move_to_left_work_zone_button.clicked.connect(partial(self.move_workspace_to,'left'))
+
+        self.center_footer_layout.addWidget(self.move_to_right_work_zone_button)
+        self.center_footer_layout.addStretch(1)
+        
         self.center_footer_layout.addWidget(QtWidgets.QLabel("Length(mm)"))
         self.part_length_lin = QtWidgets.QLineEdit()
         self.part_length_lin.setValidator(self.float_validator)
+        
+
         self.center_footer_layout.addWidget(self.part_length_lin)
         self.center_footer_layout.addStretch(1)
         self.qr_scan_line = QtWidgets.QLineEdit()
@@ -182,6 +246,10 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.workspace_length_lin = QtWidgets.QLineEdit()
         self.workspace_length_lin.setValidator(self.float_validator)
         self.center_footer_layout.addWidget(self.workspace_length_lin)
+
+        self.center_footer_layout.addWidget(self.move_to_left_work_zone_button)
+        self.center_footer_layout.addStretch(1)
+
         self.center_side_cam_frame_layout.addLayout(self.center_footer_layout, stretch=0)
 
         # right width
@@ -215,6 +283,18 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.widget_layout.addWidget(self.main_widget_frame)
         #self.widget_layout.addStretch(1)
         #self.camera_widget.setMinimumSize(2000, 600)
+
+    def move_workspace_to(self,work_zone:str):
+        if work_zone == 'left':
+            self.current_work_zone = 'left'
+            self.move_to_left_work_zone_button.setDisabled(True)
+            self.move_to_right_work_zone_button.setEnabled(True)
+        elif work_zone == 'right':
+            self.current_work_zone = 'right'
+            self.move_to_right_work_zone_button.setDisabled(True)
+            self.move_to_left_work_zone_button.setEnabled(True)
+
+
 
 
 class SandingCameraPageManager(ModifiedSandingPageView):

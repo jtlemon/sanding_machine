@@ -305,6 +305,32 @@ if __name__ == '__main__':
     [ 0.00000000e+00,  0.00000000e+00 , 0.00000000e+00,  1.00000000e+00]])
 
 
+    cTcnc_dict = {  '0,0': cTcnc[0][0],
+                    '0,1': cTcnc[0][1],
+                    '0,2': cTcnc[0][2],
+                    '0,3': cTcnc[0][3],
+                    
+                    '1,0': cTcnc[1][0],
+                    '1,1': cTcnc[1][1],
+                    '1,2': cTcnc[1][2],
+                    '1,3': cTcnc[1][3],
+
+                    '2,0': cTcnc[2][0],
+                    '2,1': cTcnc[2][1],
+                    '2,2': cTcnc[2][2],
+                    '2,3': cTcnc[2][3],
+
+                    '3,0': cTcnc[3][0],
+                    '3,1': cTcnc[3][1],
+                    '3,2': cTcnc[3][2],
+                    '3,3': cTcnc[3][3],
+                    }
+
+    cTcnc_json_object = json.dumps(cTcnc_dict, indent=4)
+ 
+    # Writing to sample.json
+    with open("/home/sanding/dovetail_drill_dowel/configurations/custom_configurations/cTcnc.json", "w") as outfile:
+        outfile.write(cTcnc_json_object)
 
     #generate 3 points on aruco's x,y plane 
     #create plane

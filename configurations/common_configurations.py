@@ -42,5 +42,5 @@ ESTOP_MODULE_BAUD_RATE = 4800
 ESTOP_CHECK_STATUS_EVERY = 0.5  # check status every 0.5 sec
 
 # ************************* grbl *********************
-IS_GRBL_MODULE_ENABLED = True
+IS_GRBL_MODULE_ENABLED = False
 GRBL_MODULE_COM_PORT = "/dev/ttyACM0"

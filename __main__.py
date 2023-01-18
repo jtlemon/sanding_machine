@@ -107,6 +107,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
+                self.operation_page_widget = operation_page_widget 
                 operation_page_widget.qr_scan_line.returnPressed.connect(self._handle_qr_code_detected)
                 operation_page_widget.qr_scan_line.setFocus()
                 operation_page_widget.start_left_button.setCheckable(True)
@@ -250,7 +251,7 @@ class MachineGuiInterface(MachineInterfaceUi):
                     continue
                 # let's draw parts over the image
                 if cam_index == 0 and len(self.current_parts) > 0:
-                    image = draw_parts_on_image(image, self.current_parts)
+                    image = draw_parts_on_image(image, self.current_parts,self.operation_page_widget.part_placement_group.checkedId(),self.operation_page_widget.current_work_zone)
 
                 # convert image to pix mab
                 height, width, channel = image.shape

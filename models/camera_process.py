@@ -104,10 +104,10 @@ class CameraOnly:
             is_valid, image = self.__cam.read()
             if is_valid:
                 self.frame_loss_counter = 0
-                image = cv2.undistort(image, self.mtx, self.dist, None, self.mtx)
-                image = cv2.resize(image, (common_configurations.IMAGE_HEIGHT,
-                                           common_configurations.IMAGE_WIDTH
-                                    ))
+                # image = cv2.undistort(image, self.mtx, self.dist, None, self.mtx)
+                # image = cv2.resize(image, (common_configurations.IMAGE_HEIGHT,
+                                        #    common_configurations.IMAGE_WIDTH
+                                    # ))
                 # 
                 #image = cv2.rotate(image, cv2.ROTATE_180)
                 return  cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

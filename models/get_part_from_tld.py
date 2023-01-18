@@ -13,18 +13,14 @@ returns: part dimension, route paths
 """
 class getParts:
 
-    def __init__(self) -> None:
-        pass
-
-
-    def create_part_info(parts: List[Part], self):
+    def create_part_info(self, parts: List[Part]):
         
         for part in parts:
             part_height, part_width = part.get_outer_dims()
-            rotate_part = False
+            self.rotate_part = False
             if part_height > part_width: # rotating parts to orient to machine correctly
-                rotate_part = True
-            if rotate_part:
+                self.rotate_part = True
+            if self.rotate_part:
                 part_y_dim, part_x_dim = part_width, part_height
             else:
                 part_x_dim, part_y_dim = part_width, part_height
@@ -53,17 +49,15 @@ class getParts:
                 if operation.tool_id == 107:
                     continue
                 op_height, op_width = operation.get_outer_dims()
-                if rotate_part:
+                if self.rotate_part:
                     panel_y_dim, panel_x_dim = op_width, op_height
                 else:
                     panel_x_dim, panel_y_dim = op_width, op_height
                 
                 xpos, ypos = operation.get_init_pos()
-                if rotate_part:
+                if self.rotate_part:
                     xpos, ypos = ypos, xpos
-                    
-                panel_x_dim = op_width
-                panel_y_dim = op_height
+                
                 print(f'panel #{panel_no}, x: {panel_x_dim}, y: {panel_y_dim}')
                 # todo these are what we need to pass to sanding generate, currently sending list?
                 panel_no += 1
@@ -74,7 +68,7 @@ class getParts:
                 outlines = operation.get_outlines()
 
                 """
-                self.panel_info.append = (panel_x_dim, panel_y_dim, xpos, ypos, operation.tool_id)
+                self.panel_info.append((panel_x_dim, panel_y_dim, xpos, ypos, operation.tool_id))
 
         # not sure if we want to return in this format, we may want to save to internal db
         return [(part_x_dim, part_y_dim), self.panel_info] # need to return for each operation

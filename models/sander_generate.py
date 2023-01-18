@@ -568,8 +568,13 @@ def generate(sensors_board_ref=None):
                 #  print(f"old: {x} new {all_g_codes[index]}")
 
     all_g_codes.extend(generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
-
+    f = open("g-code.nc", "w")
+    for item in all_g_codes:
+       f.write(item)
+       f.write("\n")
+    f.close()
     return all_g_codes
+    
     # print(*all_g_codes, sep="\n")
 
 
