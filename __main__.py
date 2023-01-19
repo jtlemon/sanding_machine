@@ -297,6 +297,19 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.machine_status_lbl.setText(new_state)
 
     def handle_measure_unit_changed(self, new_unit: MeasureUnitType):
+
+        if new_unit == MeasureUnitType.MM_UNIT:
+            self.operation_page_widget.part_width_label.setText('Width(mm)')
+            self.operation_page_widget.part_length_label.setText('Length(mm)')
+            self.operation_page_widget.workspace_width_label.setText('Width(mm)')
+            self.operation_page_widget.workspace_length_label.setText('Length(mm)')
+            
+        elif new_unit == MeasureUnitType.IN_UNIT:
+            self.operation_page_widget.part_width_label.setText('Width(in)')
+            self.operation_page_widget.part_length_label.setText('Length(in)')
+            self.operation_page_widget.workspace_width_label.setText('Width(in)')
+            self.operation_page_widget.workspace_length_label.setText('Length(in)')
+
         for spinbox in CustomSpinBox.class_objects:
             spinbox.set_display_mode(
                 SpinUnitMode.MM_MODE if new_unit == MeasureUnitType.MM_UNIT else SpinUnitMode.IN_MODE)
@@ -407,7 +420,9 @@ class MachineGuiInterface(MachineInterfaceUi):
         # todo call the sanding generate
         print(f'you pressed the {side} button')
 
-        g_commands = generate(sensors_board_ref=self.__sensors_board_thread)
+        list_of_part_info = self.part_getter.create_current_part_info(self.current_parts,self.operation_page_widget.part_placement_group.checkedId())
+        # todo, when the part is selected, we need to select the door style.  this should be done when we qr scan and update parts..
+        g_commands = generate(sensors_board_ref=self.__sensors_board_thread, list_of_part_panel_info=list_of_part_info)
         self.send_g_code(g_commands)
 
 

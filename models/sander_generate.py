@@ -494,8 +494,23 @@ def turn_vacuum_off(sensors_board_ref, ch):
         pass
 
 
+<<<<<<< HEAD
 def generate(sensors_board_ref=None):
     # door style will no longer be determined by param, will come from new db info
+=======
+def probe_test():
+    all_g_codes = []
+    generate_probe = Probe()
+    all_g_codes.extend(generate_probe.calibrate())
+    print(all_g_codes, sep="\n")
+    print(generate_probe.probe_part())
+
+
+def generate(sensors_board_ref=None, list_of_part_panel_info = None):
+    print("############### Part info list #################")
+    print(list_of_part_panel_info)
+    print("############### Part info list end #################")
+>>>>>>> c228b00e1b029985460d3df007e58427d24c2952
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
     zone = CustomMachineParamManager.get_value('side')
