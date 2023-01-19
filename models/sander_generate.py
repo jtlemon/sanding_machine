@@ -95,7 +95,7 @@ class SanderControl:
 
 
 class SandingGenerate:
-    def __init__(self, part_type, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length,
+    def __init__(self, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length,
                  part_width):
 
         self.g_code = []
@@ -104,17 +104,18 @@ class SandingGenerate:
         self._active_sander_id = pass_.sander.pk
         self.part_length = part_length
         self.part_width = part_width
-        self.frame_width = door_style.get_value("outside_edge_width") + \
-                           door_style.get_value("inside_edge_width") + \
-                           door_style.get_value("frame_width")
-        self.hold_back = door_style.get_value("hold_back_inside_edge")
+        # self.frame_width = door_style.get_value("outside_edge_width") + \
+        #                    door_style.get_value("inside_edge_width") + \
+        #                    door_style.get_value("frame_width")
+        # self.hold_back = door_style.get_value("hold_back_inside_edge")
+        self.frame_add = door_style.get_value("inside_edge_width") + door_style.get_value("hold_back_inside_edge")
         self.pressure = 10 * (self.sander_selection.map_pressure(self.__current_pass.pressure_value))
         # print(f'pressure {self.pressure}')
         # print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
         #      f' {self.__current_pass.speed_value}, {self.hold_back}')
 
-    def slab(self, perimeter):
+    def slab(self):
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
         overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
@@ -122,28 +123,7 @@ class SandingGenerate:
         outside_box = overhang_mm_x + offset_x, overhang_mm_y + offset_y, self.part_length - overhang_mm_x - offset_x,\
                       self.part_width - overhang_mm_y - offset_y
         print(f'Outside box: {outside_box}')
-        self.g_code.append(self.sander_selection.get_offset())
-        self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
-        self.g_code.append(self.sander_selection.get_work_plane())
-        # ramp in start
-
-        #figure out ramp in to be arch
-        self.g_code.append(self.sander_selection.on(self.pressure))
-
-        if perimeter:
-            # start at far side on y
-            self.g_code.append(f'g1x-{round(outside_box[0], 1)}y{round(outside_box[3], 1)}(start)') # start of box
-            self.g_code.append(f'g1y{round(outside_box[1], 1)}(1)')
-            self.g_code.append(f'g1x-{round(outside_box[2], 1)}(2)')
-            self.g_code.append(f'g1y{round(outside_box[3], 1)}(3)')
-            self.g_code.append(f'g1x-{round(outside_box[0], 1)}(end of perimeter)')
-            print('this is the extra pass')
-            pass
-        # send to panel pattern
-        # ending does not go here now self.g_code.append(self.sander_selection.off())
-        print('i got here')
-        self.panel_spiral_in(outside_box)
-        # return self.g_code
+        return outside_box
 
     def old_slab(self, perimeter):
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
@@ -251,12 +231,11 @@ class SandingGenerate:
 
         return self.g_code
 
-    def panel_spiral_in(self, outside_box):
+    def panel_spiral_in(self, outside_box, perimeter, entire_panel=True):
 
         if outside_box[2] >= outside_box[3]:
             y_half_width = (outside_box[3] - outside_box[1]) / 2
             print(self.sander_selection.get_y_value())
-            overlap_y_ideal = ((1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value())
             passes = ceil(y_half_width / ((1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value()))
             print(f'x is longer than y, y half width : {y_half_width}, passes: {passes}')
             step_over_y = y_half_width / passes
@@ -264,20 +243,45 @@ class SandingGenerate:
         else:
             x_half_width = (outside_box[2] - outside_box[0]) / 2
             print(f'y is longer than x, x half width: {x_half_width}')
+            # todo need to develop this logic
 
-        for i in range(passes):
-            # todo, add first position before for loop
-            self.g_code.append(f'g1x-{round(outside_box[0] + (step_over_x * (i + 1)), 1)}y{round(outside_box[3] - (step_over_y * (i + 1)), 1)}(1-{i + 1})')
-            # todo, line above is correct, need to work out next 3 lines
-            self.g_code.append(f'g1x-{round(outside_box[2] - (step_over_x * (i+1)))}')
-            self.g_code.append(f'g1y{round(outside_box[1] + (step_over_y * (i + 1)))}')
-            self.g_code.append(f'g1x-{round(outside_box[0] + step_over_x * (i+1))}')
-            if i >= passes - 1: # i am not sure if the break if needs to be here:
-                print(f'i: {i}')
-                break
-        self.g_code.append(f'g1x-{outside_box[2]}(end)')
+        self.g_code.append(self.sander_selection.get_offset())
+        self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
+        self.g_code.append(self.sander_selection.get_work_plane())
+        # ramp in start, not currently ramping, but may not be necessary
+        self.g_code.append(f'g0x-{round(outside_box[0] + (step_over_x *2), 1)}y{round(outside_box[3] - (step_over_y / 2) , 1)}')  # still working on this
 
-        self.g_code.append(self.sander_selection.off())
+        self.g_code.append(self.sander_selection.on(self.pressure))
+
+        self.g_code.append(f'g1x-{round(outside_box[0], 1)}y{round(outside_box[3], 1)}(start)')  # start of box
+        self.g_code.append(f'g1y{round(outside_box[1], 1)}(1)')
+        self.g_code.append(f'g1x-{round(outside_box[2], 1)}(2)')
+        self.g_code.append(f'g1y{round(outside_box[3], 1)}(3)')
+        self.g_code.append(f'g1x-{round(outside_box[0], 1)}(end of perimeter)')
+
+        if perimeter:
+            # start at far side on y
+            self.g_code.append(f'g1x-{round(outside_box[0], 1)}y{round(outside_box[3], 1)}(extra perimeter)')  # start of box
+            self.g_code.append(f'g1y{round(outside_box[1], 1)}(1)')
+            self.g_code.append(f'g1x-{round(outside_box[2], 1)}(2)')
+            self.g_code.append(f'g1y{round(outside_box[3], 1)}(3)')
+            self.g_code.append(f'g1x-{round(outside_box[0], 1)}(end of perimeter)')
+
+        if entire_panel:
+            self.g_code.append(
+                f'g1x-{round(outside_box[0] + step_over_x, 1)}y{round(outside_box[3] - step_over_y, 1)}(before entering for loop)')
+
+            for i in range(passes):
+                self.g_code.append(f'g1x-{round(outside_box[2] - (step_over_x * (i+1)))}(1-{i + 1})')
+                y_2_pass = round(outside_box[1] + (step_over_y * (i + 1)))
+                self.g_code.append(f'g1y{y_2_pass}(2-{i + 1})')
+                self.g_code.append(f'g1x-{round(outside_box[0] + step_over_x * (i+1))}(3-{i + 1})')
+                self.g_code.append(f'g1y{round(outside_box[3] - (step_over_y * (i + 2)), 1)}(4-{i + 1})')
+                if y_2_pass >= y_half_width:
+                    break
+            self.g_code.append(f'g1x-{outside_box[2] - step_over_x}(end)')
+
+            self.g_code.append(self.sander_selection.off())
 
         return self.g_code
 
@@ -291,80 +295,23 @@ class SandingGenerate:
         method to sand panels and slabs parallel on y
         """
 
-    def panel(self, perimeter, entire_panel):
-        # todo, look at how we pass panel info, want to pass it as panel corners
-        # todo, can we use same loop for panel and for slab?  Only difference should be the outside perimeter dims
-        stile = self.frame_width
-        width = float(self.part_width)
-        length = float(self.part_length)
-        overlap = float(self.__current_pass.overlap_value)
-        hold_back = float(self.hold_back)
-        panel_size = length - (stile * 2), width - (stile * 2)
-        panel_corners = (stile, stile), (stile, width - stile), (length - stile, width - stile), (length - stile, stile)
-        print(f'panel corners: {panel_corners}')
-        step_over = length / (round(length / (self.sander_selection.get_x_value() * (1 - overlap / 100)))), \
-                    width / (round(width / (self.sander_selection.get_y_value() * (1 - overlap / 100))))
-        print(f'step over x : {step_over[0]} y: {step_over[1]}')
-        offset_x = float(self.sander_selection.get_x_value() / 2) + hold_back
-        offset_y = float(self.sander_selection.get_y_value() / 2) + hold_back
-        print(f'panel size{panel_size}, offset: {offset_x, offset_y}')
-        if self.sander_selection.get_y_value() >= panel_size[1]:
+    def panel(self, panel_operation):
+
+        # for each panel
+        panel_x_dim, panel_y_dim, xpos, ypos = panel_operation # when i get the info from panel, it will go here
+        if self.sander_selection.get_y_value() >= (panel_y_dim + (self.frame_add * 2)):
             print('sander too wide')
-        elif self.sander_selection.get_x_value() >= panel_size[0]:
+            return None
+        elif self.sander_selection.get_x_value() >= (panel_x_dim + (self.frame_add * 2)):
             print('sander too long')
-        print('you selected panel')
-        panel_start = self.frame_width + (float(self.sander_selection.get_x_value()) / 2) + \
-                      hold_back, self.frame_width + \
-                      (float(self.sander_selection.get_y_value()) / 2) + hold_back
-        passes = int(
-            ((panel_size[1] - hold_back) / step_over[1]) / 2) - 1
-        print(f'panel start {panel_start}, passes: {passes}')
-        self.g_code.append(self.sander_selection.get_offset() + " (set wco for sander)")
-        self.g_code.append(
-            f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}(set feed speed)')
-        self.g_code.append(self.sander_selection.get_work_plane())
-        # todo need to add ramp in to starting position
-        self.g_code.append(f'g0x-{panel_start[0] + hold_back}y{panel_start[1] + hold_back}(ramp in)')
-        self.g_code.append(self.sander_selection.on(self.pressure))
-        self.g_code.append(f'g3x-{panel_start[0]}y{panel_start[1]}r{hold_back}(starting)')
-        self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-        self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
-        self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
-        # todo need to step over on x and y to next pass after perimeter is sanded.
-        if entire_panel:
-            if perimeter:
-                self.g_code.append(f'g1y{panel_start[1]}(1)')
-                self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-                self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
-                self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
-            if passes == 0:
-                self.g_code.append(f'g1y{((((panel_corners[2][1] - offset_y) - panel_start[1]) / 2) + panel_start[1])}')
-                self.g_code.append(f'g1x-{round(float(length) - (panel_start[0] + step_over[0]), 1)}')
-            for i in range(passes):
-                self.g_code.append(
-                    f'g1y{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i + 1})')
-                self.g_code.append(
-                    f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2-{i + 1})')
-                if i == passes - 1 and (passes % 2) == 0:  # break here if the number of passes was even
-                    break
-                self.g_code.append(
-                    f'g1y{round(panel_corners[2][1] - ((step_over[1]) * (i + 1) + offset_y), 1)}(3-{i + 1})')
-                self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4-{i + 1})')
-                if i == passes - 1:
-                    break
-                # todo break here if the number of passes was odd
-        else:
-            if perimeter:
-                self.g_code.append(f'g1y{panel_start[1]}')
-                self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-                self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
-                self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
-            self.g_code.append(f'g1y{panel_start[1]}')
-            self.g_code.append(f'g3x-{panel_start[0] + hold_back}y{panel_start[1] + hold_back}r{hold_back}(ramp out)')
-
-        self.g_code.append(self.sander_selection.off())
-
-        return self.g_code
+            return None
+        starting_boundary = xpos, ypos, panel_x_dim + xpos, panel_y_dim + ypos
+        print(f'starting boundary: {starting_boundary}')
+        offset_x = self.sander_selection.get_x_value() / 2 + self.frame_add
+        offset_y = self.sander_selection.get_y_value() / 2 + self.frame_add
+        outside_box = starting_boundary[0] + offset_x, starting_boundary[1] + offset_y, starting_boundary[2] - offset_x, starting_boundary[3] - offset_y
+        print(f'Outside box: {outside_box}')
+        return outside_box
 
     def end_cycle(self):
         buffer = []
@@ -547,30 +494,18 @@ def turn_vacuum_off(sensors_board_ref, ch):
         pass
 
 
-def probe_test():
-    all_g_codes = []
-    generate_probe = Probe()
-    all_g_codes.extend(generate_probe.calibrate())
-    print(all_g_codes, sep="\n")
-    print(generate_probe.probe_part())
-
-
 def generate(sensors_board_ref=None):
+    # door style will no longer be determined by param, will come from new db info
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
-    # todo need to add switch for right side
-    # print(f'part type: {part_type}')
     zone = CustomMachineParamManager.get_value('side')
-    probing_on = CustomMachineParamManager.get_value('probing_on')
-
     # sensors_board_ref.turn_vacuum_on()
     # sensors_board_ref.send_vacuum_value(mode, param)
     if zone == 'left':
         # todo, part length and with is pulled from param manager, draw_utils should save there
         part_length = CustomMachineParamManager.get_value("left_part_length")
         part_width = CustomMachineParamManager.get_value("left_part_width")
-        # todo, save whether a slab or has panel 
-        part_type = CustomMachineParamManager.get_value('left_slab_selected')
+
         if part_length >= 1488:
             turn_vacuum_on(sensors_board_ref, 6)
         elif part_length >= 950:
@@ -592,9 +527,7 @@ def generate(sensors_board_ref=None):
     if zone == 'right':
         part_length = CustomMachineParamManager.get_value("right_part_length")
         part_width = CustomMachineParamManager.get_value("right_part_width")
-        part_type = CustomMachineParamManager.get_value('right_slab_selected')
-        probing_on = CustomMachineParamManager.get_value('')
-        print(f'length: {part_length} width: {part_width} type: {part_type}')
+        # print(f'length: {part_length} width: {part_width} type: {part_type}')
         if part_length >= 700:
             turn_vacuum_on(sensors_board_ref, 5)
         elif part_length >= 300:
@@ -618,15 +551,24 @@ def generate(sensors_board_ref=None):
     for index, pass_ in enumerate(passes):
         print(f"pass no {index}")
         # todo, will need to modify this for new db info
-        generate_code = SandingGenerate(part_type, pass_, door_style, part_length, part_width)
+        # part_type will need to be determined by new info, part length and width are the same?
+        generate_code = SandingGenerate(pass_, door_style, part_length, part_width)
+        part_type = False
+        if len(part_type[1]) > 0:
+            part_type = True
         if part_type:  # if the part is a 5-piece
             if pass_.contain_frames:
                 generate_code.frame()
             if pass_.contain_panels:
-                generate_code.panel(pass_.make_extra_pass_around_perimeter, pass_.is_entire_panel)
+                # will need for here for each panel that parts contain
+                for panel_operation in list: # todo, pretty sure this is not correct
+                    panel_outside_box = generate_code.panel(panel_operation)
+                    if panel_outside_box is not None:
+                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, pass_.is_entire_panel)
         else:  # the part is a slab
             if pass_.contain_slabs:
-                generate_code.slab(pass_.make_extra_pass_around_perimeter)
+                outside_box = generate_code.slab()
+                generate_code.panel_spiral_in(outside_box, pass_.make_extra_pass_around_perimeter)
         all_g_codes.extend(generate_code.g_code)
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
