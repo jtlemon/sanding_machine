@@ -42,6 +42,11 @@ SANDING_DOOR_STYLES_PROFILE = [
         "lbl": "Total Profile Width",
         "target_key": "total_profile_width",
         "field_type": WidgetsType.calculatedValue,
+    },
+   {
+        "lbl": "Tool ID",
+        "target_key": "tool_id",
+        "field_type": WidgetsType.textWidget,
     }
 ]
 

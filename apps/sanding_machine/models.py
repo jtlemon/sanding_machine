@@ -53,6 +53,7 @@ class DoorStyle(models.Model):
     profile_name = models.CharField(max_length=20, default="", unique=True)
     json_payload = jsonfield.JSONField()
     machine = models.IntegerField(choices=SupportedMachines.choices)
+    tool_id = models.TextField(default="")
 
     def get_value(self, target_key):
         return self.json_payload.get(target_key, None)
@@ -62,6 +63,23 @@ class DoorStyle(models.Model):
 
     def set_value(self, key, value):
         self.json_payload[key] = value
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        tool_id_as_values = self.json_payload.get("tool_id", "").split(",")
+        is_valid = True
+        for value in tool_id_as_values:
+            if not value.isdigit():
+                is_valid = False
+                break
+        if is_valid:
+            self.tool_id = "\d"+"\d".join(tool_id_as_values)+"\d"
+        else:
+            self.json_payload["tool_id"] = ""
+            self.tool_id = ""
+        super(DoorStyle, self).save(force_insert=False, force_update=False, using=None,
+             update_fields=None)
+
 
 
 class SandingProgram(models.Model):

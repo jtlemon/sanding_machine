@@ -76,7 +76,7 @@ class CameraOnly:
         self.__is_camera_running = False
         self.__cam = None
         self.frame_loss_counter = 0
-
+        """
         mtx_json = open('configurations/custom_configurations/camera_matrix.json')
         # returns JSON object as
         # a dictionary
@@ -92,6 +92,7 @@ class CameraOnly:
         
         print(self.mtx)
         print(self.dist)
+        """
 
 
     def connect(self):

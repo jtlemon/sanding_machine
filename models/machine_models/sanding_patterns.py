@@ -28,6 +28,7 @@ class SandingGenerate:
         #                    door_style.get_value("inside_edge_width") + \
         #                    door_style.get_value("frame_width")
         # self.hold_back = door_style.get_value("hold_back_inside_edge")
+
         self.frame_add = door_style.get_value("inside_edge_width") + door_style.get_value("hold_back_inside_edge")
         self.pressure = 10 * (self.sander_selection.map_pressure(self.__current_pass.pressure_value))
         # print(f'pressure {self.pressure}')

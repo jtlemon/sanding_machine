@@ -22,6 +22,7 @@ except Exception as e:
 
 from configurations.custom_pram_loader import CustomMachineParamManager
 from models import db_utils
+from apps.sanding_machine.models import DoorStyle
 from models.machine_models.sanding_patterns import SandingGenerate
 from models.machine_models.utils import *
 
@@ -98,6 +99,14 @@ def generate(sensors_board_ref=None, list_of_part_panel_info=None):
             if pass_.contain_panels:
                 # will need for here for each panel that parts contain
                 for panel_operation in list_2:  # todo, pretty sure this is not correct
+                    tool_id = panel_operation[4]
+                    tool_id_pattern = f"\d{tool_id}\d"
+                    db_objects = DoorStyle.objects.filter(tool_id__icontains=tool_id_pattern)
+                    door_style_object = None
+                    if db_objects.exists():
+                        door_style_object = db_objects[0]
+                    if door_style_object is None:
+                        raise ValueError(f"tool id {tool_id} not found in database")
                     panel_outside_box = generate_code.panel(panel_operation)
                     panel_offset = panel_operation[3]
                     if panel_outside_box is not None:

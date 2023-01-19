@@ -151,7 +151,7 @@ class TrackableCheckBox(QtWidgets.QCheckBox):
 
 class TrackableLineEdit(QtWidgets.QLineEdit):
     def __init__(self, *args, key_name, **kwargs):
-        super(TrackableCheckBox, self).__init__(*args, **kwargs)
+        super(TrackableLineEdit, self).__init__(*args, **kwargs)
         self.__key_name = key_name
 
     def get_key(self):
