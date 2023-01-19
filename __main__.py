@@ -10,7 +10,8 @@ try:
 except Exception as e:
     print(e)
 from PySide2 import QtWidgets, QtGui, QtCore
-from models.sa import Probe
+from models.machine_models.sander_probe import Probe
+
 from models import CameraMangerProcess
 from models.draw_utils import draw_parts_on_image
 # import models.sander_generate

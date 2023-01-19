@@ -6,6 +6,8 @@ from configurations import common_configurations
 import json
 import numpy as np
 
+
+
 class CameraManger:
     def __init__(self, cam_index):
         self.__cam_index = cam_index
@@ -74,6 +76,7 @@ class CameraOnly:
         self.__is_camera_running = False
         self.__cam = None
         self.frame_loss_counter = 0
+
         mtx_json = open('configurations/custom_configurations/camera_matrix.json')
         # returns JSON object as
         # a dictionary
@@ -86,8 +89,10 @@ class CameraOnly:
         data = json.load(dist_json)
         self.dist = np.array([[data["k1"],data["k2"],data["p1"],data["p2"],data["k3"]]])
         dist_json.close()
+        
         print(self.mtx)
         print(self.dist)
+
 
     def connect(self):
         self.__cam = cv2.VideoCapture(self.__cam_index, cv2.CAP_V4L2)

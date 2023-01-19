@@ -2,7 +2,7 @@ from models import MeasureUnitType
 from views.reset_page import ResetPageView
 from PySide2 import QtCore
 from models.sensors_connector_hal import SensorConnector
-from models.sander_generate import sander_dictionary
+from models.machine_models.generate_config import sander_dictionary
 
 
 class ResetPageManager(ResetPageView):
