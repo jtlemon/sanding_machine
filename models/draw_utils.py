@@ -45,11 +45,7 @@ class TransformationHandler:
         pass
 
 
-def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:int = 0, work_zone:str = 'left'):
-    def scale_dim_to_pixels(real_in_pixels: int, real_in_inches: float, current_in_inches: float) -> int:
-        return int(real_in_pixels * (current_in_inches / real_in_inches))
-
-    def return_transformed_points(part_origin_pcd:o3d.geometry.PointCloud, rotation:List[float], translate:List[float] ):
+def return_transformed_points(part_origin_pcd:o3d.geometry.PointCloud, rotation:List[float], translate:List[float] ):
         transform = np.eye(4)
         translation = np.eye(4)
         r = R.from_euler('ZYX', rotation, degrees=True)
@@ -61,7 +57,7 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
         part_origin_points = np.insert(np.asarray(part_origin_pcd.points), 3, values=1, axis=1)
         return part_origin_points
 
-    def send_points_to_right_work_zone(points, part_breath, machine_x_max_lim = 70*25.4):
+def send_points_to_right_work_zone(points, part_breath, machine_x_max_lim = 70*25.4):
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(np.array(points)[:,0:3])
         translation = np.eye(4)
@@ -69,6 +65,14 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
         pcd.transform(translation)
         points = np.insert(np.asarray(pcd.points), 3, values=1, axis=1)
         return points
+
+def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:int = 0, work_zone:str = 'left'):
+    def scale_dim_to_pixels(real_in_pixels: int, real_in_inches: float, current_in_inches: float) -> int:
+        return int(real_in_pixels * (current_in_inches / real_in_inches))
+
+    
+
+    
 
     def drawline(img,pt1,pt2,color,thickness=1,style='dotted',gap=20):
         dist =((pt1[0]-pt2[0])**2+(pt1[1]-pt2[1])**2)**.5
@@ -119,9 +123,9 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
 
     part_getter = getParts()
     part_info = part_getter.create_part_info(parts)
-    print(f'part info: {part_info}')
+    # print(f'part info: {part_info}')
     part_breath = part_info[0][0]* 25.4
-    print(f'part breath: {part_info[0][0]}')
+    # print(f'part breath: {part_info[0][0]}')
     part_length = part_info[0][1]* 25.4
     
     # number_of_panel = part_info[1]
@@ -197,7 +201,7 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
     for point in part_origin_points:
         part_camera_point = cTcnc @ point
         u, v = project_3d_to_image(part_camera_point[0:3], mtx, dist[0])
-        print('uv:', u,v)
+        # print('uv:', u,v)
         part_pixel_points.append([int(u), int(v)])
     center = (int(part_pixel_points[0][0]+(part_pixel_points[0][0]-part_pixel_points[3][0])),
               int(part_pixel_points[0][1]-(part_pixel_points[0][1]-part_pixel_points[3][1])/2))

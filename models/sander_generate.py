@@ -468,7 +468,10 @@ def probe_test():
     print(generate_probe.probe_part())
 
 
-def generate(sensors_board_ref=None):
+def generate(sensors_board_ref=None, list_of_part_panel_info = None):
+    print("############### Part info list #################")
+    print(list_of_part_panel_info)
+    print("############### Part info list end #################")
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
     # todo need to add switch for right side

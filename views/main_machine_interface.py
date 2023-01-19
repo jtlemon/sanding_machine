@@ -104,10 +104,14 @@ class MachineInterfaceUi(QtWidgets.QWidget):
     def handle_change_measure_unit(self, new_unit: MeasureUnitType):
         if new_unit == MeasureUnitType.IN_UNIT:
             self.__inches_btn.setChecked(True)
+            self.__inches_btn.setDisabled(True)
             self.__mm_btn.setChecked(False)
+            self.__mm_btn.setEnabled(True)
         elif new_unit == MeasureUnitType.MM_UNIT:
             self.__inches_btn.setChecked(False)
+            self.__inches_btn.setEnabled(True)
             self.__mm_btn.setChecked(True)
+            self.__mm_btn.setDisabled(True)
         else:
             raise ValueError("not implemented")
         MainConfigurationLoader.set_value("measure_unit", new_unit.value, True)

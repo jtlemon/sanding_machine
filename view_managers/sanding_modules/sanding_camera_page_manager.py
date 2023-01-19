@@ -214,7 +214,8 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.left_side_cam_frame_layout.addWidget(self.right_cancel_button)
         self.left_side_cam_frame_layout.addWidget(self.left_slab_option)
         self.left_side_cam_frame_layout.addStretch(1)
-        self.left_side_cam_frame_layout.addWidget(QtWidgets.QLabel("Width(mm)"))
+        self.part_width_label = QtWidgets.QLabel("Width(in)")
+        self.left_side_cam_frame_layout.addWidget(self.part_width_label)
         self.part_width = QtWidgets.QLineEdit()
         self.part_width.setValidator(self.float_validator)
         self.left_side_cam_frame_layout.addWidget(self.part_width)
@@ -239,8 +240,8 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
 
         self.center_footer_layout.addWidget(self.move_to_right_work_zone_button)
         self.center_footer_layout.addStretch(1)
-        
-        self.center_footer_layout.addWidget(QtWidgets.QLabel("Length(mm)"))
+        self.part_length_label = QtWidgets.QLabel("Length(in)")
+        self.center_footer_layout.addWidget(self.part_length_label)
         self.part_length_lin = QtWidgets.QLineEdit()
         self.part_length_lin.setValidator(self.float_validator)
         
@@ -251,7 +252,8 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.qr_scan_line.setPlaceholderText("QR Code")
         self.center_footer_layout.addWidget(self.qr_scan_line)
         self.center_footer_layout.addStretch(1)
-        self.center_footer_layout.addWidget(QtWidgets.QLabel("Length(mm)"))
+        self.workspace_length_label = QtWidgets.QLabel("Length(in)")
+        self.center_footer_layout.addWidget(self.workspace_length_label)
         self.workspace_length_lin = QtWidgets.QLineEdit()
         self.workspace_length_lin.setValidator(self.float_validator)
         self.center_footer_layout.addWidget(self.workspace_length_lin)
@@ -277,7 +279,8 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.right_side_cam_frame_layout.addWidget(self.right_slab_option)
 
         self.right_side_cam_frame_layout.addStretch(1)
-        self.right_side_cam_frame_layout.addWidget(QtWidgets.QLabel("Width(mm)"))
+        self.workspace_width_label = QtWidgets.QLabel("Width(in)")
+        self.right_side_cam_frame_layout.addWidget(self.workspace_width_label)
         self.workspace_width = QtWidgets.QLineEdit()
         self.workspace_width.setValidator(self.float_validator)
         self.right_side_cam_frame_layout.addWidget(self.workspace_width)
