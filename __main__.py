@@ -485,7 +485,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             # currently all the files exist on the dropbox
 
             order_oms_id_as_str = str(order_oms_id)
-            target_order_folder_path = "C:\Users\Jeremiah\Dropbox\0001 PRODUCTION\Orders\verified_orders"
+            target_order_folder_path = "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders"
             folder_detected = False
             for order_folder_name in os.listdir(DROPBOX_FOLDER_PATH):
                 folder_name_as_parts = order_folder_name.split("_")
@@ -505,7 +505,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def _handle_tld_file_scanned(self, ploting_metadata: list):
         self.current_parts = ploting_metadata
-        print(f"ploting_metadata {ploting_metadata}")
+        # print(f"ploting_metadata {ploting_metadata}")
         self.handle_length_and_width()
         # part_info = self.part_getter.create_part_info(self.current_parts)
         # part_placement_id = self.operation_page_widget.part_placement_group.checkedId()

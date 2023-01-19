@@ -177,8 +177,8 @@ class MDBFileConnector:
                 path = RoutePath(float(route_width), float(route_length), float(route_depth), float(route_posX), float(route_posY), float(route_posZ), route_outline, tool_id)
                 paths.append(path)
             part = Part(_id,  float(width), float(length), bool(shaped), outline, paths)
-            print("*********************** part detected *************************************")
-            print(part)
+            # print("*********************** part detected *************************************")
+            # print(part)
             parts.append(part)
         return parts
 
