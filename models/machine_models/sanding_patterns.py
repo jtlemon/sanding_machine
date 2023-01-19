@@ -1,4 +1,5 @@
 import os
+
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     from django.core.wsgi import get_wsgi_application
@@ -11,6 +12,7 @@ from models.machine_models.generate_config import feed_speed_max
 from apps.sanding_machine import models
 from math import ceil
 from models.machine_models.sander import SanderControl
+
 
 class SandingGenerate:
     def __init__(self, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length,
@@ -105,7 +107,7 @@ class SandingGenerate:
             y_half_width = ((outside_box[3] - outside_box[1]) / 2) + panel_offset  # need to offset for center of panel
             print(self.sander_selection.get_y_value())
             passes = ceil(y_half_width / (
-                        (1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value()))
+                    (1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value()))
             print(f'x is longer than y, y half width : {y_half_width}, passes: {passes}')
             step_over_y = y_half_width / passes
             step_over_x = (self.sander_selection.get_x_value() * (1 - float(self.__current_pass.overlap_value / 100)))
@@ -188,10 +190,3 @@ class SandingGenerate:
                       starting_boundary[3] - offset_y
         print(f'Outside box: {outside_box}')
         return outside_box
-
-    def end_cycle(self):
-        buffer = []
-        buffer.append('m5(deactivate vacuum)')
-        buffer.append('g54(reset wco)')
-        buffer.append(f'g0x-900y0(go to park position)')
-        return buffer

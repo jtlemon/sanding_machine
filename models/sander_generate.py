@@ -22,11 +22,11 @@ except Exception as e:
 
 from configurations.custom_pram_loader import CustomMachineParamManager
 from models import db_utils
-from models.machine_models.sanding_generate import SandingGenerate
+from models.machine_models.sanding_patterns import SandingGenerate
 from models.machine_models.utils import *
 
 
-def generate(sensors_board_ref=None, list_of_part_panel_info = None):
+def generate(sensors_board_ref=None, list_of_part_panel_info=None):
     door_style = db_utils.get_current_door_style()
     passes = db_utils.get_current_program()  # this object contain multiple paths
     zone = CustomMachineParamManager.get_value('side')
@@ -90,18 +90,19 @@ def generate(sensors_board_ref=None, list_of_part_panel_info = None):
             part_type = True
             list_1 = list_of_part_panel_info[1:]
             list_2 = list_1[0]
-                                
+
         if part_type:  # if the part is a 5-piece
             if pass_.contain_frames:
                 print("we are not handling frames yet")
                 # generate_code.frame()
             if pass_.contain_panels:
                 # will need for here for each panel that parts contain
-                for panel_operation in list_2: # todo, pretty sure this is not correct
+                for panel_operation in list_2:  # todo, pretty sure this is not correct
                     panel_outside_box = generate_code.panel(panel_operation)
                     panel_offset = panel_operation[3]
                     if panel_outside_box is not None:
-                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, entire_panel=pass_.is_entire_panel, panel_offset=panel_offset)
+                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter,
+                                                      entire_panel=pass_.is_entire_panel, panel_offset=panel_offset)
         else:  # the part is a slab
             if pass_.contain_slabs:
                 outside_box = generate_code.slab()
@@ -133,8 +134,7 @@ def generate(sensors_board_ref=None, list_of_part_panel_info = None):
                     all_g_codes[index] = x.replace("x", "x-")
                 #  print(f"old: {x} new {all_g_codes[index]}")
 
-    all_g_codes.extend(
-        generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
+    all_g_codes.extend(end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
     f = open("g-code.nc", "w")
     for item in all_g_codes:
         f.write(item)

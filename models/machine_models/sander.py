@@ -10,7 +10,9 @@ except Exception as e:
 
 from apps.sanding_machine import models
 from configurations.custom_pram_loader import CustomMachineParamManager
-from models.machine_models.generate_config import  sander_dictionary, sander_on_delay, sander_off_delay
+from models.machine_models.generate_config import sander_dictionary, sander_on_delay, sander_off_delay
+
+
 class SanderControl:
     def __init__(self, sander_db_obj: models.Sander):
         self._active_sander_id = sander_db_obj.pk
