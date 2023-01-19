@@ -1,7 +1,7 @@
 import os
 import logging
 from apps.commons import SupportedMachines
-DROPBOX_FOLDER_PATH =  "/home/sanding/Dropbox/0001 PRODUCTION/Orders/verified_orders"
+DROPBOX_FOLDER_PATH = "C:/Users/Jeremiah/Dropbox/0001 PRODUCTION/Orders/verified_orders"
 CURRENT_MACHINE = SupportedMachines.sandingMachine
 # ************************* dovetail left/right active mapper *************
 DOVETAIL_LEFT_RIGHT_ACTIVE_LVL_MAPPER = [0, 4, 6, 8, 10]

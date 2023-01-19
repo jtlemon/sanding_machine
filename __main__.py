@@ -485,7 +485,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             # currently all the files exist on the dropbox
 
             order_oms_id_as_str = str(order_oms_id)
-            target_order_folder_path = "C:\Users\Jeremiah\Dropbox\0001 PRODUCTION\Orders\verified_orders"
+            target_order_folder_path = "C:/Users/Jeremiah/Dropbox/0001 PRODUCTION/Orders/verified_orders"
             folder_detected = False
             for order_folder_name in os.listdir(DROPBOX_FOLDER_PATH):
                 folder_name_as_parts = order_folder_name.split("_")
