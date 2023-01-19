@@ -64,7 +64,7 @@
     "sander4_x_value": 150.0,
     "sander4_y": 1,
     "sander4_y_value": 150.0,
-    "side": "right",
+    "side": "left",
     "spindle_time_out": 2,
     "workspace_length": 700.0,
     "workspace_points": [],

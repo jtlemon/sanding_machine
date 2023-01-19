@@ -101,11 +101,11 @@ def generate(sensors_board_ref=None, list_of_part_panel_info = None):
                     panel_outside_box = generate_code.panel(panel_operation)
                     panel_offset = panel_operation[3]
                     if panel_outside_box is not None:
-                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, entire_panel=pass_.is_entire_panel, panel=panel_offset)
+                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, entire_panel=pass_.is_entire_panel, panel_offset=panel_offset)
         else:  # the part is a slab
             if pass_.contain_slabs:
                 outside_box = generate_code.slab()
-                generate_code.panel_spiral_in(outside_box, pass_.make_extra_pass_around_perimeter, panel=0)
+                generate_code.panel_spiral_in(outside_box, pass_.make_extra_pass_around_perimeter, panel_offset=0)
         all_g_codes.extend(generate_code.g_code)
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
