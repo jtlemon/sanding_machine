@@ -112,7 +112,13 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget = SandingCameraPageManager("Camera")
                 self.operation_page_widget = operation_page_widget 
                 operation_page_widget.qr_scan_line.returnPressed.connect(self._handle_qr_code_detected)
-                operation_page_widget.part_placement_group.clicked.connect(self.swap_length_and_width_for_90_rotation())
+                # operation_page_widget.part_placement_group.clicked.connect()
+                self.operation_page_widget.normal_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.rotate_plus_90_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.rotate_minus_90_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.rotate_180_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.flipped_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.mirrored_placement_button.clicked.connect(self.handle_length_and_width)
                 operation_page_widget.qr_scan_line.setFocus()
                 operation_page_widget.start_left_button.setCheckable(True)
                 operation_page_widget.start_right_button.setCheckable(True)
@@ -256,7 +262,20 @@ class MachineGuiInterface(MachineInterfaceUi):
                 # let's draw parts over the image
                 if cam_index == 0 and len(self.current_parts) > 0:
                     image = draw_parts_on_image(image, self.current_parts,self.operation_page_widget.part_placement_group.checkedId(),self.operation_page_widget.current_work_zone)
+                # if len(self.current_parts) > 0:
+                #     part_info = self.part_getter.create_part_info(self.current_parts)
+                #     part_placement_id = self.operation_page_widget.part_placement_group.checkedId()
 
+                #     work_zone = self.operation_page_widget.current_work_zone
+
+                #     if part_placement_id == 1 or part_placement_id == 2:
+                #         length = part_info[0][0]
+                #         width = part_info[0][1]
+                #     else:
+                #         length = part_info[0][1]
+                #         width = part_info[0][0]
+
+                #     self.operation_page_widget.update_length_width_line_edit(str(length),str(width),work_zone)
                 # convert image to pix mab
                 height, width, channel = image.shape
                 bytes_per_line = 3 * width
@@ -414,21 +433,10 @@ class MachineGuiInterface(MachineInterfaceUi):
         #self.qr_scanner.on_new_char_received(key_value)
 
     def _handle_qr_code_detected(self):
-        part_info = self.part_getter.create_part_info(self.current_parts)
-
+        
 
         camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-
-        part_placement_id = camera_widget_manager.part_placement_group.checkedId()
-
-        work_zone = camera_widget_manager.current_work_zone
-
-        if part_placement_id == 1 or part_placement_id == 2:
-            length = part_info[0][0]
-            width = part_info[0][1]
-        else:
-            length = part_info[0][1]
-            width = part_info[0][0]
+        
 
         qr_code = camera_widget_manager.qr_scan_line.text()
         def get_order_number_from_name(order_name: str):
@@ -454,24 +462,10 @@ class MachineGuiInterface(MachineInterfaceUi):
             self._handle_qr_code_scanned(tld_part_id, order_oms_id)
         camera_widget_manager.qr_scan_line.setText("")
 
-        camera_widget_manager.update_length_width_line_edit(str(length),str(width),work_zone)
+        
+        
+        
 
-
-    def swap_length_and_width_for_90_rotation(self):
-        part_info = self.part_getter.create_part_info(self.current_parts)
-        camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-
-        part_placement_id = camera_widget_manager.part_placement_group.checkedId()
-
-        work_zone = camera_widget_manager.current_work_zone
-
-        if part_placement_id == 1 or part_placement_id == 2:
-            length = part_info[0][0]
-            width = part_info[0][1]
-        else:
-            length = part_info[0][1]
-            width = part_info[0][0]
-        camera_widget_manager.update_length_width_line_edit(str(length), str(width), work_zone)
 
 
 
@@ -510,8 +504,35 @@ class MachineGuiInterface(MachineInterfaceUi):
     def _handle_tld_file_scanned(self, ploting_metadata: list):
         self.current_parts = ploting_metadata
         print(f"ploting_metadata {ploting_metadata}")
+        self.handle_length_and_width()
+        # part_info = self.part_getter.create_part_info(self.current_parts)
+        # part_placement_id = self.operation_page_widget.part_placement_group.checkedId()
 
+        # work_zone = self.operation_page_widget.current_work_zone
 
+        # if part_placement_id == 1 or part_placement_id == 2:
+        #     length = part_info[0][1]
+        #     width = part_info[0][0]
+        # else:
+        #     length = part_info[0][0]
+        #     width = part_info[0][1]
+
+        # self.operation_page_widget.update_length_width_line_edit(str(length),str(width),work_zone)
+
+    def handle_length_and_width(self):
+        part_info = self.part_getter.create_part_info(self.current_parts)
+        part_placement_id = self.operation_page_widget.part_placement_group.checkedId()
+
+        work_zone = self.operation_page_widget.current_work_zone
+
+        if part_placement_id == 1 or part_placement_id == 2:
+            length = part_info[0][1]
+            width = part_info[0][0]
+        else:
+            length = part_info[0][0]
+            width = part_info[0][1]
+
+        self.operation_page_widget.update_length_width_line_edit(str(length),str(width),work_zone)
 
 def create_default_records():
     from apps.sanding_machine.models import Sander
