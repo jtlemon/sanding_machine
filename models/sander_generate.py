@@ -84,7 +84,7 @@ def generate(sensors_board_ref=None, list_of_part_panel_info=None):
         print(f"pass no {index}")
         # todo, will need to modify this for new db info
         # part_type will need to be determined by new info, part length and width are the same?
-        generate_code = SandingGenerate(pass_, door_style, part_length, part_width)
+        generate_code = SandingGenerate(pass_, part_length, part_width)
         part_type = False
         # print(f'list len {list_of_part_panel_info[1][0]}')
         if len(list_of_part_panel_info[1]) > 0:

@@ -15,7 +15,7 @@ from models.machine_models.sander import SanderControl
 
 
 class SandingGenerate:
-    def __init__(self, pass_: models.SandingProgramPass, door_style: models.DoorStyle, part_length,
+    def __init__(self, pass_: models.SandingProgramPass, part_length,
                  part_width):
 
         self.g_code = []
@@ -29,13 +29,14 @@ class SandingGenerate:
         #                    door_style.get_value("frame_width")
         # self.hold_back = door_style.get_value("hold_back_inside_edge")
 
-        self.frame_add = door_style.get_value("inside_edge_width") + door_style.get_value("hold_back_inside_edge")
+        # self.frame_add = door_style.get_value("inside_edge_width") + door_style.get_value("hold_back_inside_edge")
+        # print(f'frame add {self.frame_add}')
         self.pressure = 10 * (self.sander_selection.map_pressure(self.__current_pass.pressure_value))
         # print(f'pressure {self.pressure}')
         # print(f'loaded: {part_type}, {pass_.sander}, {self.part_length}, {self.part_width},'
         #      f' {self.frame_width}, {self.__current_pass.hangover_value}, {self.__current_pass.overlap_value},'
         #      f' {self.__current_pass.speed_value}, {self.hold_back}')
-
+    
     def slab(self):
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
         overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
@@ -171,22 +172,33 @@ class SandingGenerate:
 
     def panel(self, panel_operation):
         print(f'panel operation: {panel_operation}')
+        tool_id = panel_operation[4]
+        tool_id_pattern = f"\d{tool_id}\d"
+        db_objects = models.DoorStyle.objects.filter(tool_id__icontains=tool_id_pattern)
+        door_style_object = None
+        if db_objects.exists():
+            door_style_object = db_objects[0]
+        if door_style_object is None:
+            raise ValueError(f"tool id {tool_id} not found in database")
+        frame_add = door_style_object.get_value("inside_edge_width") + door_style_object.get_value("hold_back_inside_edge")
+        print(f'frame add: {frame_add}')
         panel_x_dim = round(panel_operation[0] * 25.4, 1)
         panel_y_dim = round(panel_operation[1] * 25.4, 1)
         xpos = round(panel_operation[2] * 25.4, 1)
         ypos = round(panel_operation[3] * 25.4, 1)
         print(f'x: {panel_x_dim}, y: {panel_y_dim}, xpos: {xpos}, ypos: {ypos}')
 
-        if self.sander_selection.get_y_value() >= (panel_y_dim + (self.frame_add * 2)):
+
+        if self.sander_selection.get_y_value() >= (panel_y_dim + (frame_add * 2)):
             print('sander too wide')
             return None
-        elif self.sander_selection.get_x_value() >= (panel_x_dim + (self.frame_add * 2)):
+        elif self.sander_selection.get_x_value() >= (panel_x_dim + (frame_add * 2)):
             print('sander too long')
             return None
         starting_boundary = xpos, ypos, panel_x_dim + xpos, panel_y_dim + ypos
         print(f'starting boundary: {starting_boundary}')
-        offset_x = self.sander_selection.get_x_value() / 2 + self.frame_add
-        offset_y = self.sander_selection.get_y_value() / 2 + self.frame_add
+        offset_x = self.sander_selection.get_x_value() / 2 + frame_add
+        offset_y = self.sander_selection.get_y_value() / 2 + frame_add
         outside_box = starting_boundary[0] + offset_x, starting_boundary[1] + offset_y, starting_boundary[2] - offset_x, \
                       starting_boundary[3] - offset_y
         print(f'Outside box: {outside_box}')

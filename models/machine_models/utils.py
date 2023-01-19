@@ -25,7 +25,7 @@ def probe_test():
     print(generate_probe.probe_part())
 
 
-def end_cycle(self):
+def end_cycle():
     buffer = []
     buffer.append('m5(deactivate vacuum)')
     buffer.append('g54(reset wco)')

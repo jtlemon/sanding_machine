@@ -1,6 +1,6 @@
 {
     "cal_x_1": 250,
-    "door_style": "shaker",
+    "door_style": "henderson",
     "dovetail_fence_distance": 457.2,
     "dovetail_setting_a_zero": 1,
     "dovetail_setting_b_zero": 1,
@@ -12,8 +12,8 @@
     "dovetail_setting_y_zero": 1,
     "dovetail_setting_z_zero": -20,
     "left_active": 0,
-    "left_part_length": 1304.925,
-    "left_part_width": 452.4375,
+    "left_part_length": 606.425,
+    "left_part_width": 339.72499999999997,
     "left_slab_selected": false,
     "left_slap_selected": true,
     "loaded_bit_id": -1,
