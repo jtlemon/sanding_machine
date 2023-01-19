@@ -469,7 +469,6 @@ class MachineGuiInterface(MachineInterfaceUi):
 
 
 
-
     def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):
         # dropbox folder path
         module_logger.info(f"new part detected <{tld_part_id} > order:{order_oms_id}")

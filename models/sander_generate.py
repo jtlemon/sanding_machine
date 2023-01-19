@@ -9,6 +9,7 @@ created by: Jeremiah Lemon
 
 import os
 import time
+
 #  from tkinter.messagebox import NO
 
 try:
@@ -24,12 +25,13 @@ from models import db_utils
 from apps.sanding_machine import models
 from statistics import mean
 from PySide2 import QtCore
+from math import ceil as ceil
 
 """
 need to get all of the parameters from the current program
 
 """
-MAX_WAIT_TIME = 30 # 20 sec
+MAX_WAIT_TIME = 30  # 20 sec
 feed_speed_max = 15000  # we probably want to move this to a static config file
 x_max_length = CustomMachineParamManager.set_value("x_max_length", 1778, auto_store=True)
 y_max_width = CustomMachineParamManager.set_value("y_max_width", 660.4, auto_store=True)
@@ -57,19 +59,18 @@ class SanderControl:
 
         return f'{sander_dictionary[self._active_sander_id]["extend"]}(extend)' "\n" \
                f'g4p{sander_on_delay}(delay for sander to extend)' "\n" \
-               f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}(turn on sander and set pressure)' "\n"\
+               f'{sander_dictionary[self._active_sander_id]["on"]}m3s{pressure}(turn on sander and set pressure)' "\n" \
                f'g4p{sander_on_delay}(delay for sander to start)' "\n"
 
     def off(self):
         if self._active_sander_id not in sander_dictionary:
             raise Exception("Sander ID is invalid")
 
-        return f'{sander_dictionary[self._active_sander_id]["retract"]}'"\n"\
-                f'{sander_dictionary[self._active_sander_id]["off"]}'\
-               's1000'"\n"\
-               f'g4p{sander_off_delay}(delay for retraction)'"\n"\
+        return f'{sander_dictionary[self._active_sander_id]["retract"]}'"\n" \
+               f'{sander_dictionary[self._active_sander_id]["off"]}' \
+               's1000'"\n" \
+               f'g4p{sander_off_delay}(delay for retraction)'"\n" \
                'm5(cancel pressure control)'"\n"
-
 
     def get_x_value(self):
         return self._sander_db_obj.x_length
@@ -115,47 +116,80 @@ class SandingGenerate:
 
     def slab(self, perimeter):
         overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
+        overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
+        offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
+        offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
+        outside_box = overhang_mm_x + offset_x, overhang_mm_y + offset_y, self.part_length - overhang_mm_x - offset_x,\
+                      self.part_width - overhang_mm_y - offset_y
+        print(f'Outside box: {outside_box}')
+        self.g_code.append(self.sander_selection.get_offset())
+        self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
+        self.g_code.append(self.sander_selection.get_work_plane())
+        # ramp in start
+
+        #figure out ramp in to be arch
+        self.g_code.append(self.sander_selection.on(self.pressure))
+
+        if perimeter:
+            # start at far side on y
+            self.g_code.append(f'g1x-{round(outside_box[0], 1)}y{round(outside_box[3], 1)}(start)') # start of box
+            self.g_code.append(f'g1y{round(outside_box[1], 1)}(1)')
+            self.g_code.append(f'g1x-{round(outside_box[2], 1)}(2)')
+            self.g_code.append(f'g1y{round(outside_box[3], 1)}(3)')
+            self.g_code.append(f'g1x-{round(outside_box[0], 1)}(end of perimeter)')
+            print('this is the extra pass')
+            pass
+        # send to panel pattern
+        # ending does not go here now self.g_code.append(self.sander_selection.off())
+        print('i got here')
+        self.panel_spiral_in(outside_box)
+        # return self.g_code
+
+    def old_slab(self, perimeter):
+        overhang_mm_x = self.__current_pass.hangover_value / 100 * self.sander_selection.get_x_value()
         # print(f'overhang x :{overhang_mm_x}')
         overhang_mm_y = self.__current_pass.hangover_value / 100 * self.sander_selection.get_y_value()
         offset_x = self.sander_selection.get_x_value() / 2 - overhang_mm_x
         offset_y = self.sander_selection.get_y_value() / 2 - overhang_mm_y
         step_over_x = float(self.part_length) / (round(
-            float(self.part_length) / (self.sander_selection.get_x_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
+            float(self.part_length) / (
+                    self.sander_selection.get_x_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
         step_over_y = float(self.part_width) / (round(
-            float(self.part_width) / (self.sander_selection.get_y_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
-        starting_position = offset_x, offset_y
+            float(self.part_width) / (
+                    self.sander_selection.get_y_value() * (1 - float(self.__current_pass.overlap_value / 100)))))
+        starting_position = offset_x, offset_y # i think i want to change to strategy of generating extreme box of centerline of pattern
         center_line = self.part_width / 2
         print(f'center line: {center_line}')
         self.g_code.append(self.sander_selection.get_offset())
         self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
-        self.g_code.append('g18 g21')
+        self.g_code.append(self.sander_selection.get_work_plane())
         self.g_code.append(
-            f'g0x-{round(starting_position[0] + (step_over_x * 2), 1)}z{round(starting_position[1] + (step_over_y / 2), 1)}(ramp in)')
+            f'g0x-{round(starting_position[0] + (step_over_x * 2), 1)}y{round(starting_position[1] + (step_over_y / 2), 1)}(ramp in)') # starting of ramp in
         self.g_code.append(self.sander_selection.on(self.pressure))
         self.g_code.append(
-            f'g2x-{round(starting_position[0], 1)}z{round(starting_position[1], 1)}r{step_over_x * 2}(start)')
-        self.g_code.append(f'g1z{round(float(self.part_width) - offset_y, 1)}(1)')
+            f'g2x-{round(starting_position[0], 1)}y{round(starting_position[1], 1)}r{step_over_x * 2}(start)') # start of pattern here, replace with new strategy, start with perimeter
+        self.g_code.append(f'g1y{round(float(self.part_width) - offset_y, 1)}(1)')
         self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x, 1)}(2)')
-        self.g_code.append(f'g1z{round(starting_position[1], 1)}(3)')
+        self.g_code.append(f'g1y{round(starting_position[1], 1)}(3)')
         if perimeter:
             self.g_code.append(
-                f'g1x-{round(starting_position[0] + overhang_mm_x, 1)}z{round(starting_position[1], 1)}(start)')
-            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - overhang_mm_y, 1)}(1)')
+                f'g1x-{round(starting_position[0] + overhang_mm_x, 1)}y{round(starting_position[1], 1)}(start)')
+            self.g_code.append(f'g1y{round(float(self.part_width) - offset_y - overhang_mm_y, 1)}(1)')
             self.g_code.append(f'g1x-{round(float(self.part_length) - offset_x - overhang_mm_x, 1)}(2)')
-            self.g_code.append(f'g1z{round(starting_position[1] + overhang_mm_y, 1)}(3)')
+            self.g_code.append(f'g1y{round(starting_position[1] + overhang_mm_y, 1)}(3)')
             # print('make extra pass')
             pass  # go around outside twice
         self.g_code.append(f'g1x-{round(starting_position[0] + step_over_x, 1)}(4)')
         passes = int(int(float(self.part_width) / step_over_y) / 2)
         # print(f'passes: {passes}')
         for i in range(passes):
-            self.g_code.append(f'g1z{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i + 1})')
+            self.g_code.append(f'g1y{round(float(self.part_width) - offset_y - (step_over_y * (i + 1)), 1)}(1-{i + 1})')
             self.g_code.append(
                 f'g1x-{round(float(self.part_length) - (starting_position[0] + (step_over_x * (i + 1))), 1)}(2-{i + 1})')
             if (starting_position[1] + (step_over_y * (i + 1))) >= center_line:
                 print('end')
                 break
-            self.g_code.append(f'g1z{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i + 1})')
+            self.g_code.append(f'g1y{round(starting_position[1] + (step_over_y * (i + 1)), 1)}(3-{i + 1})')
             self.g_code.append(f'g1x-{round(starting_position[0] + (step_over_x * (i + 2)), 1)}(4-{i + 1})')
             # if i == passes - 1:
             if self.part_width - offset_y - (step_over_y * (i + 1)) <= center_line:
@@ -176,11 +210,11 @@ class SandingGenerate:
             self.g_code.append(self.sander_selection.get_offset())
             self.g_code.append(f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}')
             self.g_code.append(self.sander_selection.get_work_plane())
-            self.g_code.append(f'g0x-{center_positions[0][0]}z{center_positions[0][0]}')
+            self.g_code.append(f'g0x-{center_positions[0][0]}y{center_positions[0][0]}')
             self.g_code.append(self.sander_selection.on(self.pressure))
-            self.g_code.append(f'g1z{center_positions[1][1]}')
+            self.g_code.append(f'g1y{center_positions[1][1]}')
             self.g_code.append(f'g1x-{center_positions[2][0]}')
-            self.g_code.append(f'g1z{center_positions[3][1]}')
+            self.g_code.append(f'g1y{center_positions[3][1]}')
             self.g_code.append(f'g1x-{center_positions[0][0]}')
             self.g_code.append(self.sander_selection.off())
             # self.g_code.append('g53g0x0z0')
@@ -217,8 +251,49 @@ class SandingGenerate:
 
         return self.g_code
 
+    def panel_spiral_in(self, outside_box):
+
+        if outside_box[2] >= outside_box[3]:
+            y_half_width = (outside_box[3] - outside_box[1]) / 2
+            print(self.sander_selection.get_y_value())
+            overlap_y_ideal = ((1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value())
+            passes = ceil(y_half_width / ((1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value()))
+            print(f'x is longer than y, y half width : {y_half_width}, passes: {passes}')
+            step_over_y = y_half_width / passes
+            step_over_x = (self.sander_selection.get_x_value() * (1 - float(self.__current_pass.overlap_value / 100)))
+        else:
+            x_half_width = (outside_box[2] - outside_box[0]) / 2
+            print(f'y is longer than x, x half width: {x_half_width}')
+
+        for i in range(passes):
+            # todo, add first position before for loop
+            self.g_code.append(f'g1x-{round(outside_box[0] + (step_over_x * (i + 1)), 1)}y{round(outside_box[3] - (step_over_y * (i + 1)), 1)}(1-{i + 1})')
+            # todo, line above is correct, need to work out next 3 lines
+            self.g_code.append(f'g1x-{round(outside_box[2] - (step_over_x * (i+1)))}')
+            self.g_code.append(f'g1y{round(outside_box[1] + (step_over_y * (i + 1)))}')
+            self.g_code.append(f'g1x-{round(outside_box[0] + step_over_x * (i+1))}')
+            if i >= passes - 1: # i am not sure if the break if needs to be here:
+                print(f'i: {i}')
+                break
+        self.g_code.append(f'g1x-{outside_box[2]}(end)')
+
+        self.g_code.append(self.sander_selection.off())
+
+        return self.g_code
+
+    def panel_parallel_x(self):
+        """
+        method to sand panels and slabs parallel on x
+        """
+
+    def panel_parallel_y(self):
+        """
+        method to sand panels and slabs parallel on y
+        """
+
     def panel(self, perimeter, entire_panel):
-        # todo, look at how we pass panel info
+        # todo, look at how we pass panel info, want to pass it as panel corners
+        # todo, can we use same loop for panel and for slab?  Only difference should be the outside perimeter dims
         stile = self.frame_width
         width = float(self.part_width)
         length = float(self.part_length)
@@ -247,43 +322,45 @@ class SandingGenerate:
         self.g_code.append(self.sander_selection.get_offset() + " (set wco for sander)")
         self.g_code.append(
             f'f{round(feed_speed_max * int(self.__current_pass.speed_value) / 100, 1)}(set feed speed)')
-        self.g_code.append('g18 g21(work-plane xz and mm)')
-        self.g_code.append(f'g0x-{panel_start[0] + hold_back}z{panel_start[1] + hold_back}(ramp in)')
+        self.g_code.append(self.sander_selection.get_work_plane())
+        # todo need to add ramp in to starting position
+        self.g_code.append(f'g0x-{panel_start[0] + hold_back}y{panel_start[1] + hold_back}(ramp in)')
         self.g_code.append(self.sander_selection.on(self.pressure))
-        self.g_code.append(f'g3x-{panel_start[0]}z{panel_start[1]}r{hold_back}(starting)')
+        self.g_code.append(f'g3x-{panel_start[0]}y{panel_start[1]}r{hold_back}(starting)')
         self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-        self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
+        self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
         self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
+        # todo need to step over on x and y to next pass after perimeter is sanded.
         if entire_panel:
             if perimeter:
-                self.g_code.append(f'g1z{panel_start[1]}(1)')
+                self.g_code.append(f'g1y{panel_start[1]}(1)')
                 self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-                self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
+                self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
                 self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
             if passes == 0:
-                self.g_code.append(f'g1z{((((panel_corners[2][1] - offset_y) - panel_start[1]) / 2) + panel_start[1])}')
+                self.g_code.append(f'g1y{((((panel_corners[2][1] - offset_y) - panel_start[1]) / 2) + panel_start[1])}')
                 self.g_code.append(f'g1x-{round(float(length) - (panel_start[0] + step_over[0]), 1)}')
             for i in range(passes):
                 self.g_code.append(
-                    f'g1z{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i + 1})')
+                    f'g1y{round(panel_corners[3][1] + offset_y + (step_over[1] * (i + 1)), 1)}(1-{i + 1})')
                 self.g_code.append(
                     f'g1x-{round(float(length) - (panel_start[0] + (step_over[0] * (i + 1))), 1)}(2-{i + 1})')
                 if i == passes - 1 and (passes % 2) == 0:  # break here if the number of passes was even
                     break
                 self.g_code.append(
-                    f'g1z{round(panel_corners[2][1] - ((step_over[1]) * (i + 1) + offset_y), 1)}(3-{i + 1})')
+                    f'g1y{round(panel_corners[2][1] - ((step_over[1]) * (i + 1) + offset_y), 1)}(3-{i + 1})')
                 self.g_code.append(f'g1x-{round(panel_start[0] + (step_over[0] * (i + 2)), 1)}(4-{i + 1})')
                 if i == passes - 1:
                     break
                 # todo break here if the number of passes was odd
         else:
             if perimeter:
-                self.g_code.append(f'g1z{panel_start[1]}')
+                self.g_code.append(f'g1y{panel_start[1]}')
                 self.g_code.append(f'g1x-{round(panel_corners[3][0] - offset_x, 1)}(2)')
-                self.g_code.append(f'g1z{round(panel_corners[2][1] - offset_y, 1)}(3)')
+                self.g_code.append(f'g1y{round(panel_corners[2][1] - offset_y, 1)}(3)')
                 self.g_code.append(f'g1x-{round(panel_start[0], 1)}(4)')
-            self.g_code.append(f'g1z{panel_start[1]}')
-            self.g_code.append(f'g3x-{panel_start[0] + hold_back}z{panel_start[1] + hold_back}r{hold_back}(ramp out)')
+            self.g_code.append(f'g1y{panel_start[1]}')
+            self.g_code.append(f'g3x-{panel_start[0] + hold_back}y{panel_start[1] + hold_back}r{hold_back}(ramp out)')
 
         self.g_code.append(self.sander_selection.off())
 
@@ -293,13 +370,14 @@ class SandingGenerate:
         buffer = []
         buffer.append('m5(deactivate vacuum)')
         buffer.append('g54(reset wco)')
-        buffer.append(f'g0x-900z0(go to park position)')
+        buffer.append(f'g0x-900y0(go to park position)')
         return buffer
 
 
 class Probe(QtCore.QThread):
     calibrationFailedSignal = QtCore.Signal()
     partProbbeingFinishedSignal = QtCore.Signal(str, float, float)
+
     def __init__(self, serial_interface, in_calibration_mode=False, side="left"):
         super(Probe, self).__init__()
         self.g_code = []
@@ -310,7 +388,7 @@ class Probe(QtCore.QThread):
             "probe_cal_y", None)  # this will come from settings page
         if self.cal_size[0] is None or self.cal_size[1] is None:
             raise ValueError("you have to set the probe values from the setting page first.")
-        self.starting_rough = CustomMachineParamManager.get_value('probe_x_zero'),\
+        self.starting_rough = CustomMachineParamManager.get_value('probe_x_zero'), \
                               CustomMachineParamManager.get_value('probe_y_zero')
         self.offset_in = 75
 
@@ -344,7 +422,7 @@ class Probe(QtCore.QThread):
                 time.sleep(2)
         return values, alarm_no
 
-    def send_and_get_response(self, cmd , delay_ms: int = 500, decode_block_flag=False):
+    def send_and_get_response(self, cmd, delay_ms: int = 500, decode_block_flag=False):
         result = None
         alarm_no = 0
         cmd_str = cmd + "\r\n"
@@ -357,32 +435,37 @@ class Probe(QtCore.QThread):
                     self.msleep(50)
                 else:
                     result, alarm_no = self.decode_response(rec_bytes_list)
-                    if result is not None or alarm_no >0:
+                    if result is not None or alarm_no > 0:
                         break
         return result, alarm_no
 
     def calibrate(self):
 
         self.send_and_get_response('g21g54(set units and wco)')
-        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        #self.g_code.append('g38.5x0f1200')
+        self.send_and_get_response(
+            f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        # self.g_code.append('g38.5x0f1200')
         test_probe = self.send_and_get_response('?')
         decoded_response, alarm_no = self.send_and_get_response('g38.5x0f1200', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_x_minus = decoded_response[0]  # todo this will be replaced with result from probe
-        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response, alarm_no = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}', decode_block_flag=True)
+        self.send_and_get_response(
+            f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.5z-{self.starting_rough[1] + 10}',
+                                                                decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_z_plus = decoded_response[2]  # todo get return of probe
-        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
-        decoded_response, alarm_no=self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
+        self.send_and_get_response(
+            f'g0x-{self.starting_rough[0] + self.cal_size[0] - self.offset_in}z-{self.starting_rough[1] - self.offset_in}')
+        decoded_response, alarm_no = self.send_and_get_response(f'g38.5x-1700', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         result_x_plus = decoded_response[0]  # todo get return of probe
-        self.send_and_get_response(f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
-        decoded_response, alarm_no= self.send_and_get_response('g38.5z0', decode_block_flag=True)
+        self.send_and_get_response(
+            f'g0x-{self.starting_rough[0] + self.offset_in}z-{self.starting_rough[1] - self.cal_size[1] + self.offset_in}')
+        decoded_response, alarm_no = self.send_and_get_response('g38.5z0', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
         self.send_and_get_response('g0x-900z0(park machine)')
@@ -391,8 +474,10 @@ class Probe(QtCore.QThread):
         result_size = -1 * (result_x_plus - result_x_minus), result_z_minus - result_z_plus
         CustomMachineParamManager.set_value("probe_x_diameter", (self.cal_size[0] - result_size[0]), auto_store=True)
         CustomMachineParamManager.set_value("probe_y_diameter", (self.cal_size[1] - result_size[1]), auto_store=True)
-        CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value('probe_x_diameter'), auto_store=True)
-        CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value('probe_y_diameter'), auto_store=True)
+        CustomMachineParamManager.set_value('probe_x_zero', (-1 * result_x_minus) - CustomMachineParamManager.get_value(
+            'probe_x_diameter'), auto_store=True)
+        CustomMachineParamManager.set_value('probe_y_zero', (-1 * result_z_plus) + CustomMachineParamManager.get_value(
+            'probe_y_diameter'), auto_store=True)
 
     def probe_part(self):
         if self.current_side == "right":
@@ -402,11 +487,13 @@ class Probe(QtCore.QThread):
         x_y_0 = CustomMachineParamManager.get_value('probe_x_zero'), CustomMachineParamManager.get_value('probe_y_zero')
         self.send_and_get_response('g21g54(set units and wco)')
         self.send_and_get_response('g0x-900z0')
-        decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + (step_back*4)}z-{x_y_0[1] - step_back}f8000', decode_block_flag=True)
+        decoded_response, alarm_no = self.send_and_get_response(
+            f'g38.2x-{x_y_0[0] + (step_back * 4)}z-{x_y_0[1] - step_back}f8000', decode_block_flag=True)
         if alarm_no == 5:
             # @todo for some reason i am not getting into this if statement when i should be, i suspect it is because it is reading the response to the unlock
             print('part not found yet')
-            decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}', decode_block_flag=True)
+            decoded_response, alarm_no = self.send_and_get_response(f'g38.2x-{x_y_0[0] + step_back}',
+                                                                    decode_block_flag=True)
             if alarm_no == 5:
                 print('no part found, canceling probe')
                 self.send_and_get_response('g0x-900z0')
@@ -431,7 +518,7 @@ class Probe(QtCore.QThread):
             self.calibrationFailedSignal.emit()
             return
         result_z = decoded_response[2]
-        self.send_and_get_response(f'g0z-{(-1*result_z)  + step_back}')
+        self.send_and_get_response(f'g0z-{(-1 * result_z) + step_back}')
         decoded_response = self.send_and_get_response('g38.5x-1700f2400', decode_block_flag=True)
         if decoded_response is None:
             self.calibrationFailedSignal.emit()
@@ -550,33 +637,33 @@ def generate(sensors_board_ref=None):
 
     if zone == 'right':  # need to offset x dims by maximum length, and invert all x  todo
         for index, x in enumerate(all_g_codes):
-            x_offset =  CustomMachineParamManager.get_value('x_max_length') - part_length
+            x_offset = CustomMachineParamManager.get_value('x_max_length') - part_length
             print(f'offset: {x_offset}')
             if x[0] == "g" and x[2] == "x":
                 if x[3] == "-":
                     s = ""
                     for i in range(4, len(x)):
-                      if x[i] in "0123456789.":
-                          s += x[i]
-                      else:
-                          break
-                    new_value = round(-1*float(s) - x_offset, 2)
-                    new_string = x[:3] + str(new_value)+x[i:]
+                        if x[i] in "0123456789.":
+                            s += x[i]
+                        else:
+                            break
+                    new_value = round(-1 * float(s) - x_offset, 2)
+                    new_string = x[:3] + str(new_value) + x[i:]
                     all_g_codes[index] = new_string
                 else:
                     all_g_codes[index] = x.replace("x", "x-")
                 #  print(f"old: {x} new {all_g_codes[index]}")
 
-    all_g_codes.extend(generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
+    all_g_codes.extend(
+        generate_code.end_cycle())  # todo the vacuum is releasing after the first run, need to figure out why
     f = open("g-code.nc", "w")
     for item in all_g_codes:
-       f.write(item)
-       f.write("\n")
+        f.write(item)
+        f.write("\n")
     f.close()
     return all_g_codes
-    
-    # print(*all_g_codes, sep="\n")
 
+    # print(*all_g_codes, sep="\n")
 
 
 if __name__ == "__main__":
