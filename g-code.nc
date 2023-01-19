@@ -1,52 +1,40 @@
-g56
+g57
 f9000.0
 g18 g21 (workplane selection)
-g0x-35.0z26.25
-m72(extend)
+g0x-1308.9y375.4
+m74(extend)
 g4p0.75(delay for sander to extend)
-m64m3s130(turn on sander and set pressure)
+m66m3s200(turn on sander and set pressure)
 g4p0.75(delay for sander to start)
 
-g1z313.47499999999997
-g1x-571.425
-g1z26.25
-g1x-35.0
-g1x-41.5z50.25
-g1z289.47499999999997
-g1x-564.925
-g1z50.25
-g1x-41.5
-m73
-m65s1000
-g4p3(delay for retraction)
-m5(cancel pressure control)
-
-g56 (set wco for sander)
-f9000.0(set feed speed)
-g18 g21(work-plane xz and mm)
-g0x-130.5z118.0(ramp in)
-m72(extend)
-g4p0.75(delay for sander to extend)
-m64m3s130(turn on sander and set pressure)
-g4p0.75(delay for sander to start)
-
-g3x-128.5z116.0r2.0(starting)
-g1x-477.9(2)
-g1z223.7(3)
-g1x-128.5(4)
-g1z116.0(1)
-g1x-477.9(2)
-g1z223.7(3)
-g1x-128.5(4)
-g1z153.7(1-1)
-g1x-427.4(2-1)
-g1z186.0(3-1)
-g1x-229.6(4-1)
-m73
-m65s1000
+g1x-1233.9y391.8(start)
+g1y62.5(1)
+g1x-1715.5(2)
+g1y391.8(3)
+g1x-1233.9(end of perimeter)
+g1x-1271.4y358.9(before entering for loop)
+g1x-1678.4(1-1)
+g1y95(2-1)
+g1x-1271.4(3-1)
+g1y326.0(4-1)
+g1x-1640.4(1-2)
+g1y128(2-2)
+g1x-1309.4(3-2)
+g1y293.0(4-2)
+g1x-1603.4(1-3)
+g1y161(2-3)
+g1x-1346.4(3-3)
+g1y260.1(4-3)
+g1x-1565.4(1-4)
+g1y194(2-4)
+g1x-1384.4(3-4)
+g1y227.2(4-4)
+g1x-1678.0(end)
+m75
+m67s1000
 g4p3(delay for retraction)
 m5(cancel pressure control)
 
 m5(deactivate vacuum)
 g54(reset wco)
-g0x-900z0(go to park position)
+g0x-900y0(go to park position)

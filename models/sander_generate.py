@@ -231,10 +231,12 @@ class SandingGenerate:
 
         return self.g_code
 
-    def panel_spiral_in(self, outside_box, perimeter, entire_panel=True):
-
+    def panel_spiral_in(self, outside_box, perimeter, entire_panel=True, panel=float):
+        panel = panel * 25.4
+        print(f'panel offset: {panel}')
         if outside_box[2] >= outside_box[3]:
-            y_half_width = (outside_box[3] - outside_box[1]) / 2
+            
+            y_half_width = ((outside_box[3] - outside_box[1]) / 2) + panel # need to offset for center of panel
             print(self.sander_selection.get_y_value())
             passes = ceil(y_half_width / ((1 - float(self.__current_pass.overlap_value / 100)) * self.sander_selection.get_y_value()))
             print(f'x is longer than y, y half width : {y_half_width}, passes: {passes}')
@@ -296,9 +298,13 @@ class SandingGenerate:
         """
 
     def panel(self, panel_operation):
+        print(f'panel operation: {panel_operation}')
+        panel_x_dim = round(panel_operation[0] * 25.4, 1)
+        panel_y_dim = round(panel_operation[1] * 25.4, 1)
+        xpos = round(panel_operation[2] * 25.4, 1)
+        ypos = round(panel_operation[3] * 25.4, 1)
+        print(f'x: {panel_x_dim}, y: {panel_y_dim}, xpos: {xpos}, ypos: {ypos}')
 
-        # for each panel
-        panel_x_dim, panel_y_dim, xpos, ypos = panel_operation # when i get the info from panel, it will go here
         if self.sander_selection.get_y_value() >= (panel_y_dim + (self.frame_add * 2)):
             print('sander too wide')
             return None
@@ -565,21 +571,27 @@ def generate(sensors_board_ref=None, list_of_part_panel_info = None):
         # part_type will need to be determined by new info, part length and width are the same?
         generate_code = SandingGenerate(pass_, door_style, part_length, part_width)
         part_type = False
-        if len(part_type[1]) > 0:
+        # print(f'list len {list_of_part_panel_info[1][0]}')
+        if len(list_of_part_panel_info[1]) > 0:
             part_type = True
+            list_1 = list_of_part_panel_info[1:]
+            list_2 = list_1[0]
+                                
         if part_type:  # if the part is a 5-piece
             if pass_.contain_frames:
-                generate_code.frame()
+                print("we are not handling frames yet")
+                # generate_code.frame()
             if pass_.contain_panels:
                 # will need for here for each panel that parts contain
-                for panel_operation in list: # todo, pretty sure this is not correct
+                for panel_operation in list_2: # todo, pretty sure this is not correct
                     panel_outside_box = generate_code.panel(panel_operation)
+                    panel_offset = panel_operation[3]
                     if panel_outside_box is not None:
-                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, pass_.is_entire_panel)
+                        generate_code.panel_spiral_in(panel_outside_box, pass_.make_extra_pass_around_perimeter, entire_panel=pass_.is_entire_panel, panel=panel_offset)
         else:  # the part is a slab
             if pass_.contain_slabs:
                 outside_box = generate_code.slab()
-                generate_code.panel_spiral_in(outside_box, pass_.make_extra_pass_around_perimeter)
+                generate_code.panel_spiral_in(outside_box, pass_.make_extra_pass_around_perimeter, panel=0)
         all_g_codes.extend(generate_code.g_code)
         # all_g_codes.append("(the end of pass 1)")
     # todo add logic to turn off vacuum and park machine.
