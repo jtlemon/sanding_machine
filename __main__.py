@@ -2,8 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-
-
 try:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     from django.core.wsgi import get_wsgi_application
@@ -59,6 +57,7 @@ from models.get_part_from_tld import getParts
 
 import logging
 import cv2
+
 for k, v in os.environ.items():
     if k.startswith("QT_") and "cv2" in v:
         del os.environ[k]
@@ -97,9 +96,6 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__estop_interface = EStopSerialInterface()
         self.part_getter = getParts()
 
-
-
-
         # create dynamic pages........
         for app_operation in machine_supported_operations:
             operation_page_widget = None
@@ -110,12 +106,13 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.__machine_setting_changed_subscribers.add(operation_page_widget)
             elif app_operation == AppSupportedOperations.sandingCameraOperations:
                 operation_page_widget = SandingCameraPageManager("Camera")
-                self.operation_page_widget = operation_page_widget 
+                self.operation_page_widget = operation_page_widget
                 operation_page_widget.qr_scan_line.returnPressed.connect(self._handle_qr_code_detected)
                 # operation_page_widget.part_placement_group.clicked.connect()
                 self.operation_page_widget.normal_placement_button.clicked.connect(self.handle_length_and_width)
                 self.operation_page_widget.rotate_plus_90_placement_button.clicked.connect(self.handle_length_and_width)
-                self.operation_page_widget.rotate_minus_90_placement_button.clicked.connect(self.handle_length_and_width)
+                self.operation_page_widget.rotate_minus_90_placement_button.clicked.connect(
+                    self.handle_length_and_width)
                 self.operation_page_widget.rotate_180_placement_button.clicked.connect(self.handle_length_and_width)
                 self.operation_page_widget.flipped_placement_button.clicked.connect(self.handle_length_and_width)
                 self.operation_page_widget.mirrored_placement_button.clicked.connect(self.handle_length_and_width)
@@ -128,7 +125,8 @@ class MachineGuiInterface(MachineInterfaceUi):
                 operation_page_widget.right_cancel_button.clicked.connect(self.handle_cancel)
                 self.subscribe_to_image(0, operation_page_widget)
             elif app_operation == AppSupportedOperations.restMachineOperation:
-                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface, sensors_board_ref=self.__sensors_board_thread)
+                operation_page_widget = ResetPageManager(grbl_interface_ref=self.__grbl_interface,
+                                                         sensors_board_ref=self.__sensors_board_thread)
                 for cam_index in range(common_configurations.AVAILABLE_CAMERAS):
                     self.subscribe_to_image(cam_index, operation_page_widget)
                 operation_page_widget.serial_monitor_widget.errorReceivedSignal.connect(self.handle_new_error_decoded)
@@ -141,7 +139,8 @@ class MachineGuiInterface(MachineInterfaceUi):
             elif app_operation == AppSupportedOperations.settingParametersOperation:
                 operation_page_widget = MachineSettingsManager()
                 operation_page_widget.settingChangedSignal.connect(self.handle_machine_setting_changed_slot)
-                operation_page_widget.probCalibrationValuesModifiedSignal.connect(self.handle_prob_calibration_values_modified)
+                operation_page_widget.probCalibrationValuesModifiedSignal.connect(
+                    self.handle_prob_calibration_values_modified)
             elif app_operation == AppSupportedOperations.partProfileOperation:
                 operation_page_widget = SandingPartProfilePageManager()
             elif app_operation == AppSupportedOperations.sandingProgramsOperations:
@@ -261,7 +260,9 @@ class MachineGuiInterface(MachineInterfaceUi):
                     continue
                 # let's draw parts over the image
                 if cam_index == 0 and len(self.current_parts) > 0:
-                    image = draw_parts_on_image(image, self.current_parts,self.operation_page_widget.part_placement_group.checkedId(),self.operation_page_widget.current_work_zone)
+                    image = draw_parts_on_image(image, self.current_parts,
+                                                self.operation_page_widget.part_placement_group.checkedId(),
+                                                self.operation_page_widget.current_work_zone)
                 # if len(self.current_parts) > 0:
                 #     part_info = self.part_getter.create_part_info(self.current_parts)
                 #     part_placement_id = self.operation_page_widget.part_placement_group.checkedId()
@@ -283,8 +284,6 @@ class MachineGuiInterface(MachineInterfaceUi):
                 pix_map = QtGui.QPixmap.fromImage(q_image)
                 active_widget.new_image_received(cam_index, pix_map)
 
-
-
     def handle_joint_dowel_profile_updates(self, new_profiles):
         for subscriber_widget in self.__joint_dowel_profile_update_subscribers:
             subscriber_widget.handle_joint_dowel_profile_updated(new_profiles)
@@ -303,7 +302,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             self.operation_page_widget.part_length_label.setText('Length(mm)')
             self.operation_page_widget.workspace_width_label.setText('Width(mm)')
             self.operation_page_widget.workspace_length_label.setText('Length(mm)')
-            
+
         elif new_unit == MeasureUnitType.IN_UNIT:
             self.operation_page_widget.part_width_label.setText('Width(in)')
             self.operation_page_widget.part_length_label.setText('Length(in)')
@@ -342,7 +341,6 @@ class MachineGuiInterface(MachineInterfaceUi):
     def handle_cancel(self):
         print('cancel pressed')
         self.__grbl_interface.cancel_sanding()
-
 
     def common_sanding_start(self, side="left"):
         widget = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
@@ -399,7 +397,6 @@ class MachineGuiInterface(MachineInterfaceUi):
                 self.p_1.partProbbeingFinishedSignal.connect(self._handle_executing_machine_cycle)
                 self.p_1.start()
 
-
         CustomMachineParamManager.set_value("left_slab_selected", left_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("right_slab_selected", right_slab_selected, auto_store=False)
         CustomMachineParamManager.set_value("program_name", program_name, auto_store=False)
@@ -420,12 +417,11 @@ class MachineGuiInterface(MachineInterfaceUi):
         # todo call the sanding generate
         print(f'you pressed the {side} button')
 
-        list_of_part_info = self.part_getter.create_current_part_info(self.current_parts,self.operation_page_widget.part_placement_group.checkedId())
+        list_of_part_info = self.part_getter.create_current_part_info(self.current_parts,
+                                                                      self.operation_page_widget.part_placement_group.checkedId())
         # todo, when the part is selected, we need to select the door style.  this should be done when we qr scan and update parts..
         g_commands = generate(sensors_board_ref=self.__sensors_board_thread, list_of_part_panel_info=list_of_part_info)
         self.send_g_code(g_commands)
-
-
 
     def handle_prob_calibration_values_modified(self):
         # handle the change
@@ -438,22 +434,21 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.__grbl_interface.park()
         view_manager_utils.display_error_message("Failed to calibrate probe", "error", self)
 
-    def send_g_code(self, g_commands:list):
+    def send_g_code(self, g_commands: list):
         for command in g_commands:
             self.__grbl_interface.grbl_stream.add_new_command(command)
 
     # listen to barcode data stream
     def keyReleaseEvent(self, event) -> None:
         key_value = event.key()
-        #self.qr_scanner.on_new_char_received(key_value)
+        # self.qr_scanner.on_new_char_received(key_value)
 
     def _handle_qr_code_detected(self):
-        
 
         camera_widget_manager = self.__installed_operations[AppSupportedOperations.sandingCameraOperations]
-        
 
         qr_code = camera_widget_manager.qr_scan_line.text()
+
         def get_order_number_from_name(order_name: str):
             order_system_number = -1
             order_name = order_name.lstrip("#")
@@ -477,13 +472,6 @@ class MachineGuiInterface(MachineInterfaceUi):
             self._handle_qr_code_scanned(tld_part_id, order_oms_id)
         camera_widget_manager.qr_scan_line.setText("")
 
-        
-        
-        
-
-
-
-
     def _handle_qr_code_scanned(self, tld_part_id: int, order_oms_id: int):
         # dropbox folder path
         module_logger.info(f"new part detected <{tld_part_id} > order:{order_oms_id}")
@@ -497,7 +485,7 @@ class MachineGuiInterface(MachineInterfaceUi):
             # currently all the files exist on the dropbox
 
             order_oms_id_as_str = str(order_oms_id)
-            target_order_folder_path = ""
+            target_order_folder_path = "C:\Users\Jeremiah\Dropbox\0001 PRODUCTION\Orders\verified_orders"
             folder_detected = False
             for order_folder_name in os.listdir(DROPBOX_FOLDER_PATH):
                 folder_name_as_parts = order_folder_name.split("_")
@@ -546,7 +534,8 @@ class MachineGuiInterface(MachineInterfaceUi):
             length = part_info[0][0]
             width = part_info[0][1]
 
-        self.operation_page_widget.update_length_width_line_edit(str(length),str(width),work_zone)
+        self.operation_page_widget.update_length_width_line_edit(str(length), str(width), work_zone)
+
 
 def create_default_records():
     from apps.sanding_machine.models import Sander

@@ -7,6 +7,7 @@ from typing import List, Dict, Any
 class TldFileScanner(QtCore.QThread):
     is_running = False
     ploting_metadata_available_signal = QtCore.Signal(list)
+
     def __init__(self, order_folder_path: Path, tld_part_id: int):
         """
         tld file is access db file i should connect to it and get the data
