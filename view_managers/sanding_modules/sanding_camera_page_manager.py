@@ -5,6 +5,7 @@ from configurations.system_configuration_loader import MainConfigurationLoader
 from models import MeasureUnitType
 from view_managers.abs_operation_widget_manager import AbstractOperationWidgetManger
 from functools import partial
+from models.get_part_from_tld import getParts
 
 
 class SandingCameraWidget(QtWidgets.QLabel):
@@ -112,6 +113,7 @@ class TestImageSource(QtCore.QThread):
 class ModifiedSandingPageView(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(ModifiedSandingPageView, self).__init__(parent)
+        self.part_getter = getParts()
         self.widget_layout = QtWidgets.QHBoxLayout(self)
         self.widget_layout.setContentsMargins(15, 15, 15, 15)
         self.main_widget_frame = QtWidgets.QFrame()
@@ -142,36 +144,43 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.part_placement_layout.addWidget(QtWidgets.QLabel("Part Placement:"))
         self.part_placement_group = QtWidgets.QButtonGroup(self) # Number group
         
-        normal_placement_button = QtWidgets.QRadioButton("Normal",self)
-        normal_placement_button.setChecked(True)
+        self.normal_placement_button = QtWidgets.QRadioButton("Normal",self)
+        self.normal_placement_button.setChecked(True)
+        # self.normal_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(normal_placement_button,0)
-        self.part_placement_layout.addWidget(normal_placement_button)
+        self.part_placement_group.addButton(self.normal_placement_button,0)
+        self.part_placement_layout.addWidget(self.normal_placement_button)
 
-        rotate_plus_90_placement_button = QtWidgets.QRadioButton("Rotate +90°",self)
+        self.rotate_plus_90_placement_button = QtWidgets.QRadioButton("Rotate +90°",self)
+        # self.rotate_plus_90_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(rotate_plus_90_placement_button,1)
-        self.part_placement_layout.addWidget(rotate_plus_90_placement_button)
+        self.part_placement_group.addButton(self.rotate_plus_90_placement_button,1)
+        self.part_placement_layout.addWidget(self.rotate_plus_90_placement_button)
 
-        rotate_minus_90_placement_button = QtWidgets.QRadioButton("Rotate -90°",self)
+        self.rotate_minus_90_placement_button = QtWidgets.QRadioButton("Rotate -90°",self)
+        # self.rotate_minus_90_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(rotate_minus_90_placement_button,2)
-        self.part_placement_layout.addWidget(rotate_minus_90_placement_button)
+        self.part_placement_group.addButton(self.rotate_minus_90_placement_button,2)
+        self.part_placement_layout.addWidget(self.rotate_minus_90_placement_button)
 
-        rotate_180_placement_button = QtWidgets.QRadioButton("Rotate 180°",self)
+        self.rotate_180_placement_button = QtWidgets.QRadioButton("Rotate 180°",self)
+        # self.rotate_180_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(rotate_180_placement_button,3)
-        self.part_placement_layout.addWidget(rotate_180_placement_button)
+        self.part_placement_group.addButton(self.rotate_180_placement_button,3)
+        self.part_placement_layout.addWidget(self.rotate_180_placement_button)
 
-        flipped_placement_button = QtWidgets.QRadioButton("Flipped",self)
+        self.flipped_placement_button = QtWidgets.QRadioButton("Flipped",self)
+        # self.flipped_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(flipped_placement_button,4)
-        self.part_placement_layout.addWidget(flipped_placement_button)
+        self.part_placement_group.addButton(self.flipped_placement_button,4)
+        self.part_placement_layout.addWidget(self.flipped_placement_button)
 
-        mirrored_placement_button = QtWidgets.QRadioButton("Mirrored",self)
+        self.mirrored_placement_button = QtWidgets.QRadioButton("Mirrored",self)
+        # self.mirrored_placement_button.clicked.connect(self.handle_length_and_width)
         
-        self.part_placement_group.addButton(mirrored_placement_button,5)
-        self.part_placement_layout.addWidget(mirrored_placement_button)
+        self.part_placement_group.addButton(self.mirrored_placement_button,5)
+        self.part_placement_layout.addWidget(self.mirrored_placement_button)
+
 
 
         
@@ -284,15 +293,35 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         #self.widget_layout.addStretch(1)
         #self.camera_widget.setMinimumSize(2000, 600)
 
+
+
+
+
+    def update_length_width_line_edit(self,length:str,width:str,work_zone:str):
+        if work_zone == 'left':
+            self.part_length_lin.setText(length)
+            self.part_width.setText(width)
+            self.workspace_length_lin.setText("")
+            self.workspace_width.setText("")
+        elif work_zone == 'right':
+            self.workspace_length_lin.setText(length)
+            self.workspace_width.setText(width)
+            self.part_length_lin.setText("")
+            self.part_width.setText("")
+
+
+
     def move_workspace_to(self,work_zone:str):
         if work_zone == 'left':
             self.current_work_zone = 'left'
             self.move_to_left_work_zone_button.setDisabled(True)
             self.move_to_right_work_zone_button.setEnabled(True)
+            self.update_length_width_line_edit(self.workspace_length_lin.text(),self.workspace_width.text(),work_zone)
         elif work_zone == 'right':
             self.current_work_zone = 'right'
             self.move_to_right_work_zone_button.setDisabled(True)
             self.move_to_left_work_zone_button.setEnabled(True)
+            self.update_length_width_line_edit(self.part_length_lin.text(), self.part_width.text(), work_zone)
 
 
 

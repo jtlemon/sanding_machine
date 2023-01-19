@@ -220,13 +220,14 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
     # Using cv2.polylines() method
     # Draw a Blue polygon with 
     # thickness of 1 px
-    if part_position_id == 4: # "flipped"
-        # image = cv2.polylines(image, [pts], True, color, thickness,cv2.LINE_8)
-        # todo, we only want the panel to be dotted, not the outline
-        drawpoly(image,part_pixel_points,color,thickness,style='dotted',)
+    # if part_position_id == 4: # "flipped"
+    #     # image = cv2.polylines(image, [pts], True, color, thickness,cv2.LINE_8)
+    #     # todo, we only want the panel to be dotted, not the outline
+    #     drawpoly(image,part_pixel_points,color,thickness,style='dotted',)
 
-    else:
-        image = cv2.polylines(image, [pts], True, color, thickness)
+    # else:
+    #     image = cv2.polylines(image, [pts], True, color, thickness)
+    image = cv2.polylines(image, [pts], True, color, thickness)
 
     for panel in part_info[1]:
         panel_breath = panel[0] * 25.4
@@ -293,6 +294,7 @@ def draw_parts_on_image(image: np.ndarray, parts: List[Part], part_position_id:i
             drawpoly(image,panel_pixel_points,color,thickness,style='dotted',)
         else:
             image = cv2.polylines(image, [pts], True, color, thickness)
+        # image = cv2.polylines(image, [pts], True, color, thickness)
 
 
     # image_height_pixels, image_width_pixels = image.shape[:2]
