@@ -10,23 +10,24 @@ from models.get_part_from_tld import getParts
 
 class SandingCameraWidget(QtWidgets.QLabel):
     newAreaSelectedSignal = QtCore.Signal(QtCore.QRect)
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         super(SandingCameraWidget, self).__init__(parent=parent)
         self.rubberBand = QtWidgets.QRubberBand(QtWidgets.QRubberBand.Rectangle, self)
         self.origin = QtCore.QPoint()
         self.workplace_area = None
         self.part_area = None
         self.is_annotation_enabled = True
-        #self.setScaledContents(True)
+        # self.setScaledContents(True)
         self.setFixedSize(1300, 650)
 
-    def set_work_place_area(self, area:QtCore.QRect):
+    def set_work_place_area(self, area: QtCore.QRect):
         self.workplace_area = area
         MainConfigurationLoader.set_value("workspace_points",
                                           [area.x(), area.y(), area.width(), area.height()],
                                           auto_store=True)
 
-    def set_part_area(self, area:QtCore.QRect):
+    def set_part_area(self, area: QtCore.QRect):
         self.part_area = area
 
     def clr_part_area(self):
@@ -46,11 +47,9 @@ class SandingCameraWidget(QtWidgets.QLabel):
         painter.setPen(pen_rectangle)
         painter.drawRect(rect)
 
-
-
-    def draw_rectangles(self, pix_map, rect:QtCore.QRect, color):
+    def draw_rectangles(self, pix_map, rect: QtCore.QRect, color):
         # create painter instance with pixmap
-        painter= QtGui.QPainter(pix_map)
+        painter = QtGui.QPainter(pix_map)
         path = QtGui.QPainterPath()
         path.addRect(rect)
 
@@ -72,15 +71,12 @@ class SandingCameraWidget(QtWidgets.QLabel):
         painter.fillPath(path, QtCore.Qt.red)
         painter.drawPath(path)
 
-
-
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
             if self.is_annotation_enabled:
                 self.origin = QtCore.QPoint(event.pos())
                 self.rubberBand.setGeometry(QtCore.QRect(self.origin, QtCore.QSize()))
                 self.rubberBand.show()
-
 
     def mouseMoveEvent(self, event):
         if not self.origin.isNull():
@@ -94,8 +90,10 @@ class SandingCameraWidget(QtWidgets.QLabel):
     def enable_annotation(self, is_enabled):
         self.is_annotation_enabled = is_enabled
 
+
 class TestImageSource(QtCore.QThread):
-    newImageSignal  = QtCore.Signal(QtGui.QPixmap)
+    newImageSignal = QtCore.Signal(QtGui.QPixmap)
+
     def run(self) -> None:
         cam = cv2.VideoCapture(0)
         while cam.isOpened():
@@ -106,8 +104,6 @@ class TestImageSource(QtCore.QThread):
             pix_map = QtGui.QPixmap.fromImage(q_image)
             self.newImageSignal.emit(pix_map)
             cv2.waitKey(100)
-
-
 
 
 class ModifiedSandingPageView(QtWidgets.QWidget):
@@ -137,59 +133,51 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.main_widget_frame_layout.addLayout(self.top_h_layout, stretch=0)
         self.main_widget_frame_layout.addStretch(1)
 
-
         # Added radio buttons for Part placement by Bhavin on 1/16/23
 
         self.part_placement_layout = QtWidgets.QHBoxLayout(self)
         self.part_placement_layout.addWidget(QtWidgets.QLabel("Part Placement:"))
-        self.part_placement_group = QtWidgets.QButtonGroup(self) # Number group
-        
-        self.normal_placement_button = QtWidgets.QRadioButton("Normal",self)
+        self.part_placement_group = QtWidgets.QButtonGroup(self)  # Number group
+
+        self.normal_placement_button = QtWidgets.QRadioButton("Normal", self)
         self.normal_placement_button.setChecked(True)
         # self.normal_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.normal_placement_button,0)
+
+        self.part_placement_group.addButton(self.normal_placement_button, 0)
         self.part_placement_layout.addWidget(self.normal_placement_button)
 
-        self.rotate_plus_90_placement_button = QtWidgets.QRadioButton("Rotate +90°",self)
+        self.rotate_plus_90_placement_button = QtWidgets.QRadioButton("Rotate +90°", self)
         # self.rotate_plus_90_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.rotate_plus_90_placement_button,1)
+
+        self.part_placement_group.addButton(self.rotate_plus_90_placement_button, 1)
         self.part_placement_layout.addWidget(self.rotate_plus_90_placement_button)
 
-        self.rotate_minus_90_placement_button = QtWidgets.QRadioButton("Rotate -90°",self)
+        self.rotate_minus_90_placement_button = QtWidgets.QRadioButton("Rotate -90°", self)
         # self.rotate_minus_90_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.rotate_minus_90_placement_button,2)
+
+        self.part_placement_group.addButton(self.rotate_minus_90_placement_button, 2)
         self.part_placement_layout.addWidget(self.rotate_minus_90_placement_button)
 
-        self.rotate_180_placement_button = QtWidgets.QRadioButton("Rotate 180°",self)
+        self.rotate_180_placement_button = QtWidgets.QRadioButton("Rotate 180°", self)
         # self.rotate_180_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.rotate_180_placement_button,3)
+
+        self.part_placement_group.addButton(self.rotate_180_placement_button, 3)
         self.part_placement_layout.addWidget(self.rotate_180_placement_button)
 
-        self.flipped_placement_button = QtWidgets.QRadioButton("Flipped",self)
+        self.flipped_placement_button = QtWidgets.QRadioButton("Flipped", self)
         # self.flipped_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.flipped_placement_button,4)
+
+        self.part_placement_group.addButton(self.flipped_placement_button, 4)
         self.part_placement_layout.addWidget(self.flipped_placement_button)
 
-        self.mirrored_placement_button = QtWidgets.QRadioButton("Mirrored",self)
+        self.mirrored_placement_button = QtWidgets.QRadioButton("Mirrored", self)
         # self.mirrored_placement_button.clicked.connect(self.handle_length_and_width)
-        
-        self.part_placement_group.addButton(self.mirrored_placement_button,5)
+
+        self.part_placement_group.addButton(self.mirrored_placement_button, 5)
         self.part_placement_layout.addWidget(self.mirrored_placement_button)
-
-
-
-        
-        
-
 
         self.main_widget_frame_layout.addLayout(self.part_placement_layout, stretch=0)
         self.main_widget_frame_layout.addStretch(1)
-
 
         ########################
         # validator = QRegExpValidator(QRegExp(r'[0-9].+'))
@@ -212,7 +200,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.left_slab_option = QtWidgets.QCheckBox("5 piece")
         self.left_side_cam_frame_layout.addWidget(self.start_left_button)
         self.left_side_cam_frame_layout.addWidget(self.right_cancel_button)
-        self.left_side_cam_frame_layout.addWidget(self.left_slab_option)
+        # self.left_side_cam_frame_layout.addWidget(self.left_slab_option)
         self.left_side_cam_frame_layout.addStretch(1)
         self.part_width_label = QtWidgets.QLabel("Width(in)")
         self.left_side_cam_frame_layout.addWidget(self.part_width_label)
@@ -228,15 +216,15 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.center_side_cam_frame_layout.addWidget(self.camera_widget, stretch=1)
         self.camera_frame_layout.addWidget(self.center_side_cam_frame, stretch=1)
         self.center_footer_layout = QtWidgets.QHBoxLayout()
-        
-        #Adding move right and left buttons (Bhavin 1/16/2023)
+
+        # Adding move right and left buttons (Bhavin 1/16/2023)
         self.current_work_zone = 'left'
-        self.move_to_right_work_zone_button = QtWidgets.QPushButton('Move right',self)
-        self.move_to_left_work_zone_button = QtWidgets.QPushButton('Move left',self)
+        self.move_to_right_work_zone_button = QtWidgets.QPushButton('Move right', self)
+        self.move_to_left_work_zone_button = QtWidgets.QPushButton('Move left', self)
         self.move_to_left_work_zone_button.setDisabled(True)
 
-        self.move_to_right_work_zone_button.clicked.connect(partial(self.move_workspace_to,'right'))
-        self.move_to_left_work_zone_button.clicked.connect(partial(self.move_workspace_to,'left'))
+        self.move_to_right_work_zone_button.clicked.connect(partial(self.move_workspace_to, 'right'))
+        self.move_to_left_work_zone_button.clicked.connect(partial(self.move_workspace_to, 'left'))
 
         self.center_footer_layout.addWidget(self.move_to_right_work_zone_button)
         self.center_footer_layout.addStretch(1)
@@ -244,7 +232,6 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.center_footer_layout.addWidget(self.part_length_label)
         self.part_length_lin = QtWidgets.QLineEdit()
         self.part_length_lin.setValidator(self.float_validator)
-        
 
         self.center_footer_layout.addWidget(self.part_length_lin)
         self.center_footer_layout.addStretch(1)
@@ -276,7 +263,7 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.right_slab_option = QtWidgets.QCheckBox("5 piece")
         self.right_side_cam_frame_layout.addWidget(self.start_right_button)
         self.right_side_cam_frame_layout.addWidget(self.right_cancel_button)
-        self.right_side_cam_frame_layout.addWidget(self.right_slab_option)
+        # self.right_side_cam_frame_layout.addWidget(self.right_slab_option)
 
         self.right_side_cam_frame_layout.addStretch(1)
         self.workspace_width_label = QtWidgets.QLabel("Width(in)")
@@ -291,16 +278,12 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
         self.main_widget_frame_layout.addWidget(self.camera_frame)
 
         # connect all
-        #self.widget_layout.addStretch(1)
+        # self.widget_layout.addStretch(1)
         self.widget_layout.addWidget(self.main_widget_frame)
-        #self.widget_layout.addStretch(1)
-        #self.camera_widget.setMinimumSize(2000, 600)
+        # self.widget_layout.addStretch(1)
+        # self.camera_widget.setMinimumSize(2000, 600)
 
-
-
-
-
-    def update_length_width_line_edit(self,length:str,width:str,work_zone:str):
+    def update_length_width_line_edit(self, length: str, width: str, work_zone: str):
         if work_zone == 'left':
             self.part_length_lin.setText(length)
             self.part_width.setText(width)
@@ -312,14 +295,12 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
             self.part_length_lin.setText("")
             self.part_width.setText("")
 
-
-
-    def move_workspace_to(self,work_zone:str):
+    def move_workspace_to(self, work_zone: str):
         if work_zone == 'left':
             self.current_work_zone = 'left'
             self.move_to_left_work_zone_button.setDisabled(True)
             self.move_to_right_work_zone_button.setEnabled(True)
-            self.update_length_width_line_edit(self.workspace_length_lin.text(),self.workspace_width.text(),work_zone)
+            self.update_length_width_line_edit(self.workspace_length_lin.text(), self.workspace_width.text(), work_zone)
         elif work_zone == 'right':
             self.current_work_zone = 'right'
             self.move_to_right_work_zone_button.setDisabled(True)
@@ -327,17 +308,15 @@ class ModifiedSandingPageView(QtWidgets.QWidget):
             self.update_length_width_line_edit(self.part_length_lin.text(), self.part_width.text(), work_zone)
 
 
-
-
 class SandingCameraPageManager(ModifiedSandingPageView):
-    def __init__(self, footer_btn="Camera", parent= None):
+    def __init__(self, footer_btn="Camera", parent=None):
         super(SandingCameraPageManager, self).__init__(parent=parent)
         self.__footer_btn_text = footer_btn
         self.camera_widget.newAreaSelectedSignal.connect(self._handle_image_area_selected)
         self.current_unit = MeasureUnitType.MM_UNIT
         self.__dims_widgets = [self.part_width, self.part_length_lin, self.workspace_width, self.workspace_length_lin]
 
-    def new_image_received(self, cam_index:int, pix_map:QtGui.QPixmap):
+    def new_image_received(self, cam_index: int, pix_map: QtGui.QPixmap):
         if cam_index == 0:
             rect = self.get_part_rect()
             pix_map = pix_map.scaled(self.camera_widget.size())
@@ -345,17 +324,16 @@ class SandingCameraPageManager(ModifiedSandingPageView):
                 self.camera_widget.draw_rectangles(pix_map, rect, QtCore.Qt.darkGreen)
             self.camera_widget.set_image(pix_map)
 
-
     def get_part_rect(self):
         part_width, part_length, workspace_width, workspace_length = self.__get_measured_values()
         if part_width > 0 and part_length and workspace_width > 0 and workspace_length > 0:
-            part_width_pixels = int((part_width/workspace_width)*self.camera_widget.height())
-            part_length_pixels = int((part_length/workspace_length)*self.camera_widget.width())
+            part_width_pixels = int((part_width / workspace_width) * self.camera_widget.height())
+            part_length_pixels = int((part_length / workspace_length) * self.camera_widget.width())
             generated_rect = QtCore.QRect(0, self.camera_widget.height() - part_width_pixels,
-                                 part_length_pixels, part_width_pixels)
+                                          part_length_pixels, part_width_pixels)
             return generated_rect
 
-    def _handle_image_area_selected(self, rect:QtCore.QRect):
+    def _handle_image_area_selected(self, rect: QtCore.QRect):
         if self.localize_workplace_btn.isChecked():
             self.camera_widget.set_work_place_area(rect)
         elif self.localize_part_btn.isChecked():
@@ -364,7 +342,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         self.localize_part_btn.setChecked(False)
         self.camera_widget.enable_annotation(False)
 
-    def _handle_image_area_selected(self, rect:QtCore.QRect):
+    def _handle_image_area_selected(self, rect: QtCore.QRect):
         if self.localize_workplace_btn.isChecked():
             self.camera_widget.set_work_place_area(rect)
         elif self.localize_part_btn.isChecked():
@@ -376,10 +354,8 @@ class SandingCameraPageManager(ModifiedSandingPageView):
     def get_footer_btn_name(self) -> str:
         return self.__footer_btn_text
 
-
     def is_dirty(self) -> bool:
         return False
-
 
     def handle_joint_dowel_profile_updated(self, new_profiles):
         pass
@@ -393,7 +369,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         if unit == MeasureUnitType.MM_UNIT:
             factor = 25.4
         else:
-            factor = 1/25.4
+            factor = 1 / 25.4
         for index, widget in enumerate(self.__dims_widgets):
             value = values[index] * factor
             value = round(value, 2)
@@ -403,7 +379,7 @@ class SandingCameraPageManager(ModifiedSandingPageView):
         """this will return the dim in mm """
         values = self.__get_measured_values()
         if self.current_unit == MeasureUnitType.IN_UNIT:
-            values = [val*25.4 for val in values]
+            values = [val * 25.4 for val in values]
         return values
 
     def __get_measured_values(self):
@@ -419,6 +395,3 @@ class SandingCameraPageManager(ModifiedSandingPageView):
             else:
                 measures.append(0)
         return measures
-
-
-

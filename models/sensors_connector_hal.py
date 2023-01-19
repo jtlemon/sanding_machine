@@ -3,14 +3,16 @@ from PySide2 import QtCore
 from .sensors_connector_bsp import SensorsSerialConnector
 from configurations import common_configurations
 
-module_logger  = logging.getLogger(common_configurations.LOGGER_NAME)
+module_logger = logging.getLogger(common_configurations.LOGGER_NAME)
+
 
 class SensorConnector(QtCore.QObject):
     weightChangedSignal = QtCore.Signal(float)
     newWidthSensorsSignal = QtCore.Signal(list)
     autoLeftRightWidthChanged = QtCore.Signal(float, float)
-    physicalStartSignal = QtCore.Signal(str) # this simulate the left and right btn
+    physicalStartSignal = QtCore.Signal(str)  # this simulate the left and right btn
     physicalErrorSignal = QtCore.Signal(str)
+
     def __init__(self):
         super(SensorConnector, self).__init__()
         self.__current_vaccum_state = [0 for i in range(10)]
@@ -27,9 +29,8 @@ class SensorConnector(QtCore.QObject):
         self.__width_sensor_readings = list()
         self.__current_measured_weight = 0.0
         self.__serial_interface_thread = SensorsSerialConnector()
-        self.__serial_interface_thread.start_left_signal.connect(lambda :self.physicalStartSignal.emit("left"))
+        self.__serial_interface_thread.start_left_signal.connect(lambda: self.physicalStartSignal.emit("left"))
         self.__serial_interface_thread.start_right_signal.connect(lambda: self.physicalStartSignal.emit("right"))
-
 
     def start(self):
         self.__serial_interface_thread.start()
@@ -102,21 +103,18 @@ class SensorConnector(QtCore.QObject):
         else:
             self.__serial_interface_thread.turn_off_servo()
 
-    def send_vacuum_value(self, mode:int, param:int):
+    def send_vacuum_value(self, mode: int, param: int):
         values_as_str = ",".join([str(val) for val in self.__current_vaccum_state])
         cmd_str = f'${mode},{param},{values_as_str}*\n'
         self.__serial_interface_thread.send_message(cmd_str.encode())
 
-
     def turn_vacuum_on(self, vac_no):
-        self.__current_vaccum_state[vac_no-1] = 1
-
+        self.__current_vaccum_state[vac_no - 1] = 1
 
     def turn_vacuum_off(self, vac_no):
-        self.__current_vaccum_state[vac_no-1] = 0
+        self.__current_vaccum_state[vac_no - 1] = 0
 
     def send_pressure_value(self, value):
         cmd = f"$1,{value}*"
         print(cmd)
         self.__serial_interface_thread.send_message(cmd.encode())
-
