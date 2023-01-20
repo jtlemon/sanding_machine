@@ -13,6 +13,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from models.machine_models.sander_probe import Probe
 
 from models import CameraMangerProcess
+from application import get_app
 from models.draw_utils import draw_parts_on_image
 # import models.sander_generate
 from configurations.common_configurations import DROPBOX_FOLDER_PATH
@@ -204,6 +205,9 @@ class MachineGuiInterface(MachineInterfaceUi):
         self.access_widget = AccessBrowserWidget()
         self.add_app_window_widget(self.access_widget)
 
+        # app related signals
+        get_app().new_message_signal.connect(self.handle_new_error_decoded)
+
     def handle_page_selected(self, page_index):
         if page_index == 0:
             if common_configurations.CURRENT_MACHINE == common_configurations.SupportedMachines.sandingMachine:
@@ -224,6 +228,7 @@ class MachineGuiInterface(MachineInterfaceUi):
     def handle_new_error_decoded(self, category, color, error_key, error_text):
         self.latest_errors_container.append((error_key, error_text, color))
         self.header_error_lbl.set_error(category, preferred_color=color)
+
 
     def handle_display_all_errors(self, ev):
         if len(self.latest_errors_container):
@@ -333,6 +338,7 @@ class MachineGuiInterface(MachineInterfaceUi):
 
     def handle_left_start(self):
         print("left btn clicked")
+        #get_app().new_message_signal.emit("left btn clicked", "green", "20", "hello world")
         self.common_sanding_start('left')
 
     def handle_right_start(self):
@@ -561,7 +567,7 @@ if __name__ == "__main__":
         machine_supported_operations = SUPPORTED_SANDING_OPERATIONS
     else:
         raise ValueError("not supported machine type.")
-    app = QtWidgets.QApplication(sys.argv)
+    app = get_app()
     utils.load_app_fonts()
     app.setStyleSheet(utils.load_app_style())
     # create default records
