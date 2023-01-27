@@ -205,7 +205,7 @@ class GrblControllerHal(QtCore.QObject):
         self.deactivate_solenoids()
         self.grbl_stream.add_new_command('g90', notify_message='Parking')
         self.grbl_stream.add_new_command('g0z0')
-        self.grbl_stream.add_new_command('g0x-900z-780', notify_message='Parked-Ready')
+        self.grbl_stream.add_new_command('g0x-900y-780', notify_message='Parked-Ready')
         module_logger.debug("change paper position")
 
     def cancel_sanding(self):
@@ -317,10 +317,10 @@ class GrblControllerHal(QtCore.QObject):
         s4_y = CustomMachineParamManager.get_value("sander4_y_value")
         self.grbl_stream.add_new_command("g10 p1 l20 x0 y0 z0",
                                          notify_message='Homing Complete-Ready')
-        self.grbl_stream.add_new_command(f'g10 p2 l20 x{x_zero - s1_x}y0z{y_zero - s1_y}')
-        self.grbl_stream.add_new_command(f'g10 p3 l20 x{x_zero - s2_x}y0z{y_zero - s2_y}')
-        self.grbl_stream.add_new_command(f'g10 p4 l20 x{x_zero - s3_x}y0z{y_zero - s3_y}')
-        self.grbl_stream.add_new_command(f'g10 p5 l20 x{x_zero - s4_x}y0z{y_zero - s4_y}')
+        self.grbl_stream.add_new_command(f'g10 p2 l20 x{x_zero - s1_x}y{y_zero - s1_y}z0')
+        self.grbl_stream.add_new_command(f'g10 p3 l20 x{x_zero - s2_x}y{y_zero - s1_y}z0')
+        self.grbl_stream.add_new_command(f'g10 p4 l20 x{x_zero - s3_x}y{y_zero - s3_y}z0')
+        self.grbl_stream.add_new_command(f'g10 p5 l20 x{x_zero - s4_x}y{y_zero - s4_y}z0')
 
     def reset_and_home(self):
         self.grbl_stream.add_new_command('$slp')

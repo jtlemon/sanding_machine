@@ -37,10 +37,10 @@ SENSOR_MAP = [101.6, 228.6, 304.8, 381, 457.2, 533.4, 609.6, 685.8, 762, 914.4]
 
 # ***************************** E-Stop module ************************
 IS_ESTOP_MODULE_ENABLED = False
-ESTOP_MODULE_COM_PORT = "/dev/ttyACM0"
+ESTOP_MODULE_COM_PORT = "/dev/ttyUSB0"
 ESTOP_MODULE_BAUD_RATE = 4800
 ESTOP_CHECK_STATUS_EVERY = 0.5  # check status every 0.5 sec
 
 # ************************* grbl *********************
-IS_GRBL_MODULE_ENABLED = False
+IS_GRBL_MODULE_ENABLED = True
 GRBL_MODULE_COM_PORT = "/dev/ttyACM0"

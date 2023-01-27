@@ -63,5 +63,5 @@ dovetail_fence_distance = (457.2, 609.6, 0.01)
 # Sander Range
 sander_x_length = (1, 610, 1)
 sander_y_length = (1, 610, 1)
-sander_x_zero = (0, 900, 0.1)
+sander_x_zero = (-10, 900, 0.1)
 sander_pressure = (0, 30, 0.5)
